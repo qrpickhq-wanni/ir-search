@@ -13,6 +13,7 @@ scratch/
 # Local runtime (Phase 1+)
 .venv/
 logs/*.log
+logs/mice-feasibility-audit/
 !logs/.gitkeep
 # Ignore dated raw run folders; keep scaffold + manual-test marker
 data/raw/*/

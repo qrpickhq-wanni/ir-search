@@ -1,7 +1,0 @@
-STATUS=200
-URL=https://k-mice.visitkorea.or.kr/robots.txt
-CT=text/plain
-LEN=33
----
-User-Agent: *
-Disallow: /*search*

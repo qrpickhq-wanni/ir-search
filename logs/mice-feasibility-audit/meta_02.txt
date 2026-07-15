@@ -1,8 +1,0 @@
-STATUS=200
-URL=https://www.mice.or.kr/robots.txt
-CT=text/plain
-LEN=49
----
-User-agent: *
-Disallow: /adm/
-Disallow: /install/
