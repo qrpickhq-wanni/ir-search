@@ -2,11 +2,19 @@ __pycache__/
 *.pyc
 .DS_Store
 *.jsonl
-details/
-output/
-evals/
+/details/
+/output/
+/evals/
 *-workspace/
 
 .playwright-mcp/
-ir-search-profile.md
 scratch/
+
+# Local runtime (Phase 1)
+.venv/
+logs/*.log
+!logs/.gitkeep
+# Ignore dated raw run folders; keep scaffold + manual-test marker
+data/raw/*/
+!data/raw/manual-test/
+!data/raw/**/.gitkeep

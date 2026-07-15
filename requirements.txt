@@ -1,0 +1,3 @@
+# QRPick opportunity pipeline — Phase 1 runtime deps
+# Upstream ir-search crawlers need curl_cffi for TLS fingerprint compatibility.
+curl_cffi>=0.15
