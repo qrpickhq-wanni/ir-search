@@ -1,5 +1,4 @@
 registry_version: '1.0'
-# Sole source of truth for MICE source metadata. CSV under reports/ is a generated artifact.
 authority: config/mice-source-registry.yaml
 artifact_csv: reports/mice-source-audit.csv
 generated_at: '2026-07-15'
@@ -50,6 +49,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: P0
+  implementation_mode: NEW_COLLECTOR
   audit_status: INHERITED_EXISTING_AUDIT
   evidence_urls:
   - docs/mice-source-feasibility-audit.md
@@ -100,6 +100,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: A
   implementation_priority: P0
+  implementation_mode: NEW_COLLECTOR
   audit_status: INHERITED_EXISTING_AUDIT
   evidence_urls:
   - docs/mice-source-feasibility-audit.md
@@ -146,6 +147,7 @@ sources:
   legal_operational_grade: C
   business_value_grade: C
   implementation_priority: HOLD
+  implementation_mode: MANUAL_OR_PARTNERSHIP
   audit_status: INHERITED_EXISTING_AUDIT
   evidence_urls:
   - docs/mice-source-feasibility-audit.md
@@ -193,6 +195,7 @@ sources:
   legal_operational_grade: A
   business_value_grade: A
   implementation_priority: P0
+  implementation_mode: NEW_COLLECTOR
   audit_status: NEWLY_AUDITED
   evidence_urls:
   - https://www.data.go.kr/data/15119881/fileData.do
@@ -238,6 +241,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: A
   implementation_priority: P0
+  implementation_mode: NEW_COLLECTOR
   audit_status: NEWLY_AUDITED
   evidence_urls:
   - logs/mice-landscape-sample/kintex_robots.txt
@@ -283,6 +287,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: A
   implementation_priority: P0
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/coex_robots.txt
@@ -326,6 +331,7 @@ sources:
   legal_operational_grade: C
   business_value_grade: A
   implementation_priority: HOLD
+  implementation_mode: MANUAL_OR_PARTNERSHIP
   audit_status: NEWLY_AUDITED
   evidence_urls:
   - logs/mice-landscape-sample/bexco_robots.txt
@@ -370,6 +376,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: A
   implementation_priority: P0
+  implementation_mode: NEW_COLLECTOR
   audit_status: NEWLY_AUDITED
   evidence_urls:
   - logs/mice-landscape-sample/songdo_sched.txt
@@ -411,6 +418,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: P1
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/exco_robots.txt
@@ -452,6 +460,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: P1
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/dcc_home.txt
@@ -493,6 +502,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: P1
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/icc_home.txt
@@ -535,6 +545,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: P1
+  implementation_mode: NEW_COLLECTOR
   audit_status: NEWLY_AUDITED
   evidence_urls:
   - logs/mice-landscape-sample/kdj_home.txt
@@ -578,6 +589,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: P1
+  implementation_mode: NEW_COLLECTOR
   audit_status: NEWLY_AUDITED
   evidence_urls:
   - logs/mice-landscape-sample/ceco_home.txt
@@ -617,6 +629,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: C
   implementation_priority: P2
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/suwon_cc.txt
@@ -654,6 +667,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: C
   implementation_priority: P2
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/setec_home.txt
@@ -694,6 +708,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: P1
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/aTcenter.txt
@@ -738,6 +753,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: A
   implementation_priority: P0
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/miceseoul_robots.txt
@@ -781,6 +797,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: P1
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/bto_cvb.txt
@@ -822,6 +839,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: P1
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/busanmice_home.txt
@@ -863,6 +881,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: P1
+  implementation_mode: NEW_COLLECTOR
   audit_status: NEWLY_AUDITED
   evidence_urls:
   - logs/mice-landscape-sample/incheon_cvb.txt
@@ -903,6 +922,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: C
   implementation_priority: P2
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/daejeon_cvb.txt
@@ -940,6 +960,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: HOLD
+  implementation_mode: MANUAL_OR_PARTNERSHIP
   audit_status: PENDING
   evidence_urls:
   - https://k-mice.visitkorea.or.kr/convention_kr/guidehtml/mice07_5_cvb.jsp
@@ -982,6 +1003,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: P1
+  implementation_mode: NEW_COLLECTOR
   audit_status: NEWLY_AUDITED
   evidence_urls:
   - logs/mice-landscape-sample/k-mice_cvb_list.txt
@@ -1024,6 +1046,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: P1
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/akei_home.txt
@@ -1066,6 +1089,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: A
   implementation_priority: P0
+  implementation_mode: NEW_COLLECTOR
   audit_status: NEWLY_AUDITED
   evidence_urls:
   - logs/mice-landscape-sample/showala_robots.txt
@@ -1110,6 +1134,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: A
   implementation_priority: P0
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/keoa_home.txt
@@ -1151,6 +1176,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: P1
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/micekorea_home.txt
@@ -1189,6 +1215,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: HOLD
+  implementation_mode: MANUAL_OR_PARTNERSHIP
   audit_status: PENDING
   evidence_urls:
   - https://songdoconvensia.visitincheon.or.kr/page/openApiEvent.do
@@ -1230,6 +1257,7 @@ sources:
   legal_operational_grade: C
   business_value_grade: B
   implementation_priority: HOLD
+  implementation_mode: MANUAL_OR_PARTNERSHIP
   audit_status: NEWLY_AUDITED
   evidence_urls:
   - logs/mice-landscape-sample/daara_robots.txt
@@ -1272,6 +1300,7 @@ sources:
   legal_operational_grade: C
   business_value_grade: C
   implementation_priority: HOLD
+  implementation_mode: MANUAL_OR_PARTNERSHIP
   audit_status: NEWLY_AUDITED
   evidence_urls:
   - logs/mice-landscape-sample/contentour_robots.txt
@@ -1315,6 +1344,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: B
   implementation_priority: P1
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/gep_home.txt
@@ -1355,6 +1385,7 @@ sources:
   legal_operational_grade: A
   business_value_grade: A
   implementation_priority: P0
+  implementation_mode: QUERY_EXTENSION
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/g2b_hint.txt
@@ -1395,6 +1426,7 @@ sources:
   legal_operational_grade: A
   business_value_grade: A
   implementation_priority: P0
+  implementation_mode: EXISTING_PIPELINE_REUSE
   audit_status: VERIFIED_EXISTING_AUDIT
   evidence_urls:
   - README.md
@@ -1435,6 +1467,7 @@ sources:
   legal_operational_grade: A
   business_value_grade: A
   implementation_priority: P0
+  implementation_mode: EXISTING_PIPELINE_REUSE
   audit_status: VERIFIED_EXISTING_AUDIT
   evidence_urls:
   - README.md
@@ -1474,6 +1507,7 @@ sources:
   legal_operational_grade: D
   business_value_grade: C
   implementation_priority: EXCLUDE
+  implementation_mode: MANUAL_OR_PARTNERSHIP
   audit_status: NEWLY_AUDITED
   evidence_urls:
   - logs/mice-landscape-sample/micetoday_robots.txt
@@ -1513,6 +1547,7 @@ sources:
   legal_operational_grade: C
   business_value_grade: D
   implementation_priority: EXCLUDE
+  implementation_mode: MANUAL_OR_PARTNERSHIP
   audit_status: PENDING
   evidence_urls:
   - docs/mice-source-feasibility-audit.md
@@ -1552,6 +1587,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: C
   implementation_priority: P2
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/jejumice.txt
@@ -1589,6 +1625,7 @@ sources:
   legal_operational_grade: B
   business_value_grade: C
   implementation_priority: P2
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/gyeongnam_cvb.txt

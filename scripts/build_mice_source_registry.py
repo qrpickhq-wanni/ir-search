@@ -50,6 +50,7 @@ REQUIRED_FIELDS = [
     "legal_operational_grade",
     "business_value_grade",
     "implementation_priority",
+    "implementation_mode",
     "audit_status",
     "evidence_urls",
     "existing_audit_reference",
@@ -78,6 +79,13 @@ DATA_TYPES = {
     "PARTICIPANT_RECRUITMENT",
     "ORGANIZER_SIGNAL",
     "SALES_LEAD",
+}
+
+IMPLEMENTATION_MODE = {
+    "NEW_COLLECTOR",
+    "EXISTING_PIPELINE_REUSE",
+    "QUERY_EXTENSION",
+    "MANUAL_OR_PARTNERSHIP",
 }
 
 TECHNICAL_GRADE = {"A", "B", "C", "D"}
@@ -200,6 +208,10 @@ def validate_sources(sources: list[dict[str, Any]]) -> list[str]:
         if prio not in PRIORITY:
             errors.append(f"{label}: invalid implementation_priority '{prio}'")
 
+        mode = src.get("implementation_mode")
+        if mode not in IMPLEMENTATION_MODE:
+            errors.append(f"{label}: invalid implementation_mode '{mode}'")
+
         status = src.get("audit_status")
         if status not in AUDIT_STATUS:
             errors.append(f"{label}: invalid audit_status '{status}'")
@@ -282,6 +294,9 @@ def compute_stats(sources: list[dict[str, Any]]) -> dict[str, Any]:
         "implementation_priority": dict(
             Counter(s["implementation_priority"] for s in sources)
         ),
+        "implementation_mode": dict(
+            Counter(s["implementation_mode"] for s in sources)
+        ),
         "source_category": dict(Counter(s["source_category"] for s in sources)),
         "business_value_grade": dict(Counter(s["business_value_grade"] for s in sources)),
         "audit_status": dict(Counter(s["audit_status"] for s in sources)),
@@ -359,6 +374,7 @@ def main() -> int:
     print("legal_operational_grade", stats["legal_operational_grade"])
     print("business_value_grade", stats["business_value_grade"])
     print("implementation_priority", stats["implementation_priority"])
+    print("implementation_mode", stats["implementation_mode"])
     print("source_category", stats["source_category"])
     print("audit_status", stats["audit_status"])
     print("baseline_ok", not args.skip_baseline)
