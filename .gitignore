@@ -10,7 +10,7 @@ __pycache__/
 .playwright-mcp/
 scratch/
 
-# Local runtime (Phase 1)
+# Local runtime (Phase 1+)
 .venv/
 logs/*.log
 !logs/.gitkeep
@@ -18,3 +18,10 @@ logs/*.log
 data/raw/*/
 !data/raw/manual-test/
 !data/raw/**/.gitkeep
+# Phase-2 run artifacts (dated)
+data/normalized/*/
+!data/normalized/.gitkeep
+reports/*/
+!reports/.gitkeep
+reports/**/*.csv
+reports/**/*.md

@@ -1,0 +1,111 @@
+# QRPick company / product profile for Phase-2 rule filtering.
+# Unconfirmed company facts must remain TODO or UNKNOWN — never invent values.
+
+judgment_principle: >
+  공고 적합성을 QRPick 기존 기능 일치 여부에만 한정하지 않는다.
+  QRPick·쇼다의 기술·운영·기획·개발·마케팅 자산과 대표자 수행경력을 활용해
+  직접 공급, 확장 개발, 신규 구축용역, 운영용역, 공동수행, 영업기회로
+  전환할 수 있는지를 최상위로 판단한다.
+
+company:
+  name: 주식회사 쇼다
+  product: QRPick
+  legal_founded_at: "2021-02-14"
+  business_started_at: UNKNOWN
+  headquarters_region: 서울
+  representative: 신석원
+  verification_status: INTERNAL_COMPANY_PROFILE_ONLY
+  verification_warning: >
+    내부 확인 프로필만 반영했다. 사업자등록증·등기부등본 원본 검증 전이므로
+    공식 자격요건 판정(업력·소재지·대표자)에 사용하지 않는다.
+  startup_certificate: UNKNOWN
+  sme_certificate: UNKNOWN
+  venture_certificate: UNKNOWN
+  recent_revenue: UNKNOWN
+  employee_count: UNKNOWN
+  active_government_projects: UNKNOWN
+
+business_model:
+  description:
+    - QRPick 표준 플랫폼을 기반으로 행사 세팅, 운영, 현장, 데이터, 결과보고까지 필요한 범위를 결합하는 Software-enabled Service
+    - 단순 SaaS만이 아니라 고객이 필요한 수준의 운영 서비스를 선택적으로 결합
+
+core_business:
+  - MICE 행사 등록 및 참가자 관리
+  - QR 체크인
+  - 현장 등록 및 배지 발권
+  - 행사 홈페이지 및 온라인 부스
+  - 부스 리드 수집
+  - 세션 및 프로그램 운영
+  - 비즈니스 매칭 및 상담회 운영
+  - 운영 대시보드
+  - 행사 데이터 정리 및 결과 리포트
+  - 멀티테넌트 SaaS
+  - 행사 세팅 및 현장 운영 서비스
+
+extension_business:
+  - MICE 참가자의 지역관광 전환
+  - Bleisure
+  - Destination Pack
+  - 관광재단 및 컨벤션뷰로용 참가자 서비스
+  - 전시컨벤션센터용 방문객 서비스
+  - 리조트 및 호텔 Local Concierge
+  - 다국어 방문객 WebApp
+  - 관광 및 지역상권 OMO 연계
+
+advanced_technology:
+  - QR 기반 App-less WebApp
+  - OCR 기반 명함 및 리드 저장
+  - AI 기반 온라인 부스 프로필 초안
+  - 코사인 유사도 기반 비즈니스 매칭
+  - RAG 기반 지역정보 추천
+  - 다국어 안내
+  - 운영 대시보드
+  - 오프라인 저장 및 복구 동기화
+  - API 연계
+  - 멀티테넌트 Admin SaaS
+  - AI Management Hub
+
+preferred_program_types:
+  - PoC
+  - 실증
+  - 사업화
+  - 오픈이노베이션
+  - 관광
+  - MICE
+  - 지역상권
+  - AI
+  - SaaS
+  - DX
+  - AX
+  - 공공서비스
+  - 서비스 고도화
+  - R&D
+  - 공공조달
+  - 해외진출
+  - 수출
+  - 판로
+
+strong_negative_domains:
+  - 바이오 및 의료 전용
+  - 반도체 전용
+  - 배터리 및 ESS 전용
+  - 에너지 VPP 전용
+  - 제조설비 및 예지보전 전용
+  - 식품 제조 전용
+  - 로봇 하드웨어 전용
+  - 차량 및 모빌리티 제조 전용
+  - 독립적인 영상 객체추적
+  - 센서 및 제어장비 개발
+  - 예비창업자 전용
+  - 대학생 전용
+  - 개인 교육생 전용
+
+partner_required_domains:
+  - 비식별 영상분석
+  - 실내 위치추적
+  - IoT 센서
+  - 로봇
+  - 결제 및 금융 인허가
+  - 특수 하드웨어
+  - 대규모 컴퓨터비전

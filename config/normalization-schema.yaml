@@ -1,0 +1,72 @@
+# Standard opportunity schema for Phase-2 normalization.
+# Missing values are null or empty arrays. Do not embed full raw_record.
+
+required_fields:
+  - opportunity_id
+  - canonical_id
+  - source
+  - source_id
+  - source_occurrences
+  - title
+  - title_normalized
+  - program
+  - organization
+  - organization_normalized
+  - agency_type
+  - category
+  - category_normalized
+  - posted_at
+  - application_start
+  - deadline
+  - deadline_text
+  - dday
+  - region
+  - support_type
+  - support_amount
+  - applicant_summary
+  - url
+  - detail_url
+  - attachment_urls
+  - collected_at
+  - raw_file
+  - duplicate_group_id
+  - duplicate_count
+  - first_pass_status
+  - first_pass_score
+  - positive_reasons
+  - negative_reasons
+  - review_reasons
+  - needs_detail_review
+  - asset_fit_path
+  - commercialization_path
+  - asset_fit_reasons
+  - usable_qrpick_features
+  - usable_showda_assets
+  - new_development_scope
+  - partner_required_scope
+  - opportunity_kind
+  - next_action
+
+source_occurrence_fields:
+  - source
+  - source_id
+  - url
+  - raw_file
+
+asset_fit_path_allowed:
+  - QRPICK_DIRECT
+  - QRPICK_EXTENSION
+  - SHOWDA_ASSET_REUSE
+  - CUSTOM_BUILD_SERVICE
+  - PARTNER_CONSORTIUM
+  - SALES_LEAD
+  - NO_REALISTIC_PATH
+
+notes:
+  - opportunity_id is "{source}:{source_id}"
+  - canonical_id identifies the representative record of a duplicate group
+  - original title and organization strings are never mutated
+  - title_normalized / organization_normalized are comparison aids only
+  - Fitness is not limited to existing QRPick feature parity
+  - Top question: Can QRPick/Showda assets convert into supply, extension, custom build, ops service, consortium, or sales?
+  - Every scored opportunity must carry asset_fit_path and next_action

@@ -13,24 +13,31 @@
 - 이후 단계에서 정규화·QRPick 적합성 평가·제안 대응으로 확장한다.
 - QRPick 실제 서비스 저장소와는 연결하지 않는다 (독립 로컬 운영체계).
 
-## 현재 구축 범위 (1단계)
+## 현재 구축 범위
+
+### 1단계 — 수집 기반환경
+
+- Python `.venv` + `requirements.txt` (`curl_cffi>=0.15`, `PyYAML`)
+- 운영 폴더 구조, `ir-search-profile.md`, 수집 배치/로그
+
+### 2단계 — 정규화·보수적 중복·룰 기반 1차 필터 (이번 단계)
+
+목적: 원본 JSONL을 QRPick 표준 레코드로 정규화하고, 보수적으로 중복을 묶은 뒤,
+유료 AI 없이 설명 가능한 규칙으로 검토 후보를 선별한다.
 
 포함:
-
-- Python `.venv` + `requirements.txt` (`curl_cffi>=0.15`)
-- 운영 폴더 구조 (`config/`, `data/`, `app/`, `logs/`, `scripts/` 등)
-- `ir-search-profile.md` (QRPick 프로필 초안)
-- Windows 배치 스모크 테스트
-  - `scripts/test_kstartup_collect.bat`
-  - `scripts/test_all_sources_collect.bat`
-- 실행 로그 (`logs/`)
+- `config/qrpick-profile.yaml`, `normalization-schema.yaml`, `filter-rules.yaml`, `status-codes.yaml`
+- `app/normalizers/*`, `app/evaluators/*`
+- `app/run_normalize.py`, `app/run_first_pass.py`, `app/run_summary.py`, `app/run_phase2.py`
+- `scripts/run_phase2_pipeline.bat`
+- `tests/test_*.py`
+- 정책 문서: [`docs/phase2-normalization-and-filter-policy.md`](docs/phase2-normalization-and-filter-policy.md)
 
 아직 포함하지 않음:
-
-- 대시보드
-- AI 평가 / 유료 AI API
-- 추가 관광기관 크롤러
-- 제안서 자동 생성 파이프라인 본구현
+- 웹 대시보드, SQLite, LLM/유료 AI API
+- 상세공고·첨부 전수 다운로드
+- 관광기관·컨벤션뷰로 신규 크롤러
+- 자동 이메일·제안서 작성·최종 GO/NO-GO·자동 제출
 
 ## 실행 방법
 
@@ -43,19 +50,33 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### K-Startup 수집 테스트
+### 1단계 수집 테스트
 
 ```bat
 scripts\test_kstartup_collect.bat
-```
-
-### 기업마당·NIPA·KOCCA·SMTECH 통합 수집 테스트
-
-```bat
 scripts\test_all_sources_collect.bat
 ```
 
-배치 파일은 프로젝트 루트로 이동 → `.venv` 활성화 → 오늘 날짜 폴더 생성 → 원본 `skills/ir-search/scripts/*.py` 호출 → 결과/로그 기록을 수행합니다.
+### 2단계 정규화·1차 필터
+
+```bat
+scripts\run_phase2_pipeline.bat
+```
+
+또는:
+
+```bat
+.venv\Scripts\python.exe app\run_phase2.py --raw-dir data\raw\2026-07-15 --today 2026-07-15
+```
+
+입력은 `data/raw` 아래 가장 최근 `YYYY-MM-DD` 폴더의 `kstartup_all.jsonl` + `sources_all.jsonl`이다.
+원본 JSONL은 읽기 전용이며 수정하지 않는다.
+
+### 단위 테스트
+
+```bat
+.venv\Scripts\python.exe -m unittest discover -s tests -v
+```
 
 ## 생성되는 파일 위치
 
@@ -63,47 +84,73 @@ scripts\test_all_sources_collect.bat
 |------|------|
 | K-Startup 원본 | `data/raw/YYYY-MM-DD/kstartup_all.jsonl` |
 | 통합 소스 원본 | `data/raw/YYYY-MM-DD/sources_all.jsonl` |
-| K-Startup 실행 로그 | `logs/YYYY-MM-DD_kstartup_test.log` |
-| 통합 소스 실행 로그 | `logs/YYYY-MM-DD_sources_test.log` |
-| QRPick 프로필 | `ir-search-profile.md` |
-| (사전 수동 검증본) | `data/raw/manual-test/` |
+| 정규화 대표 공고 | `data/normalized/YYYY-MM-DD/opportunities.jsonl` |
+| 중복 로그 | `data/normalized/YYYY-MM-DD/duplicates.jsonl` |
+| 정규화 오류 | `data/normalized/YYYY-MM-DD/normalization_errors.jsonl` |
+| 요약 보고서 | `reports/YYYY-MM-DD/collection-summary.md` |
+| 후보 CSV (HIGH/REVIEW/DETAIL) | `reports/YYYY-MM-DD/candidate-list.csv` |
+| 상태별 CSV | `high-priority-list.csv`, `review-list.csv`, `needs-detail-review.csv`, `low-fit-list.csv` |
+| Phase-2 로그 | `logs/YYYY-MM-DD_phase2.log` |
 
-원본 JSONL은 덮어쓰되 **내용을 편집하지 않는 것**을 원칙으로 합니다. 가공본은 이후 `data/normalized/` 등에서 다룹니다.
+CSV는 Excel 한글 호환을 위해 **UTF-8 BOM(`utf-8-sig`)** 으로 저장한다.
 
-## 알려진 제약
+## 상태코드와 점수의 의미
 
-- 공개 공고 페이지만 접근합니다. 로그인·CAPTCHA 우회·비공개 API는 하지 않습니다.
-- `curl_cffi`가 없으면 TLS 지문 차단으로 실패할 수 있습니다. `.venv`에 `curl_cffi>=0.15`를 설치하세요.
-- 사이트 개편·일시 장애 시 해당 소스만 0건 또는 부분 실패할 수 있습니다. 우회 코드는 추가하지 않고 로그에 원인을 남깁니다.
-- 요청 간 지연(약 0.3~0.4초)이 있어 통합 수집은 수 분 이상 걸릴 수 있습니다.
-- 업력·소재지 등 미확정 프로필 항목은 TODO로 두며 임의 작성하지 않습니다.
-- 유료 AI API는 사용하지 않습니다.
+| 상태 | 의미 |
+|------|------|
+| HIGH_PRIORITY | QRPick 코어·확장과 직접 연관 신호가 강해 상세검토 우선 (지원 확정 아님) |
+| REVIEW | 연관 가능, 지원형태·효익 추가 검토 |
+| DETAIL_REVIEW | 제목만으로 과제·자격 판단 불가 |
+| LOW_FIT | 직접 관련성 낮음 또는 대상 명확 부적합 |
+| EXPIRED | 마감 종료 |
+| UNKNOWN | 데이터 부족 |
+
+점수는 **검토 순서용(0~100)** 이며 지원 가능 여부가 아니다.
+상세 정책은 `docs/phase2-normalization-and-filter-policy.md`를 본다.
+
+## 중복 제거 방식
+
+- 자동 병합: 동일 source+source_id, 또는 정규화 제목+기관+마감 완전 일치
+- 후보만 기록: 제목 일치 + (기관 또는 마감) — fuzzy 병합 없음
+- 불확실하면 별도 공고로 유지
+
+## 자동 필터의 한계 / 회사 TODO 영향
+
+- 목록 메타데이터만 사용한다. 자격·예산·지역제한은 확정하지 않는다.
+- `headquarters_region`·업력이 TODO이면 지역/업력 요건을 판정하지 않고 `DETAIL_REVIEW`/`review_reasons`에 남긴다.
+- NIPA 등에서 과거 마감 공고가 섞이면 EXPIRED가 커질 수 있다.
+- 따라서 **다음 단계에서는 HIGH/REVIEW/DETAIL 후보의 상세공고를 반드시 검증**해야 한다.
 
 ### 1단계 실행 검증 메모 (2026-07-15)
 
-- K-Startup (`scripts\test_kstartup_collect.bat`): **성공** — 217건 → `data/raw/2026-07-15/kstartup_all.jsonl` / `logs/2026-07-15_kstartup_test.log`
-- sources `list all` (`scripts\test_all_sources_collect.bat`): **성공** — 825건 → `data/raw/2026-07-15/sources_all.jsonl` / `logs/2026-07-15_sources_test.log`
-  - bizinfo 450 · nipa 300 · kocca 16 · smtech 59
-- 사이트 접근 실패: **없음** (우회 코드 미작성)
+- K-Startup: **성공** 217건
+- sources `list all`: **성공** 825건 (bizinfo 450 · nipa 300 · kocca 16 · smtech 59)
+
+### 2단계 실행 검증 메모 (행동 대기열 분리 후, 2026-07-15)
+
+- 입력 1,042 / 대표 1,041 / 오류 0 / 자동병합 1
+- **action_queue**: ACTION_NOW **5** · QUALIFICATION_CHECK **38** · SALES_OUTREACH **108** · WATCHLIST **52** · NO_ACTION **511** · CLOSED **327**
+- **primary_asset_fit_path**: SHOWDA_ASSET_REUSE **29** ← 이전 787에서 감소 · NO_REALISTIC_PATH 819 · SALES_LEAD 116 · CUSTOM_BUILD 55 · EXTENSION 7 · DIRECT 1 · PARTNER 14
+- 즉시 사람 손길 필요한 작업열(ACTION_NOW+QUAL+SALES) ≈ **151건** (유효 714 대비 운영 가능)
+- 회사 프로필: 설립 2021-02-14·서울·대표 신석원 (`INTERNAL_COMPANY_PROFILE_ONLY`)
+- 추적 무결성 PASS (1042)
+- 대기열 CSV: `reports/2026-07-15/action-now.csv` 등
 
 ## 원본 ir-search 코드와 QRPick 맞춤 코드의 경계
 
 | 구분 | 경로 | 수정 정책 |
 |------|------|-----------|
 | 원본 수집기·스킬 | `skills/ir-search/` | **수정하지 않음** |
-| QRPick 운영 래퍼 | `scripts/*.bat`, `ir-search-profile.md`, `README.md`, `config/`, `app/`(향후) | 이 저장소에서 관리 |
-| 원본·로그 산출물 | `data/`, `logs/` | 원본 JSONL은 수정하지 않음 |
+| QRPick 운영 코드 | `scripts/`, `config/`, `app/`, `tests/`, `docs/` | 이 저장소에서 관리 |
+| 원본·로그 산출물 | `data/raw`, `logs/` | 원본 JSONL은 수정하지 않음 |
 | QRPick 서비스 저장소 | (외부) | **연결·수정하지 않음** |
 
-향후 `app/collectors/` 등에 래퍼를 둘 때도 원본 스크립트를 fork해 고치지 말고, 서브프로세스로 호출하는 방식을 유지합니다.
+## 다음 단계
 
-## 다음 단계 (2단계 이후 후보)
-
-1. 프로필 TODO(업력·소재지 등) 확정
-2. `data/normalized/` 스키마·정규화 스크립트
-3. QRPick 적합 키워드/룰 기반 1차 필터 (유료 AI 없이)
-4. 상세공고(`detail`) 선택적 수집과 자격요건 체크리스트
-5. 대시보드·제안 파이프라인·추가 관광기관 소스 (별도 착수)
+1. 프로필 TODO(업력·소재지) 확정
+2. HIGH/REVIEW/DETAIL 후보 상세공고 선택 수집·자격 체크리스트
+3. 사람 검토 워크플로(스프레드시트/노션) 정착
+4. (이후) 대시보드·제안 파이프라인·추가 관광기관 소스
 
 ## 라이선스
 

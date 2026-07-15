@@ -1,0 +1,639 @@
+# Rule-based first-pass scoring + asset-fit signals (no LLM).
+# Top question: Can QRPick/Showda assets convert this into supply, build, ops, consortium, or sales?
+
+base_score: 30
+
+scoring:
+  event_types:
+    points_per_hit: 5
+    max_points: 25
+  ops_infra:
+    points_per_hit: 6
+    max_points: 30
+  core_mice:
+    points_per_hit: 8
+    max_points: 32
+  tourism_extension:
+    points_per_hit: 6
+    max_points: 24
+  extension_broad:
+    points_per_hit: 4
+    max_points: 20
+  technology:
+    points_per_hit: 4
+    max_points: 16
+  service_build:
+    points_per_hit: 6
+    max_points: 24
+  program_value:
+    points_per_hit: 7
+    max_points: 21
+  export_market:
+    points_per_hit: 5
+    max_points: 10
+  combo_two_high_groups: 18
+  combo_three_high_groups: 28
+
+penalties:
+  trainee_individual:
+    points: -25
+  space_only:
+    points: -20
+  mentoring_only:
+    points: -12
+  strong_domain_mismatch:
+    points: -20
+  pre_startup_only:
+    points: -40
+  student_only:
+    points: -40
+
+# Groups counted toward HIGH_PRIORITY combo (review ranking)
+high_signal_groups:
+  - core_mice
+  - tourism_extension
+  - program_value
+  - ops_infra
+  - event_types
+
+positive_signals:
+  event_types:
+    - 전시회
+    - 박람회
+    - 엑스포
+    - 컨벤션
+    - 컨퍼런스
+    - 포럼
+    - 세미나
+    - 학술회의
+    - 학술대회
+    - 심포지엄
+    - 총회
+    - 설명회
+    - 발표회
+    - 페스티벌
+    - 축제
+    - 수출상담회
+    - 구매상담회
+    - 투자상담회
+    - 비즈니스상담회
+    - 비즈니스 매칭
+    - 비즈매칭
+    - 미팅
+    - IR
+    - 데모데이
+    - 오픈이노베이션
+    - Open Innovation
+    - 밋업
+    - 네트워킹
+    - 로드쇼
+    - 상담회
+  ops_infra:
+    - 행사 운영 시스템
+    - 참가자 관리
+    - 사전등록
+    - 현장등록
+    - 현장 접수
+    - 출입관리
+    - 체크인
+    - 발권
+    - 배지
+    - 네임택
+    - 예약
+    - 스케줄
+    - 상담 배정
+    - 매칭
+    - 미팅 관리
+    - 부스 관리
+    - 전시 운영
+    - 회의 운영
+    - 세션 관리
+    - 리드 수집
+    - 설문
+    - 만족도
+    - 통계
+    - 성과관리
+    - 대시보드
+    - 결과보고
+    - 행사 홈페이지
+    - 온라인 전시관
+    - 디지털 부스
+    - 온라인 부스
+    - WebApp
+    - 모바일 서비스
+    - QR
+    - 알림톡
+    - 문자
+    - 다국어
+  core_mice:
+    - MICE
+    - 마이스
+    - 전시회
+    - 컨퍼런스
+    - 수출상담회
+    - 비즈니스 매칭
+    - 비즈매칭
+    - 상담회
+    - 행사 등록
+    - 참가자 관리
+    - 체크인
+    - 출입관리
+    - 발권
+    - 네임택
+    - 배지
+    - 온라인 부스
+    - 부스 리드
+    - 전시부스
+    - 박람회
+    - 전시컨벤션
+    - 컨벤션
+    # 세미나/포럼은 event_types로만 두고 core_mice HIGH 트리거에서 제외
+  tourism_extension:
+    - 관광
+    - 지역관광
+    - 관광객
+    - 관광기업
+    - 관광재단
+    - 컨벤션뷰로
+    - 리조트
+    - 호텔
+    - Bleisure
+    - 블레저
+    - 워케이션
+    - 지역상권
+    - 로컬
+    - OMO
+    - 마이스 그로우업
+  extension_broad:
+    - 공공정보
+    - 정책 안내
+    - 맞춤 알림
+    - 큐레이션
+    - 콘텐츠 플랫폼
+    - B2B 플랫폼
+    - 수출 플랫폼
+    - CRM
+    - 데이터 수집
+    - 데이터 분석
+    - 모바일 마케팅
+    - 쿠폰
+    - 프로모션
+    - 지능형 검색
+    - 챗봇
+    - RAG
+    - LLM
+    - AI 추천
+    - 다국어 변환
+    - 문서 파싱
+    - 프로필 생성
+    - 운영 자동화
+  technology:
+    - SaaS
+    - 플랫폼
+    - 디지털전환
+    - DX
+    - AX
+    - AI
+    - 인공지능
+    - OCR
+    - 데이터
+    - 다국어
+    - WebApp
+    - API
+    - 클라우드
+    - 스마트시티
+    - 스마트도시
+  service_build:
+    - 구축
+    - 고도화
+    - 유지관리
+    - 운영대행
+    - 운영 용역
+    - 용역
+    - 입찰
+    - 실증
+    - 컨설팅
+    - 기획 용역
+    - 시스템 구축
+    - 플랫폼 구축
+    - 웹 구축
+    - 모바일 구축
+  program_value:
+    - 실증
+    - PoC
+    - POC
+    - 테스트베드
+    - 오픈이노베이션
+    - Open Innovation
+    - 사업화
+    - 기술개발
+    - R&D
+    - 연구개발
+    - 구매
+    - 조달
+    - 벤처나라
+  export_market:
+    - 판로
+    - 수출
+    - 해외진출
+    - 스케일업
+    - 글로벌
+
+# Keywords that alone must not drive high core scores
+weak_alone_words:
+  - 행사
+  - 콘텐츠
+  - 교육
+  - 멘토링
+
+negative_signals:
+  trainee_individual:
+    - 교육생 모집
+    - 개인 참가자
+    - 수강생
+    - 부트캠프 참가자
+    - 연수생
+  space_only:
+    - 입주기업 모집
+    - BI입주
+    - 입주공고
+    - 입주 모집
+    - 보육공간
+    - 입주공간
+  mentoring_only:
+    - 멘토링만
+    - 컨설팅만
+    - 멘토링 프로그램
+    - 자문단
+  pre_startup_only:
+    - 예비창업자만
+    - 예비창업자 전용
+    - 예비창업패키지
+  student_only:
+    - 대학생만
+    - 대학생 전용
+    - 고등학생
+    - 중고등학생
+  strong_domain:
+    - 바이오
+    - 메디컬
+    - 헬스케어
+    - 의료기기
+    - 제약
+    - 반도체
+    - 배터리
+    - ESS
+    - VPP
+    - 식품 제조
+    - 스마트팩토리
+    - 로봇 제조
+    - 차량 제조
+    - 모빌리티 제조
+    - 예지보전
+
+# Soften industrial-domain penalty when these SW/ops role signals exist
+domain_role_override_signals:
+  - 행사
+  - 전시
+  - 박람회
+  - 상담회
+  - 등록
+  - 매칭
+  - 플랫폼
+  - 웹
+  - 모바일
+  - 데이터
+  - 마케팅
+  - 정보제공
+  - 운영시스템
+  - 운영 시스템
+  - 홈페이지
+  - 대시보드
+  - AI
+  - 참가기업
+  - 부스
+
+domain_exclusive_markers:
+  - 전용
+  - 특화
+  - 만 대상
+  - 에 한함
+
+ascii_word_boundary_keywords:
+  - AI
+  - AX
+  - DX
+  - API
+  - OCR
+  - ESS
+  - VPP
+  - PoC
+  - POC
+  - SaaS
+  - OMO
+  - RAG
+  - LLM
+  - IR
+  - CRM
+  - QR
+
+# Floor: any of these groups → at least DETAIL_REVIEW (unless EXPIRED/UNKNOWN)
+detail_review_floor_groups:
+  - event_types
+  - ops_infra
+  - tourism_extension
+  - extension_broad
+  - service_build
+
+detail_review_program_cues:
+  - 오픈이노베이션
+  - Open Innovation
+  - 실증
+  - PoC
+  - 사업화
+  - R&D
+  - 연구개발
+  - 기술개발
+  - 구매
+  - 테스트베드
+  - 구축
+  - 용역
+  - 입찰
+  - 고도화
+  - 유지관리
+  - 운영대행
+
+# asset_fit_path allowed values and keyword hints
+asset_fit:
+  allowed_paths:
+    - QRPICK_DIRECT
+    - QRPICK_EXTENSION
+    - SHOWDA_ASSET_REUSE
+    - CUSTOM_BUILD_SERVICE
+    - PARTNER_CONSORTIUM
+    - SALES_LEAD
+    - NO_REALISTIC_PATH
+  # Forbidden as sole evidence for SHOWDA_ASSET_REUSE
+  generic_alone_forbidden:
+    - AI
+    - 인공지능
+    - 플랫폼
+    - 서비스
+    - 데이터
+    - 디지털
+    - DX
+    - AX
+    - 클라우드
+    - 스마트
+  direct_feature_keywords:
+    - 체크인
+    - 출입관리
+    - 발권
+    - 배지
+    - 네임택
+    - 사전등록
+    - 현장등록
+    - 참가자 관리
+    - 온라인 부스
+    - 디지털 부스
+    - 부스 리드
+    - 리드 수집
+    - 비즈니스 매칭
+    - 상담 배정
+    - 대시보드
+    - 결과보고
+    - QR
+    - 매칭 시스템
+    - 등록 시스템
+    - 운영시스템
+    - 운영 시스템
+  extension_keywords:
+    - 관광
+    - 지역관광
+    - Bleisure
+    - 블레저
+    - 컨벤션뷰로
+    - 리조트
+    - 호텔
+    - OMO
+    - 지역상권
+    - Destination
+    - 마이스
+    - MICE
+  sales_lead_keywords:
+    - 참가기업
+    - 전시부스
+    - 부스 참가
+    - 공동관
+    - 벤처나라
+    - 판로
+    - 수출상담회
+    - 구매상담회
+    - 홍보관
+    - 개별참가
+  # CUSTOM_BUILD_SERVICE: only when one of these is explicit
+  custom_build_required_keywords:
+    - 시스템 구축
+    - 플랫폼 구축
+    - 웹 구축
+    - 모바일 구축
+    - 플랫폼 제작
+    - 운영시스템
+    - 운영 시스템
+    - 시스템 실증
+    - 서비스 실증
+    - 운영대행
+    - 유지관리
+    - 정보화
+    - 기획 용역
+    - 컨설팅 용역
+    - 용역
+    - 입찰
+    - 고도화
+    - 구축
+  partner_keywords:
+    - 로봇
+    - IoT
+    - 센서
+    - 영상분석
+    - 위치추적
+    - 결제
+    - 하드웨어
+    - 컴퓨터비전
+    - 의료기기
+    - 반도체 장비
+  industrial_tech_core_keywords:
+    - 세포
+    - 신약
+    - 공정개발
+    - 소재개발
+    - 소자
+    - 웨이퍼
+    - 배터리셀
+    - 예지보전
+    - 설비제어
+    - 임상
+    - API 원료
+  # matched_asset_families: require specific evidence (not generic AI/플랫폼 alone)
+  asset_families:
+    QRPICK_EVENT_OPERATIONS:
+      - 체크인
+      - 출입관리
+      - 발권
+      - 배지
+      - 네임택
+      - 사전등록
+      - 현장등록
+      - 참가자 관리
+      - 온라인 부스
+      - 디지털 부스
+      - 부스 관리
+      - 리드 수집
+      - 상담 배정
+      - 세션 관리
+      - 행사 운영 시스템
+      - 매칭 시스템
+      - 등록 시스템
+    AI_PUBLIC_INFORMATION_SERVICE:
+      - 공공정보
+      - 정책 안내
+      - 맞춤 알림
+      - RAG
+      - 챗봇
+      - 다국어 안내
+      - 관광 안내
+    CONTENT_CURATION_PLATFORM:
+      - 큐레이션
+      - 콘텐츠 플랫폼
+      - 콘텐츠 추천
+    B2B_MATCHING_OR_COMMERCE:
+      - 비즈니스 매칭
+      - 비즈매칭
+      - B2B 플랫폼
+      - 수출 플랫폼
+      - 상담회
+      - 매칭
+      - 투자상담
+    MOBILE_MARKETING_AND_COUPON:
+      - 모바일 마케팅
+      - 쿠폰
+      - 프로모션
+      - 알림톡
+      - 문자
+    DATA_CRM_AND_DASHBOARD:
+      - CRM
+      - 대시보드
+      - 데이터 수집
+      - 데이터 분석
+      - 성과관리
+      - 결과보고
+      - 통계
+      - 만족도
+    WEB_SAAS_SERVICE_PLANNING:
+      - SaaS
+      - WebApp
+      - 웹 구축
+      - 플랫폼 구축
+      - 홈페이지 구축
+      - 멀티테넌트
+      - 정보화 사업
+
+opportunity_type_keywords:
+  EDUCATION:
+    - 교육생
+    - 수강생
+    - 부트캠프
+    - 아카데미
+    - 연수생
+    - 교육 과정
+    - 리더 과정
+  SPACE_OR_INCUBATION:
+    - 입주기업
+    - BI입주
+    - 입주공간
+    - 입주 모집
+    - 보육센터
+  NETWORKING:
+    - 네트워킹
+    - 밋업
+    - 교류회
+  EXHIBITION_OR_MARKET_ACCESS:
+    - 참가기업
+    - 전시부스
+    - 박람회
+    - 전시회
+    - 엑스포
+    - 공동관
+    - 홍보관
+    - 개별참가
+  SALES_SIGNAL:
+    - 벤처나라
+    - 판로
+    - 공공조달
+  PROCUREMENT_OR_BUILD:
+    - 구축
+    - 용역
+    - 입찰
+    - 고도화
+    - 유지관리
+    - 운영대행
+    - 정보화
+    - 시스템 구축
+  DEMAND_CHALLENGE:
+    - 오픈이노베이션
+    - Open Innovation
+    - 수요기업
+    - 수요과제
+    - PoC
+    - 실증
+  CONSULTING_SUPPORT:
+    - 컨설팅
+    - 멘토링
+    - 자문
+  SUPPORT_PROGRAM:
+    - 지원사업
+    - 사업화
+    - 바우처
+    - 스케일업
+
+action_queue_notes:
+  - Separate business relevance (asset paths) from what to do now (action_queue)
+  - Exhibition participant recruitment → SALES_OUTREACH or WATCHLIST, not dump to DETAIL_REVIEW-only
+  - Personal education trainee → NO_ACTION
+  - Unspecified OI challenge → QUALIFICATION_CHECK
+
+opportunity_kind_keywords:
+  bid_or_service:
+    - 용역
+    - 입찰
+    - 구축
+    - 유지관리
+    - 운영대행
+    - 위탁
+  sales_lead:
+    - 참가기업
+    - 전시부스
+    - 공동관
+    - 상담회 참가
+    - 벤처나라
+  support_program:
+    - 지원사업
+    - 모집공고
+    - 사업화
+    - 바우처
+    - PoC
+    - 실증
+
+status_thresholds:
+  high_priority_min_score: 70
+  review_min_score: 50
+  low_fit_max_score: 34
+  high_priority_min_signal_groups: 2
+  core_tourism_priority_min_score: 55
+
+notes:
+  - Business relevance and action queue are separate concerns
+  - SHOWDA_ASSET_REUSE requires explicit matched_asset_families evidence
+  - Generic AI/플랫폼/서비스/데이터/디지털 alone never grants SHOWDA_ASSET_REUSE
+  - CUSTOM_BUILD_SERVICE requires explicit build/ops keywords
+  - Industry labels alone never force NO_REALISTIC_PATH

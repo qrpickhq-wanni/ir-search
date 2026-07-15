@@ -1,0 +1,75 @@
+STATUS=200
+URL=https://myfair.co/robots.txt
+CT=text/plain; charset=utf-8
+LEN=2072
+---
+# =============================================================================
+# AI / LLM 크롤러
+# =============================================================================
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: Google-Extended
+User-agent: PerplexityBot
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: Applebot-Extended
+User-agent: Meta-ExternalAgent
+User-agent: cohere-ai
+Allow: /
+Disallow: /login
+Disallow: /join
+Disallow: /participation/
+Disallow: /company/participation/
+Disallow: /workspaces/
+Disallow: /pavilion-projects/
+Disallow: /private
+Disallow: /term/use
+Disallow: /company/
+Disallow: /account/
+
+# =============================================================================
+# Google 광고 및 아카이브봇 / Naver 검색봇 등
+# =============================================================================
+User-agent: Mediapartners-Google
+User-agent: ia_archiver
+User-agent: AdsBot-Google
+User-agent: AdsBot-Google-Mobile
+User-agent: Yeti
+User-agent: Naverbot
+Allow: /
+Disallow: /login
+Disallow: /join
+Disallow: /participation/
+Disallow: /company/participation/
+Disallow: /workspaces/
+Disallow: /pavilion-projects/
+Disallow: /private
+Disallow: /term/use
+Disallow: /company/
+Disallow: /account/
+
+# =============================================================================
+# 차단할 크롤러
+# =============================================================================
+User-agent: MJ12bot
+Disallow: /
+
+# =============================================================================
+# 일반 크롤러 (Google, Bing, ...)
+# =============================================================================
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /join
+Disallow: /participation/
+Disallow: /company/participation/
+Disallow: /workspaces/
+Disallow: /pavilion-projects/
+Disallow: /private
+Disallow: /term/use
+Disallow: /company/
+Disallow: /account/
+
+Sitemap: https://myfair.co/sitemap_location.xml
+
+#DaumWebMasterTool:2de9528217b8cd6cf4379a2862406c6d0aebd334329ad3d47b5cd5b3db015e20:4t0E4ZJzCuHfAWvKYg3Nww==

@@ -1,3 +1,5 @@
-# QRPick opportunity pipeline — Phase 1 runtime deps
+# QRPick opportunity pipeline — runtime deps
 # Upstream ir-search crawlers need curl_cffi for TLS fingerprint compatibility.
 curl_cffi>=0.15
+# Phase-2 config loading
+PyYAML>=6.0

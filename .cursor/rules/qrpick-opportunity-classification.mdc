@@ -1,0 +1,39 @@
+---
+description: QRPick opportunity classification — relevance vs action queue
+globs:
+  - config/**
+  - app/evaluators/**
+  - app/run_*.py
+  - reports/**
+alwaysApply: false
+---
+
+# QRPick opportunity classification
+
+자동 분류는 지원 가능 여부를 확정하기 위한 것이 아니다.
+직접 적합·상세확인·영업판로·오탐 위험을 구분하고, 사람이 다음 행동을 결정하도록 돕는다.
+
+## Required separation
+
+- **Relevance**: `primary_asset_fit_path`, `secondary_asset_fit_paths`, `matched_asset_families`, `fit_confidence`, `fit_evidence`
+- **Action**: `action_queue`, `recommended_next_action`
+
+Do not collapse everything into DETAIL_REVIEW or SHOWDA_ASSET_REUSE.
+
+## Hard gates
+
+- `SHOWDA_ASSET_REUSE` only with explicit `matched_asset_families` evidence (never AI/플랫폼/데이터 alone).
+- `CUSTOM_BUILD_SERVICE` only with explicit build/ops keywords.
+- Industry labels alone never force exclusion.
+- No per-announcement title hardcoding.
+
+## Action queues
+
+`ACTION_NOW` | `QUALIFICATION_CHECK` | `SALES_OUTREACH` | `WATCHLIST` | `NO_ACTION` | `CLOSED`
+
+Exhibition participant recruitment → sales/watchlist, not “detail dump only”.
+Personal trainee education → `NO_ACTION`.
+
+## Docs
+
+See `docs/qrpick-opportunity-classification-principles.md` and `config/filter-rules.yaml`.

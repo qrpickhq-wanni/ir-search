@@ -1,0 +1,101 @@
+STATUS=200
+FINAL=https://www.mice.or.kr/bbs/board.php?bo_table=bid
+CT=text/html; charset=utf-8
+LEN=3996
+HINTS=
+TABLEISH=False
+LINKS=
+---
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="format-detection" content="telephone=no">
+	<meta name="og:title" content="오류안내 페이지 | 마이스워크넷">
+	
+<meta name="description" content="부산관광마이스진흥회,부산 관광·MICE 유관 기업·기관,채용,입찰,행사,동향,지원사업,공모전 등 정보 안내">
+<meta name="og:description" content="부산관광마이스진흥회,부산 관광·MICE 유관 기업·기관,채용,입찰,행사,동향,지원사업,공모전 등 정보 안내">
+<meta name="naver-site-verification" content="c40df72e6d0281a71d21dfae14a99addbd8d3913" />
+    <title>오류안내 페이지 | 마이스워크넷</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+	<!--<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">-->
+	<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:400,700,800|Noto+Sans+KR&display=swap" rel="stylesheet">
+    <!--<link rel="stylesheet" type="text/css" href="https://www.mice.or.kr:443/fonts/notosanskr.css">-->
+    <link rel="stylesheet" href="https://www.mice.or.kr:443/theme/basic/css/normalize.css">
+    <link rel="stylesheet" href="https://www.mice.or.kr:443/theme/basic/css/common.css">
+    <link rel="stylesheet" href="https://www.mice.or.kr:443/theme/basic/css/default_shop.css">
+	<link rel="stylesheet" href="https://www.mice.or.kr:443/theme/basic/css/sub.css?ver=3">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://www.mice.or.kr:443/theme/basic/css/theme.css">
+	<link rel="canonical" href="https://www.mice.or.kr:443">
+
+<!--[if lte IE 8]>
+<script src="https://www.mice.or.kr:443/js/html5.js"></script>
+<![endif]-->
+<script>
+// 자바스크립트에서 사용하는 전역변수 선언
+var g5_url       = "https://www.mice.or.kr:443";
+var g5_theme_url = "https://www.mice.or.kr:443/theme/basic"; /* 테마 변수 추가 */
+var g5_bbs_url   = "https://www.mice.or.kr:443/bbs";
+var g5_is_member = "";
+var g5_is_admin  = "";
+var g5_is_mobile = "";
+var g5_bo_table  = "";
+var g5_sca       = "";
+var g5_editor    = "";
+var g5_cookie_domain = "";
+
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://www.mice.or.kr:443/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://www.mice.or.kr:443/js/owlCarousel/assets/owl.carousel.min.css">
+<script src="https://www.mice.or.kr:443/js/owlCarousel/owl.carousel.min.js"></script>
+<script src="https://www.mice.or.kr:443/js/jquery.shop.menu.js?ver=161020"></script>
+<script src="https://www.mice.or.kr:443/js/common.js?ver=161020"></script>
+<script src="https://www.mice.or.kr:443/js/wrest.js?ver=161020"></script>
+<script src="https://www.mice.or.kr:443/theme/basic/js/modernizr.mq.js"></script>
+</head>
+<body class="">
+
+<script>
+alert("존재하지 않는 게시판입니다.");
+//document.location.href = "https://www.mice.or.kr:443";
+document.location.replace("https://www.mice.or.kr:443");
+</script>
+
+<noscript>
+<div id="validation_check">
+    <h1>다음 항목에 오류가 있습니다.</h1>
+    <p class="cbg">
+        존재하지 않는 게시판입니다.    </p>
+        <div class="btn_confirm">
+        <a href="https://www.mice.or.kr:443">돌아가기</a>
+    </div>
+    
+</div>
+</noscript>
+
+
+
+<!-- ie6,7에서 사이드뷰가 게시판 목록에서 아래 사이드뷰에 가려지는 현상 수정 -->
+<!--[if lte IE 7]>
+<script>
+$(function() {
+    var $sv_use = $(".sv_use");
+    var count = $sv_use.length;
+
+    $sv_use.each(function() {
+        $(this).css("z-index", count);
+        $(this).css("position", "relative");
+        count = count - 1;
+    });
+});
+</script>
+<![endif]-->
+
+</body>
+</html>

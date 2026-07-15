@@ -1,0 +1,1933 @@
+STATUS=200
+FINAL=https://k-mice.visitkorea.or.kr/miceCalendar.kto?func_name=list&pageIndex=2
+CT=text/html;charset=UTF-8
+LEN=76515
+HINTS=
+TABLEISH=True
+LINKS=/miceCalendar.kto?func_name=list | /miceCalendar.kto?func_name=list | /miceCalendar.kto?func_name=list | /miceCalendar.kto?func_name=list
+---
+<!DOCTYPE html>
+
+
+
+
+
+
+<!-- java api -->
+
+
+
+
+
+
+<!-- struts api -->
+
+
+<!-- itis_lib api -->
+
+
+<!-- convention -->
+
+
+<!-- itis -->
+
+
+
+				
+<!-- apache -->
+
+
+
+
+<html lang="ko">
+ <head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	
+
+
+
+
+
+	
+	
+	<title>MICE 캘린더 | MICE 인프라 | KOREA, BEYOND MEETINGS</title>
+	<!-- //로그인 여부 체크 -->
+	<!-- //로그인 여부 체크 -->
+	
+
+
+
+
+
+
+
+
+
+
+
+<!-- itis_lib api -->
+
+<!-- common -->
+
+
+
+
+
+
+
+<script src="/convention_kr/js/common/jquery-1.10.2.min.js"></script>
+<script>
+function privacyCheck(){
+
+	  jQuery.ajax({
+	      url: '/privacyCheck.kto',
+	      type: 'POST',
+	      data: "Mber_id=&Mber_no=",
+	      error: function(e){
+	      },
+	      success: function(data){
+		    	var myArray2 = new Array();  
+			  	myArray2 = data ;
+			  	if(myArray2.popStatus != ""){
+			  		if(myArray2.popStatus == "yesMiceAgreeB"){//vk이용약관  miceagree이용약관
+			  			location.href="https://k-mice.visitkorea.or.kr/convention_kr/include/privacyCheck2.jsp";
+			  		}else if(myArray2.popStatus == "vkAgree" || myArray2.popStatus == "noMiceAgreeA"){//vk이용약관  miceagree이용약관
+			  			location.href="https://k-mice.visitkorea.or.kr/convention_kr/include/privacyCheck.jsp";
+			  		}else if(myArray2.popStatus == "returnVK"){}////신규
+			  	}
+	      }  
+	  });
+}
+
+
+privacyCheck();
+
+</script>
+<link rel="shourtcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" sizes="57x57" href="/favicon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/favicon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/favicon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/favicon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/favicon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/favicon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/favicon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/favicon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="/favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+<!-- <link rel="manifest" href="/favicon/manifest.json"> -->
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+	<!-- ////로그인 여부 체크 END -->
+	<script src="/convention_kr/js/common/common.js"></script>
+	<script src="/convention_kr/js/common/xssSecurity.js"></script>
+	<link rel="stylesheet" href="/convention_kr/css/new_style.css" type="text/css" />
+    <link rel="stylesheet" href="/convention_kr/css/style_v2022.css" type="text/css" /><!-- 20220401 css 파일명 수정 -->
+	<link rel="stylesheet" href="/convention_kr/css/body.css" type="text/css" />
+	<link rel="stylesheet" href="/convention_kr/css/infra.css" type="text/css"/>
+	<link rel="stylesheet" type="text/css" href="/convention_kr/datePicker/jquery-ui.css" />
+	
+	
+	<!--달력start-->
+	<script src="/convention_kr/js/ui/1.9.2/jquery-ui.js"></script>
+	<script src="/convention_kr/poshytip-1.2/jquery.poshytip.min.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="/convention_kr/datePicker/jquery-ui.css" />
+	<link rel="stylesheet" type="text/css" href="/convention_kr/poshytip-1.2/tip-yellow/tip-yellow.css" />
+	<!--달력end-->
+
+	
+	
+<script>
+
+
+//폼값을 맵 형식으로 시리얼 처리 함
+$.fn.serializeObject = function()
+{
+
+  var o = {};
+  var a = this.serializeArray();
+  $.each(a, function() {
+      if (o[this.name] !== undefined) {
+          if (!o[this.name].push) {
+              o[this.name] = [o[this.name]];
+          }
+          o[this.name].push(this.value || '');
+      } else {
+          o[this.name] = this.value || '';
+      }
+  });
+  return o;
+};
+
+
+	
+</script>
+
+<script>
+
+	
+	
+	/* 상세 조회 */
+	function goView( vEVENT_NO ) {
+		document.getElementById("miceCalendarDTO.EVENT_NO").value = vEVENT_NO;
+		document.form.action = "/miceCalendar.kto";
+		document.form.func_name.value = "calView";
+		document.form.submit();
+	}
+	
+
+	function goPage(curr_page) {
+		$("#excelYn").val("N");
+		var df = document.form;
+		df.func_name.value = "list";
+		df.curr_page.value = curr_page;
+		df.action = "/miceCalendar.kto";
+		df.target = "_self";
+		df.submit();
+	}
+
+
+	
+	function goDetailSearch(){
+		$("#excelYn").val("N");
+		$("#searchYN").val("Y");
+		
+		/* if(document.getElementById('miceCalendarDTO.MICE_FLD_CD').value==""  ){
+			alert("카테고리 항목을 선택 해 주세요.");
+			document.getElementById('miceCalendarDTO.MICE_FLD_CD').focus();
+			return;
+		}
+		
+		if(document.getElementById('miceCalendarDTO.EVENT_NM_KOR').value==""  ){
+			alert("행사명을 입력 해 주세요.");
+			document.getElementById('miceCalendarDTO.EVENT_NM_KOR').focus();
+			return;
+		} */
+
+		var df = document.form;
+		df.func_name.value = "list";
+		df.curr_page.value = 1;		
+		df.action = "/miceCalendar.kto";
+		df.target = "_self";
+		df.submit();
+		
+		
+	}
+	
+	/*
+	* replaceAll
+	*/
+	String.prototype.replaceAll = function(srcStr, desStr)
+	{
+		var str = this;
+
+		while(str.indexOf(srcStr) != -1)
+			str = str.replace(srcStr, desStr);
+
+		return str;
+	}
+	
+	/* 마우스 포커스 위치 */
+	function getMousePointX(){
+
+		if (navigator.appName == "Microsoft Internet Explorer")
+           retVal = eventValue.pageX+100;
+		else
+           retVal = event.x+200;
+		return retVal;
+	}
+
+
+	
+	
+	function changeMonth(m){
+		//월 클릭시 검색 조건 초기화
+		document.form.elements["searchYN"].value = "N";
+		document.getElementById('miceCalendarDTO.EVENT_NM_KOR').value = "";
+		document.getElementById('miceCalendarDTO.MICE_FLD_CD').value = "";
+		document.getElementById('sidoSelcect').value = "";
+		
+		$("#dayNot").val("N");
+		$("#excelYn").val("N");
+		document.form.elements["miceCalendarDTO.MONTH"].value = m;
+		document.form.elements["miceCalendarDTO.DAY"].value	 = document.form.elements["miceCalendarDTO.YEAR"].value + "" + document.form.elements["miceCalendarDTO.MONTH"].value + "01";
+		
+		var df = document.form;
+		df.func_name.value = "list";
+		df.curr_page.value = 1;		
+		df.action = "/miceCalendar.kto?setDate="+document.form.elements["miceCalendarDTO.DAY"].value;
+		df.submit();
+	}
+	
+	function changeYear(y){
+		//년도 클릭시 검색 조건 초기화
+		document.form.elements["searchYN"].value = "N";
+		document.getElementById('miceCalendarDTO.EVENT_NM_KOR').value = "";
+		document.getElementById('miceCalendarDTO.MICE_FLD_CD').value = "";
+		document.getElementById('sidoSelcect').value = "";
+		
+		$("#dayNot").val("N");  
+		document.form.elements["miceCalendarDTO.YEAR"].value = y;
+		document.form.elements["miceCalendarDTO.DAY"].value	 = document.form.elements["miceCalendarDTO.YEAR"].value + "0101"; 
+		
+		var df = document.form;
+		df.func_name.value = "list";
+		df.curr_page.value = 1;		
+		df.action = "/miceCalendar.kto?func_name=list&setDate="+document.form.elements["miceCalendarDTO.DAY"].value;
+		df.submit();
+	}
+	
+	function isNumericCheck(el) {
+		var pattern = /^[0-9]+$/;
+		return (pattern.test(el.value)) ? true : false;
+	}
+	
+	//excel 다운로드 화면_가로
+	function goExcelDown(){
+			
+		$("#excelYn").val("Y");
+		
+		
+		if( !confirm("엑셀파일로 다운로드 하시겠습니까?\n확인 버튼을 누르시면 파일이 다운로드 됩니다.")){
+	    	return;
+	    }
+		
+		$("#loading").show();
+		
+		var df = document.form;
+		df.func_name.value = "excel";
+		df.action = "/miceCalendarExcel.kto";
+		df.submit();
+		
+		
+		$("#loading").hide();
+	}
+		
+	function keyEnter(event) {
+		var keycode = event.keyCode;
+		if (keycode == "13"){
+			$("#excelYn").val("N");
+			event.preventDefault(); //submit 자동 실행 못하도록 막음. 함수만 실행 되도록 함. 
+			
+			goDetailSearch();
+		}
+	}
+	
+    //년도 스크립트
+    
+	let evtCalCurrDate = new Date("2026-07-15");
+	const v_year = evtCalCurrDate.getFullYear();
+	const v_month = String(evtCalCurrDate.getMonth() + 1).padStart(2,'0');
+	const v_day = String(evtCalCurrDate.getDate() + 1).padStart(2,'0');
+		
+	function updateDateDisplay(){
+		document.getElementById("dateDisplay").innerText = '2026';
+	}
+		
+	function changeDate(days){
+		
+		document.form.elements["miceCalendarDTO.YEAR"].value = eval(document.form.elements["miceCalendarDTO.YEAR"].value) + eval( days );
+		changeYear(document.form.elements["miceCalendarDTO.YEAR"].value);
+	}
+	
+	function selectSearch1(objval){
+		
+		// 행사명 1 카테고리 : 2, 지역 3
+		if(objval=="1"){
+			document.getElementById('miceCalendarDTO.EVENT_NM_KOR').style.display='block';
+			document.getElementById('miceCalendarDTO.MICE_FLD_CD').style.display='none';
+			document.getElementById('miceCalendarDTO.EVENT_CITY_KOR').style.display='none';
+			
+			document.getElementById('miceCalendarDTO.MICE_FLD_CD').value = "";
+			document.getElementById('miceCalendarDTO.EVENT_CITY_KOR').value = "";
+
+		}else if (objval=="2"){
+			document.getElementById('miceCalendarDTO.EVENT_NM_KOR').style.display='none';
+			document.getElementById('miceCalendarDTO.MICE_FLD_CD').style.display='block';
+			document.getElementById('miceCalendarDTO.EVENT_CITY_KOR').style.display='none';
+			
+			document.getElementById('miceCalendarDTO.EVENT_NM_KOR').value = "";
+			document.getElementById('miceCalendarDTO.EVENT_CITY_KOR').value = "";
+		}else if (objval=="3"){
+			document.getElementById('miceCalendarDTO.EVENT_NM_KOR').style.display='none';
+			document.getElementById('miceCalendarDTO.MICE_FLD_CD').style.display='none';
+			document.getElementById('miceCalendarDTO.EVENT_CITY_KOR').style.display='block';
+			
+			document.getElementById('miceCalendarDTO.EVENT_NM_KOR').value = "";
+			document.getElementById('miceCalendarDTO.MICE_FLD_CD').value = "";
+		}
+	}
+	
+	//시도 가지고 옴
+	function getSidoList(){
+		jQuery.ajax({
+			url: '/zipcode.kto?func_name=getSidoListSIORD',
+			type: 'POST',      
+			data: "addrForm="+JSON.stringify($('#frm').serializeObject())+"&etc=etc",      
+			error: function(e){
+				alert("error = "+ e);
+		  },
+		  	success: function(data){
+		  		var ziparray = new Array();  
+		  		ziparray = data ;
+		  		
+			  	makeSidoDiv(ziparray.sido);
+		  }  
+		});
+	}
+	
+	//시도 div 생성
+	function makeSidoDiv(sidoArray){
+		var divStr = "";
+		var sal= sidoArray.length;
+		
+		
+		for(var i = 0; i < sal ; i++){
+		  var selStr = "";
+		  
+		  if("" == sidoArray[i]["SIDO"] ){
+			  selStr = "selected";  
+		  }
+		  
+	      if(i==0){
+	      	$("#sidoSelcect").append("<option value="+sidoArray[i]["SIDO"]+" "+ selStr +"  >"+sidoArray[i]["SIDO"]+"</option> ");
+	      }else{
+	    	  $("#sidoSelcect").append("<option value="+sidoArray[i]["SIDO"]+" "+ selStr +"  >"+sidoArray[i]["SIDO"]+"</option> ");
+	      }
+			
+		}
+		
+		
+		
+	}
+	
+</script>	
+
+ </head>
+ <body style="">
+
+	<div id="skipNavi">
+		<a href="#content">본문 바로가기</a>
+	</div>
+	<div class="wrap">
+		<!-- top_link -->
+		<!-- // top link -->
+		<div class="inner_wrap">
+			<!-- 20220401 로그인 영역 & HEADER & SITEMAP // -->
+			
+	        
+
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0MFWB1YSF3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0MFWB1YSF3');
+</script>
+
+<script>
+	 <!--
+		//검색엔진
+	 function go_search(){
+		var f = document.searchFrm;
+		f.method = "POST";
+		
+		f.action= "/tsearch.kto?func_name=tsearch";
+		f.submit();
+	 }
+
+	 function submitit() {
+	   alert('업데이트 중입니다');
+	   return false;   
+	 }
+	 
+	 function logPage(){
+		alert('로그인이 필요한 화면입니다.');
+		location.href = "https://member.visitkorea.or.kr/kor/login.kto?next_url=https://k-mice.visitkorea.or.kr";
+	 }
+	
+	 //로그인 체크
+	function fc_login_check(){
+		if ("N" == "N") {
+			if(confirm("로그인이 필요한 화면입니다. \n로그인 하시겠습니까?")) {
+				location.href = "https://member.visitkorea.or.kr/kor/login.kto?next_url=" + "https://k-mice.visitkorea.or.kr";
+			}
+		}
+	}
+
+	function NewWindow3(mypage, myname, w, h, scroll){ 
+		var winl = 500;//
+		var wint = (screen.height - h) / 2; 
+		winprops = 'height='+h+',width='+w+',top='+wint+',left='+winl+',scrollbars='+scroll+',menubar=no,toolbar=no,location=no,status=no';
+		win = window.open(mypage, myname, winprops);
+	}
+
+
+	//-->	
+</script>
+
+<script>
+$(document).ready(function(){
+	$(".menu1").hover(function(){
+		$(".menu1").addClass("on");
+		$(".menu2").removeClass("on");
+		$(".menu3").removeClass("on");
+		$(".menu4").removeClass("on");
+		$(".menu5").removeClass("on");
+		$(".menu6").removeClass("on");
+		$(".menu1").css("color","#3A42AF");
+		$(".menu2").css("color","#333");
+		$(".menu3").css("color","#333");
+		$(".menu4").css("color","#333");
+		$(".menu5").css("color","#333");
+		$(".menu6").css("color","#333");
+	});
+	$(".menu2").hover(function(){
+		$(".menu2").addClass("on");
+		$(".menu1").removeClass("on");
+		$(".menu3").removeClass("on");
+		$(".menu4").removeClass("on");
+		$(".menu5").removeClass("on");
+		$(".menu6").removeClass("on");
+		$(".menu2").css("color","#3A42AF");
+		$(".menu1").css("color","#333");
+		$(".menu3").css("color","#333");
+		$(".menu4").css("color","#333");
+		$(".menu5").css("color","#333");
+		$(".menu6").css("color","#333");
+	});
+	$(".menu3").hover(function(){
+		$(".menu3").addClass("on");
+		$(".menu1").removeClass("on");
+		$(".menu2").removeClass("on");
+		$(".menu4").removeClass("on");
+		$(".menu5").removeClass("on");
+		$(".menu6").removeClass("on");
+		$(".menu3").css("color","#3A42AF");
+		$(".menu1").css("color","#333");
+		$(".menu2").css("color","#333");
+		$(".menu4").css("color","#333");
+		$(".menu5").css("color","#333");
+		$(".menu6").css("color","#333");
+	});
+	$(".menu4").hover(function(){
+		$(".menu4").addClass("on");
+		$(".menu1").removeClass("on");
+		$(".menu2").removeClass("on");
+		$(".menu3").removeClass("on");
+		$(".menu5").removeClass("on");
+		$(".menu6").removeClass("on");
+		$(".menu4").css("color","#3A42AF");
+		$(".menu1").css("color","#333");
+		$(".menu2").css("color","#333");
+		$(".menu3").css("color","#333");
+		$(".menu5").css("color","#333");
+		$(".menu6").css("color","#333");
+	});
+	$(".menu5").hover(function(){
+		$(".menu5").addClass("on");
+		$(".menu1").removeClass("on");
+		$(".menu2").removeClass("on");
+		$(".menu3").removeClass("on");
+		$(".menu4").removeClass("on");
+		$(".menu6").removeClass("on");
+		$(".menu5").css("color","#3A42AF");
+		$(".menu1").css("color","#333");
+		$(".menu2").css("color","#333");
+		$(".menu3").css("color","#333");
+		$(".menu4").css("color","#333");
+		$(".menu6").css("color","#333");
+	});
+	$(".menu6").hover(function(){
+		$(".menu6").addClass("on");
+		$(".menu1").removeClass("on");
+		$(".menu2").removeClass("on");
+		$(".menu3").removeClass("on");
+		$(".menu4").removeClass("on");
+		$(".menu5").removeClass("on");
+		$(".menu6").css("color","#3A42AF");
+		$(".menu1").css("color","#333");
+		$(".menu2").css("color","#333");
+		$(".menu3").css("color","#333");
+		$(".menu4").css("color","#333");
+		$(".menu5").css("color","#333");
+		
+	});
+	
+	$(".menu1").removeClass("on");
+	$(".menu2").removeClass("on");
+	$(".menu3").removeClass("on");
+	$(".menu4").removeClass("on");
+	$(".menu5").removeClass("on");
+	$(".menu6").removeClass("on");
+	$(".menu1").css("color","#333");
+	$(".menu2").css("color","#333");
+	$(".menu3").css("color","#333");
+	$(".menu4").css("color","#333");
+	$(".menu5").css("color","#333");
+	$(".menu6").css("color","#333");
+	
+		//페이징 네이션(웹접근성으로 인한 작업)
+		 $('#start').attr("title", "처음 페이지로 가기");
+		 $('#pre').attr("title", "이전 10 페이지로 가기");
+		 $('#next').attr("title", "다음 10 페이지로 가기");
+		 $('#end').attr("title", "끝 페이지로 가기");
+		 $('.current').attr("title", "현재페이지");
+		 $('#pager_p > span').text("|");
+		 
+		 //달력부분 수정(웹접근성으로 인한 작업)
+		 $('.ui-datepicker-trigger').css("margin-left", "5px");
+		 $('.ui-datepicker-trigger').removeAttr("title");
+		 $('.ui-datepicker-trigger').attr("aria-hidden", "true");
+});   	 	 
+
+jQuery(function($){
+	  var topPageCode2 = "0306" ;
+	    var topMenu = topPageCode2.substring( 0, 2) ;
+    	alldisplay() ;
+    	
+	    if(topMenu == "01"){
+			 $(".menu1").css("color","#3A42AF");
+	    	 var topsubMenu = topPageCode2.substring( 2, 4) ;
+	    	 $('#gnb01').css("display","block");
+		}else if(topMenu == "02"){
+			$(".menu3").css("color","#3A42AF");
+	    	var topsubMenu = topPageCode2.substring( 2, 4) ;
+		    $('#gnb02').css("display","block");
+	    }else if(topMenu == "03"){
+			$(".menu4").css("color","#3A42AF");
+	    	var topsubMenu = topPageCode2.substring( 2, 4) ;
+		    $('#gnb03').css("display","block");
+	    }else if(topMenu == "04"){
+			$(".menu5").css("color","#3A42AF");
+	    	var topsubMenu = topPageCode2.substring( 2, 4) ;
+		    $('#gnb04').css("display","block");
+	    }else if(topMenu == "05"){
+			$(".menu6").css("color","#3A42AF");
+	    	var topsubMenu = topPageCode2.substring( 2, 4) ;
+		    $('#gnb05').css("display","block");
+		}else if(topMenu == "07"){
+			$(".menu2").css("color","#3A42AF");
+	    	var topsubMenu = topPageCode2.substring( 2, 4) ;
+		    $('#gnb07').css("display","block");
+		}else if(topMenu == "10"){
+	    	var topsubMenu = topPageCode2.substring( 2, 4) ;
+		    $('#gnb06').css("display","block");
+		}
+	        
+});
+    //모든 메뉴를 안보이게...
+	function alldisplay(){
+		$('#gnb01').css("display","none");
+		$('#gnb02').css("display","none");
+		$('#gnb03').css("display","none");
+		$('#gnb04').css("display","none");
+		$('#gnb05').css("display","none");
+		$('#gnb06').css("display","none");
+		$('#gnb07').css("display","none");
+	}
+    
+
+	
+</script>
+<!--[if IE 7]>
+<link rel="stylesheet" type="text/css" href="/convention_kr/css/ie7.css" media="all" />
+<![endif]-->
+<!--[if IE 8]>
+<link rel="stylesheet" type="text/css" href="/convention_kr/css/ie8.css" media="all" />
+<![endif]-->
+
+<!-- LOGIN CHECK -->
+<div class="inner_header">
+	<div class="topArea">
+	  <div class="topAreain">
+			<div class="top">
+			<h1><a href="https://k-mice.visitkorea.or.kr/main.kto?func_name=mainStart"><img src="/convention_kr/images/common/logo_kmice.png" alt="KOREA, BEYOND MEETINGS" /></a></h1>
+				<div class="search_box">
+					  <!-- 검색어 form -->
+					<form name="searchFrm" onsubmit="go_search();" action="#">
+						<input type="text" title="통합검색어 입력" name="mainSearch" id="mainSearch" />
+						<input type="image" class="simg" title="검색" src="/convention_kr/images/common/btn_tot_search.png" onclick="go_search()" alt="검색" />
+					</form>
+				</div>
+					
+				<div><a href="https://member.visitkorea.or.kr/kor/login.kto?next_url=https://k-mice.visitkorea.or.kr">로그인</a></div>
+				<div><a href="https://k-mice.visitkorea.or.kr/convention_kr/mypage/MemAplyGuide.jsp">회원가입</a></div>
+				
+				<div class="eng"><a href="https://koreaconvention.org:8090/eng/engmain.kc" title="마이스영문 홈페이지 새창열림" target="_blank">English</a></div>
+				<div class="vk"><a href="https://www.visitkorea.or.kr/" title="대한민국 구석구석 홈페이지 새창열림" target="_blank"><img src="/convention_kr/images/common/vk_logo.png" alt="visitkorea"></a></div>
+				<!-- <div class="sns">
+					<ul>
+						<li><a href="https://www.instagram.com/koreamice" target="_blank" title="마이스 인스타그램 새창열림"><img src="/convention_kr/images/common/icon_instagram.png" alt="인스타그램"></a></li>
+						<li><a href="https://www.facebook.com/koreaMICE" target="_blank" title="마이스 페이스북 새창열림"><img src="/convention_kr/images/common/icon_facebook.png" alt="페이스북"></a></li>
+					</ul>
+				</div> -->
+			</div>
+	   </div>
+	</div>
+</div>
+<!-- GNB --> 
+<!-- header -->
+<div id="header">
+	<!-- login & 상단 gnb -->
+	<ul class="topNavi">
+	<li>
+		<h2 class="hidden">MICE 소개</h2>
+		<a class = "menu1"  href="/convention_kr/guidehtml/mice01.jsp">MICE 소개</a>
+		<div>
+	       <ul>
+	         <li class="gn01"><a href="/convention_kr/guidehtml/mice01.jsp">MICE란?</a></li>
+	         <li class="gn01"><a href="/convention_kr/guidehtml/AllianceIntro.jsp">MICE Alliance</a></li>
+	         <li class="gn01"><a href="/convention_kr/guidehtml/mice07_5_cvb.jsp">지역 CVB</a></li>
+	         <li class="gn01"><a href="/convention_kr/guidehtml/relate.jsp">MICE관련 사이트</a></li>
+	         <li class="gn01"><a href="/bbsTotal.kto?func_name=listEtc&amp;pbgn=1">MICE 소식</a>
+	           <ul class="depth2">
+	             <li><a href="/bbsTotal.kto?func_name=listEtc&amp;pbgn=1">알림마당</a></li>
+	             <li><a href="/noti.kto?func_name=list&amp;pgbn=2">인재마당</a>
+	               <ul class="depth3">
+	                 <li><a href="/noti.kto?func_name=list&amp;pgbn=2">정규/계약직 채용</a></li>
+	                 <li><a href="/noti.kto?func_name=list&amp;pgbn=8">행사운영요원 채용</a></li>
+	               </ul>
+	             </li>
+	           </ul>
+	         </li>
+	       </ul>
+	       <i></i></div>
+	</li>
+	<li>
+		<h2 class="hidden">지속가능한 MICE</h2>
+		<a class = "menu2"  href="/convention_kr/continuemice/continuemice.jsp">지속가능한 MICE</a>
+		<div>
+	       <ul>
+	         <li class="gn02"><a href="/convention_kr/continuemice/continuemice.jsp">지속가능한 MICE란?</a>
+	         <li class="gn02"><a href="/convention_kr/continuemice/esgguide.jsp">MICE ESG 운영가이드</a></li>
+	       </ul>
+	       <i></i></div>
+	</li>
+	<li>
+	      <h2 class="hidden">MICE 지식정보</h2>
+	      <a class = "menu3"  href="/mice_intelligence_KR/intelliMain.kto?func_name=main" title="대한민국 MICE 지식플랫폼 홈페이지 새창열림" target="_blank">MICE 지식정보</a>
+	      <div>
+	        <ul>
+	          <li class="gn03"><a href="/mice_intelligence_KR/intelliMain.kto?func_name=main" title="대한민국 MICE 지식플랫폼 홈페이지 새창열림" target="_blank">MICE 지식마당</a>
+	          <hr />
+	          <li class="gn03"><a href="/mice_main.kto?func_name=miMain">MICE 통계</a></li>
+	          <li class="gn03"><a href="/convention_kr/pds/pds6.jsp">MICE 홍보간행물</a></li>
+	          <li class="gn03"><a href="/convention_kr/pds/pds6_sub1.jsp">KTO 보고서</a>
+	            <ul class="depth2">
+	              <li><a href="/convention_kr/pds/pds6_sub1.jsp">통계 보고서</a></li>
+	              <li><a href="/convention_kr/pds/pds6_sub2.jsp">기타 보고서</a></li>
+	             <!-- <li><a href="/statist.kto?func_name=micestatistics">자료요청</a></li> -->
+	            </ul>
+	          </li>
+	        </ul>
+	        <i></i></div>
+	</li>
+	   <li>
+      <h2   class="hidden">MICE 인프라</h2>
+      <a class = "menu4"  href="/convention_kr/infor/location_main.jsp">MICE 인프라</a>
+      <div>
+        <ul>
+          <li class="gn04"><a href="/convention_kr/infor/location_main.jsp">개최지 소개</a></li>
+          <li class="gn04"><a href="/vr/main.kto" target="_blank" title="KMICE VR 홈페이지 새창열림">국제회의시설 360VR</a></li> 
+          <li class="gn04"><a href="/venueinfo.kto?func_name=list">베뉴파인더</a></li>
+          <li class="gn04"><a href="/uniquevenue/main.kto?lang=kor" title="코리아 유니크베뉴 홈페이지 새창열림" target="_blank">유니크베뉴</a></li>
+          <li class="gn04"> <a href="javascript:logPage('/event.kto?func_name=detailList');">행사정보</a></li>
+          <li class="gn04"><a href="/miceCalendar.kto?func_name=list">MICE 캘린더</a></li>
+        </ul>
+        <i></i></div>
+	</li>
+	<li>
+		<h2 class="hidden">사업지원</h2>
+		<a class = "menu5"  href="/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4">사업지원</a>
+		<div>
+			<ul>
+			<li class="gn05"><a href="/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4">국제회의</a>
+				<ul class="depth2">
+				<li><a href="/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4&amp;tab=1">보조금 지원 안내 및 신청</a></li>
+				
+					<li><a href="javascript:logPage('/meetApply.kto?func_name=result');">지원 신청 현황</a></li>
+				
+				<li><a href="/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4&amp;tab=2">패스트트랙 지원신청</a></li>
+				</ul>
+			</li>
+			<li class="gn05"><a href="/convention_kr/incentive/incentive.jsp">기업회의/인센티브 관광단체</a></li>
+			<!-- <li class="gn05"><a href="/convention_kr/nto/guide_event.jsp">국제 이벤트</a></li>  -->
+			<li class="gn05"><a href="/convention_kr/expo/guide_expo.jsp">전시박람회/로드쇼</a>
+				<ul class="depth2">
+				<li><a href="/convention_kr/expo/guide_expo.jsp">전시박람회 지원안내</a></li>
+				<li><a href="/convention_kr/expo/guide_expo2.jsp">로드쇼 지원안내</a></li>
+				</ul>
+			</li>
+			<li class="gn05" ><a href="/convention_kr/regionalcvb/regionalcvb_info.jsp">지역 CVB 지원제도 소개</a></li>
+			<li class="gn05"  style = "clear:both;"><a href="/cvbsupport.kto?func_name=list&Pgbn=C1">지역 CVB 지원</a>
+				 <ul class="depth2">
+				 	
+	              <li><a href="javascript:logPage('/cvbsupport.kto?func_name=list&Pgbn=C1');">KTO 알림</a></li>
+	              <li><a href="/cvbsupport.kto?func_name=list&Pgbn=C2">지역 CVB 소식</a></li>
+	              <li><a href="javascript:logPage('/cvbsupport.kto?func_name=list&Pgbn=C4');">지역 CVB 문의</a></li>
+	              <li><a href="javascript:logPage('/cvbsupport.kto?func_name=list&Pgbn=C3');">사업 신청/관리</a></li>
+	                <li><a href="javascript:menualert();">ICCA/UIA 국제회의</a></li>
+	              
+	            </ul>
+            </li>
+			</ul>
+		<i></i></div>
+	</li>
+    <li>
+      <h2 class="hidden">Korea MICE뷰로</h2>
+      <a class = "menu6"  href="/convention_kr/intro/introduction.jsp">Korea MICE뷰로</a>
+      <div>
+        <ul>
+          <li class="gn06"><a href="/convention_kr/intro/introduction.jsp">사업소개</a></li>
+          <li class="gn06"><a href="/convention_kr/intro/organization_chart.jsp">조직도</a></li>
+          <li class="gn06"><a href="/convention_kr/intro/way.jsp">찾아오시는길</a></li>
+          <li class="gn06"><a href="/convention_kr/intro/faqlist.jsp">FAQ</a></li>
+        </ul>
+        <i></i></div>
+	</li>
+	</ul><!-- // gnb -->
+	<button type="button" class="allMenu" title="전체메뉴 보기">전체메뉴</button>
+	  <!-- // gnb -->
+</div>
+<!-- // header -->
+
+			
+<!--  사이트맵// -->
+<div class="sitemapBox">
+	<div class="sitemap">
+		<ul class="dth1">
+		<li style="height:560px"><p><a class = "mice01"  href="/convention_kr/guidehtml/mice01.jsp">MICE 소개</a></p>
+			<ul class="dth2">
+			<li><a href="/convention_kr/guidehtml/mice01.jsp">MICE란?</a></li>
+			<li><a href="/convention_kr/guidehtml/AllianceIntro.jsp">MICE Alliance</a></li>
+			<li><a href="/convention_kr/guidehtml/mice07_5_cvb.jsp">지역 CVB</a></li>
+			<li><a href="/convention_kr/guidehtml/relate.jsp">MICE 관련사이트</a></li>
+			<li><a href="/bbsTotal.kto?func_name=listEtc&amp;pbgn=1">MICE 소식</a>
+				<ul class="dth3">
+				<li><a href="/bbsTotal.kto?func_name=listEtc&amp;pbgn=1">알림마당</a></li>
+				<li><a href="/noti.kto?func_name=list&amp;pgbn=2">인재마당</a>
+					<ul class="dth4">
+					<li><a href="/noti.kto?func_name=list&amp;pgbn=2">정규/계약직 채용</a></li>
+					<li><a href="/noti.kto?func_name=list&amp;pgbn=8">행사운영요원 채용</a></li>
+					</ul>
+				</li>
+				</ul>
+			</li>
+			</ul>
+		</li>
+		<li style="height:560px"><p><a href="/convention_kr/continuemice/continuemice.jsp">지속가능한 MICE</a></p>
+			<ul class="dth2">
+			 <li><a href="/convention_kr/continuemice/continuemice.jsp">지속가능한 MICE란?</a>
+	         <li><a href="/convention_kr/continuemice/esgguide.jsp">MICE ESG 운영가이드</a></li>
+			</ul>
+		</li>
+		<li style="height:560px"><p><a href="/mice_intelligence_KR/intelliMain.kto?func_name=main" title="대한민국 MICE 지식플랫폼 홈페이지 새창열림" target="_blank">MICE 지식정보</a></p>
+			<ul class="dth2">
+			<li><a href="/mice_intelligence_KR/intelliMain.kto?func_name=main" title="대한민국 MICE 지식플랫폼 홈페이지 새창열림" target="_blank">MICE 지식마당</a></li>
+			<li><a href="/mice_main.kto?func_name=miMain">MICE 통계</a></li>
+			<li><a href="/convention_kr/pds/pds6.jsp">MICE 홍보간행물</a></li>
+			<li><a href="/convention_kr/pds/pds6_sub1.jsp">KTO 보고서</a>
+				<ul class="dth3">
+					<li><a href="/convention_kr/pds/pds6_sub1.jsp">통계 보고서</a></li>
+					<li><a href="/convention_kr/pds/pds6_sub2.jsp">기타 보고서</a></li>
+	             <!-- <li><a href="/statist.kto?func_name=micestatistics">자료요청</a></li> -->
+	             </ul>
+			</li>
+			
+			</ul>
+		</li>
+		<li style="height:920px"><p><a href="/convention_kr/infor/location_main.jsp">MICE 인프라</a></p>
+			<ul class="dth2">
+			<li><a href="/convention_kr/infor/location_main.jsp">개최지소개</a></li>
+			<li><a href="/vr/main.kto" target="_blank" title="KMICE VR 홈페이지 새창열림" >국제회의시설 360VR</a></li>
+			<li><a href="/venueinfo.kto?func_name=list">베뉴파인더</a></li>
+			<li><a href="/uniquevenue/main.kto?lang=kor" target="_blank" title="코리아 유니크베뉴 홈페이지 새창열림">유니크베뉴</a></li>
+			<!-- <li><a href="/teambuilding.kto?func_name=list">팀빌딩 프로그램</a></li> -->
+			
+ 					       <li><a href="javascript:logPage('/event.kto?func_name=detailList');">행사정보</a></li>
+			
+			<li><a href="/miceCalendar.kto?func_name=list">MICE 캘린더</a></li> 
+				<!--<ul class="dth3">-->
+
+				
+					<!-- <li><a href="/party.kto?func_name=list">단체정보</a></li> -->
+				
+				   <!-- <li><a href="javascript:logPage('/party.kto?func_name=list');">단체정보</a></li> -->
+				
+				<!--</ul>-->
+			</ul>
+		</li>
+		<li style="margin-top:0px; height:920px"><p><a href="/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4">사업지원</a></p>
+			<ul class="dth2">
+			<li><a href="/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4">국제회의</a>
+				<ul class="dth3">
+				<li><a href="/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4&amp;tab=1">보조금 지원 안내 및 신청</a></li>
+				
+					<li><a href="javascript:logPage('/meetApply.kto?func_name=result');">지원 신청 현황</a></li>
+				
+				<li><a href="/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4&amp;tab=2">패스트트랙 지원신청</a></li>
+				</ul>
+			</li>
+			<li><a href="/convention_kr/incentive/incentive.jsp">기업회의/인센티브 관광단체</a></li>
+			<!-- <li><a href="/convention_kr/nto/guide_event.jsp">국제 이벤트</a></li>  -->
+			<li><a href="/convention_kr/expo/guide_expo.jsp">전시박람회/로드쇼</a>
+				<ul class="dth3">
+				<li><a href="/convention_kr/expo/guide_expo.jsp">전시박람회 지원안내</a></li>
+				<li><a href="/convention_kr/expo/guide_expo2.jsp">로드쇼 지원안내</a></li>
+				</ul>
+			</li>
+			<li><a href="/convention_kr/regionalcvb/regionalcvb_info.jsp">지역 CVB 지원제도 소개</a></li>
+			<li>
+				<a href="javascript:logPage('/cvbsupport.kto?func_name=list&Pgbn=C1');">지역 CVB 지원</a>
+				<ul class="dth3">
+				
+					<li><a href="javascript:logPage('/cvbsupport.kto?func_name=list&Pgbn=C1');">KTO 알림</a></li>
+					<li><a href="/cvbsupport.kto?func_name=list&Pgbn=C2">지역 CVB 소식</a></li>
+					<li><a href="javascript:logPage('/cvbsupport.kto?func_name=list&Pgbn=C4');">지역 CVB 문의</a></li>
+					<li><a href="javascript:logPage('/cvbsupport.kto?func_name=list&Pgbn=C3');">사업 신청/관리</a></li>
+					<li><a href="javascript:menualert();">ICCA/UIA 국제회의</a></li> 
+				 
+				</ul>
+			</li>
+			</ul>
+		</li>
+		<li style="margin-top:0px; height:560px"><p><a href="/convention_kr/intro/introduction.jsp">Korea MICE뷰로</a></p>
+			<ul class="dth2">
+			<li><a href="/convention_kr/intro/introduction.jsp">사업소개</a></li>
+			<li><a href="/convention_kr/intro/organization_chart.jsp">조직도</a></li>
+			<li><a href="/convention_kr/intro/way.jsp">찾아오시는길</a></li>
+			<li><a href="/convention_kr/intro/faqlist.jsp">FAQ</a></li>			
+			</ul>
+		</li>
+		</ul>
+		<button type="button" class="allMenuExit" title="전체메뉴 닫기">닫기</button>
+	</div><!-- //sitemap -->
+</div>
+<!-- //사이트맵을 대신할 전체메뉴 끝 -->
+
+<!-- sub visual -->
+<div class="visual_wrap"><!-- 20220401 불필요한 class삭제 -->
+	<div class="top_visual"><!-- 20220401 이미지가 아닌 텍스트로 변경됨 -->
+		<p>MICE INTRODUCTION</p>
+	</div><!-- // top_visual -->
+</div>
+<!-- // sub visual -->
+
+
+<!-- 20220401현재위치메뉴// -->
+<script>
+$(function(){
+
+	$(".localnav>li>a").click(function(){
+		
+		if($(this).parent().find(".localnav2").is(":visible") == true) {
+			$(this).parent().find(".localnav2").slideUp(300);
+			$(this).removeClass("arw_down").addClass("arw_up");
+			
+			if($(this).is(".dep01 > a") == true){
+				$(this).attr('title', "1뎁스 메뉴 열기");
+			}
+			
+			if($(this).is(".dep02 > a") == true){
+				$(this).attr('title', "2뎁스 메뉴 열기");
+			}
+			
+			if($(this).is(".dep03 > a") == true){
+				$(this).attr('title', "3뎁스 메뉴 열기");
+			}
+			
+			if($(this).is(".dep04 > a") == true){
+				$(this).attr('title', "4뎁스 메뉴 열기");
+			}
+				
+		}    
+		else {
+			$(this).parent().find(".localnav2").slideDown(500);
+			$(this).removeClass("arw_up").addClass("arw_down");
+			
+			if($(this).is(".dep01 > a") == true){
+				$(this).attr('title', "1뎁스 메뉴 닫기");
+				$(".dep02 > a").attr('title', "2뎁스 메뉴 열기");
+				$(".dep03 > a").attr('title', "3뎁스 메뉴 열기");
+				$(".dep04 > a").attr('title', "4뎁스 메뉴 열기");
+			}
+			
+			if($(this).is(".dep02 > a") == true){
+				$(this).attr('title', "2뎁스 메뉴 닫기");
+				$(".dep01 > a").attr('title', "1뎁스 메뉴 열기");
+				$(".dep03 > a").attr('title', "3뎁스 메뉴 열기");
+				$(".dep04 > a").attr('title', "4뎁스 메뉴 열기");
+			}
+			
+			if($(this).is(".dep03 > a") == true){
+				$(this).attr('title', "3뎁스 메뉴 닫기");
+				$(".dep01 > a").attr('title', "1뎁스 메뉴 열기");
+				$(".dep02 > a").attr('title', "2뎁스 메뉴 열기");
+				$(".dep04 > a").attr('title', "4뎁스 메뉴 열기");
+			}
+			
+			if($(this).is(".dep04 > a") == true){
+				$(this).attr('title', "4뎁스 메뉴 닫기");
+				$(".dep01 > a").attr('title', "1뎁스 메뉴 열기");
+				$(".dep02 > a").attr('title', "2뎁스 메뉴 열기");
+				$(".dep03 > a").attr('title', "3뎁스 메뉴 열기");
+			}
+		}
+
+			//같은 메뉴에 3depth가 두개 있을때 이런식으로 hidden시켜야한다.
+			if("0306"=="0404") {//gnb0404 //전시박람회
+				$('#dep03_040101').css("display","none");
+				$('#dep03_040103').css("display","none");
+				$('#dep03_040104').css("display","none");
+			}else if("0306"=="0401") {//gnb0401 국제회의 지원신청
+				$('#dep03_040102').css("display","none");
+				$('#dep03_040103').css("display","none");
+				$('#dep03_040104').css("display","none");
+			}else if("0306"=="0406") {//gnb0406  지역CVB지원
+				$('#dep03_040101').css("display","none");
+				$('#dep03_040102').css("display","none");
+				$('#dep03_040103').css("display","none");
+			}
+			
+			if($(this).parent().siblings().find(".localnav2").is(":visible") == true) {
+				$(this).parent().find(".localnav2").slideDown(500);
+				$(this).parent().siblings().find(".localnav2").slideUp(300);
+				$(this).parent().siblings().children("a").addClass("arw_up").removeClass("arw_down");
+			}
+	});
+	
+
+	$(".localnav>li:last-child>ul>li:last-child").find("a").keydown(function(e){
+		if(e.keyCode == "9"){
+			$(this).parent().parent().slideUp(300);
+			$(".localnav>li>a").removeClass("arw_down").addClass("arw_up");
+		}
+	});
+
+});
+</script>
+
+<!-- ■■■■■■■ 페이지내 서브 GNB ■■■■■ -->
+<div class="breadcrumb">
+	<ul class="localnav" id="gnb01">
+		<li><a href="https://k-mice.visitkorea.or.kr/main.kto?func_name=mainStart" class="home">홈</a></li>
+		<!-- 1차 메뉴 -->
+		<li class = "dep01"><a href="javascript:void(0);" class="arw_up"  title = "1뎁스 메뉴 열기">MICE 소개</a>
+			<ul class="localnav2"  >
+			<li class="dept0101"><a href="/convention_kr/guidehtml/mice01.jsp">MICE 소개</a></li>
+			<li class="dept0106"><a href="/convention_kr/continuemice/continuemice.jsp">지속가능한 MICE</a></li>
+			<li class="dept0102"><a href="/mice_intelligence_KR/intelliMain.kto?func_name=main" title="대한민국 MICE 지식플랫폼 홈페이지 새창열림" target="_blank">MICE 지식정보</a></li>
+			<li class="dept0103"><a href="/convention_kr/infor/location_main.jsp">MICE 인프라</a></li>
+			<li class="dept0104"><a href="/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4">사업지원</a></li>
+			<li class="dept0105"><a href="/convention_kr/intro/introduction.jsp">Korea MICE뷰로</a></li>
+			</ul>
+		</li>
+		<!-- 2차 메뉴 -->
+		<li class="dep02"><a href="javascript:void(0);" class="arw_up"   title = "2뎁스 메뉴 열기"></a><!-- 선택한 메뉴명출력 -->
+			<ul class="localnav2">
+			<li class="dept0201" id="gnb0101"><a href="https://k-mice.visitkorea.or.kr/convention_kr/guidehtml/mice01.jsp">MICE란?</a></li>
+			<li class="dept0202" id="gnb0102"><a href="https://k-mice.visitkorea.or.kr/convention_kr/guidehtml/AllianceIntro.jsp">MICE Alliance</a></li>
+			<li class="dept0203" id="gnb0103"><a href="https://k-mice.visitkorea.or.kr/convention_kr/guidehtml/mice07_5_cvb.jsp">지역 CVB</a></li>							
+			<li class="dept0204" id="gnb0104"><a href="https://k-mice.visitkorea.or.kr/convention_kr/guidehtml/relate.jsp">MICE 관련사이트</a></li>							
+			<li class="dept0205" id="gnb0105"><a href="https://k-mice.visitkorea.or.kr/bbsTotal.kto?func_name=listEtc&amp;pbgn=1">MICE 소식</a></li>	
+			</ul>
+		</li>
+		<!-- 3차 메뉴 -->
+		<li class="dep03"><a href="javascript:void(0);" class="arw_up" title = "3뎁스 메뉴 열기">인재마당</a>
+			<ul class="localnav2">
+			<li class="dept0301"><a href="/bbsTotal.kto?func_name=listEtc&amp;pbgn=1">알림마당</a></li>
+			<li class="dept0302"><a class="lnb2depth" href="/noti.kto?func_name=list&amp;pgbn=2">인재마당</a></li>
+			<!-- <li class="dept0303"><a href="/bbsTotal.kto?func_name=list&amp;pbgn=1">행사소식</a></li> -->
+			</ul>
+		</li>
+		<!-- 4차 메뉴 -->
+		<li class="dep04"><a href="javascript:void(0);" class="arw_up" title = "4뎁스 메뉴 열기">정규/계약직 채용</a>
+			<ul class="localnav2">
+			<li class="dept0401"><a href="/noti.kto?func_name=list&amp;pgbn=2">정규/계약직 채용</a></li>
+			<li class="dept0402"><a href="/noti.kto?func_name=list&amp;pgbn=8">행사운영요원 채용</a></li>
+			</ul>
+		</li>
+	</ul>
+	
+	<ul class="localnav" id="gnb07">
+		<li><a href="https://k-mice.visitkorea.or.kr/main.kto?func_name=mainStart" class="home">홈</a></li>
+		<!-- 1차 메뉴 -->
+		<li class="dep01"><a href="javascript:void(0);" class="arw_up"  title = "1뎁스 메뉴 열기">지속가능한 MICE</a>
+			<ul class="localnav2"  >
+			<li class="dept0101"><a href="/convention_kr/guidehtml/mice01.jsp">MICE 소개</a></li>
+			<li class="dept0106"><a href="/convention_kr/continuemice/continuemice.jsp">지속가능한 MICE</a></li>
+			<li class="dept0102"><a href="/mice_intelligence_KR/intelliMain.kto?func_name=main" title="대한민국 MICE 지식플랫폼 홈페이지 새창열림" target="_blank">MICE 지식정보</a></li>
+			<li class="dept0103"><a href="/convention_kr/infor/location_main.jsp">MICE 인프라</a></li>
+			<li class="dept0104"><a href="/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4">사업지원</a></li>
+			<li class="dept0105"><a href="/convention_kr/intro/introduction.jsp">Korea MICE뷰로</a></li>
+			</ul>
+		</li>
+		<!-- 2차 메뉴 -->
+		<li class="dep02"><a href="javascript:void(0);" class="arw_up" title = "2뎁스 메뉴 열기"></a><!-- 선택한 메뉴명출력 -->
+			<ul class="localnav2">
+			<li class="dept0201" id="gnb0701"><a href="https://k-mice.visitkorea.or.kr/convention_kr/continuemice/continuemice.jsp">지속가능한 MICE란?</a></li>
+			<li class="dept0203" id="gnb0703"><a href="https://k-mice.visitkorea.or.kr/convention_kr/continuemice/esgguide.jsp">MICE ESG 운영가이드</a></li>
+			</ul>
+		</li>
+	</ul>
+	
+	<ul class="localnav" id="gnb02">
+		<li><a href="https://k-mice.visitkorea.or.kr/main.kto?func_name=mainStart" class="home">홈</a></li>
+		<!-- 1차 메뉴 -->
+		<li class="dep01"><a href="javascript:void(0);" class="arw_up"  title = "1뎁스 메뉴 열기">MICE 지식정보</a>
+			<ul class="localnav2">
+			<li class="dept0101"><a href="https://k-mice.visitkorea.or.kr/convention_kr/guidehtml/mice01.jsp">MICE 소개</a></li>
+			<li class="dept0106"><a href="/convention_kr/continuemice/continuemice.jsp">지속가능한 MICE</a></li>			
+			<li class="dept0102"><a href="https://k-mice.visitkorea.or.kr/mice_intelligence_KR/intelliMain.kto?func_name=main" title="대한민국 MICE 지식플랫폼 홈페이지 새창열림" target="_blank">MICE 지식정보</a></li>
+			<li class="dept0103"><a href="https://k-mice.visitkorea.or.kr/convention_kr/infor/location_main.jsp">MICE 인프라</a></li>
+			<li class="dept0104"><a href="https://k-mice.visitkorea.or.kr/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4">사업지원</a></li>
+			<li class="dept0105"><a href="https://k-mice.visitkorea.or.kr/convention_kr/intro/introduction.jsp">Korea MICE뷰로</a></li>
+			</ul>
+		</li>
+		<!-- 2차 메뉴 -->
+		<li class="dep02"><a href="javascript:void(0);" class="arw_up" title = "2뎁스 메뉴 열기"></a><!-- 선택한 메뉴명출력 -->
+			<ul class="localnav2">
+            <li><a href="https://k-mice.visitkorea.or.kr/mice_intelligence_KR/intelliMain.kto?func_name=main" title="대한민국 MICE 지식플랫폼 홈페이지 새창열림" target="_blank">MICE 지식마당</a></li>
+			<li class="dept0201" id="gnb0201"><a href="https://k-mice.visitkorea.or.kr/mice_main.kto?func_name=miMain">MICE 통계</a></li>
+			<li class="dept0202" id="gnb0204"><a href="https://k-mice.visitkorea.or.kr/convention_kr/pds/pds6.jsp">MICE 홍보간행물</a></li>
+			<li class="dept0203" id="gnb0203"><a href="https://k-mice.visitkorea.or.kr/convention_kr/pds/pds6_sub1.jsp">KTO 보고서</a></li>
+			
+			</ul>
+		</li>
+		 <!-- 3차 메뉴 -->
+        <li class="dep03"><a href="javascript:void(0);" class="arw_up" title = "3뎁스 메뉴 열기">통계보고서</a>
+			<ul class="localnav2">
+					<li class="dept0301" id="gnb020201"><a href="/convention_kr/pds/pds6_sub1.jsp">통계 보고서</a></li>
+					<li class="dept0302" id="gnb020202"><a href="/convention_kr/pds/pds6_sub2.jsp">기타 보고서</a></li>
+	             <!-- <li><a href="/statist.kto?func_name=micestatistics">자료요청</a></li> -->
+	         </ul>
+		</li>
+			
+	</ul>
+	
+	<ul class="localnav" id="gnb03">
+		<li><a href="https://k-mice.visitkorea.or.kr/main.kto?func_name=mainStart" class="home">홈</a></li>
+		<!-- 1차 메뉴 -->
+		<li class="dep01"><a href="javascript:void(0);" class="arw_up"  title = "1뎁스 메뉴 열기">MICE 인프라</a>
+			<ul class="localnav2"  >
+			<li class="dept0101" ><a href="/convention_kr/guidehtml/mice01.jsp">MICE 소개</a></li>
+			<li class="dept0106"><a href="/convention_kr/continuemice/continuemice.jsp">지속가능한 MICE</a></li>
+			<li class="dept0102"><a href="/mice_intelligence_KR/intelliMain.kto?func_name=main" title="대한민국 MICE 지식플랫폼 홈페이지 새창열림" target="_blank">MICE 지식정보</a></li>
+			<li class="dept0103"><a href="/convention_kr/infor/location_main.jsp">MICE 인프라</a></li>
+			<li class="dept0104"><a href="/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4">사업지원</a></li>
+			<li class="dept0105"><a href="/convention_kr/intro/introduction.jsp">Korea MICE뷰로</a></li>
+			</ul>
+		</li>
+		<li class="dep02"><a href="javascript:void(0);" class="arw_up" title = "2뎁스 메뉴 열기"></a><!-- 선택한 메뉴명출력 -->
+			<ul class="localnav2">
+			<li class="dept0201" id="gnb0301"><a href="https://k-mice.visitkorea.or.kr/convention_kr/infor/location_main.jsp">개최지 소개</a></li>
+			<li class="dept0202" id="gnb0302"><a href="https://k-mice.visitkorea.or.kr/vr/main.kto" target="_blank" title="KMICE VR 홈페이지 새창열림">국제회의시설 360VR</a></li>
+			<li class="dept0203" id="gnb0303"><a href="https://k-mice.visitkorea.or.kr/venueinfo.kto?func_name=list">베뉴파인더</a></li>
+			<li class="dept0204" id="gnb0304"><a href="https://k-mice.visitkorea.or.kr/uniquevenue/main.kto?lang=kor" target="_blank" title = "코리아 유니크베뉴 홈페이지 새창열림">유니크베뉴</a></li>
+			<!--<li class="dept0205" id="gnb0305"><a href="https://k-mice.visitkorea.or.kr/teambuilding.kto?func_name=list">팀빌딩 프로그램</a></li>-->
+			<li class="dept0207" id="gnb0307"><a href="javascript:logPage('/event.kto?func_name=detailList');">행사정보</a></li>
+			<li class="dept0206" id="gnb0306"><a href="/miceCalendar.kto?func_name=list">MICE 캘린더</a></li>
+			</ul>
+		</li>
+	   <!-- 3차 메뉴 -->
+
+		<!-- 4차 메뉴 -->
+
+		
+	</ul>
+	
+	<ul class="localnav" id="gnb04">
+		<li><a href="https://k-mice.visitkorea.or.kr/main.kto?func_name=mainStart" class="home">홈</a></li>
+		<!-- 1차 메뉴 -->
+		<li class="dep01"><a href="javascript:void(0);" class="arw_up"  title = "1뎁스 메뉴 열기">사업지원</a>
+			<ul class="localnav2">
+			<li class="dept0101" ><a href="/convention_kr/guidehtml/mice01.jsp">MICE 소개</a></li>
+			<li class="dept0106"><a href="/convention_kr/continuemice/continuemice.jsp">지속가능한 MICE</a></li>			
+			<li class="dept0102" ><a href="/mice_intelligence_KR/intelliMain.kto?func_name=main" title="대한민국 MICE 지식플랫폼 홈페이지 새창열림" target="_blank">MICE 지식정보</a></li>
+			<li class="dept0103" ><a href="/convention_kr/infor/location_main.jsp">MICE 인프라</a></li>
+			<li class="dept0104" ><a href="/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4">사업지원</a></li>
+			<li class="dept0105" ><a href="/convention_kr/intro/introduction.jsp">Korea MICE뷰로</a></li>
+			</ul>
+		</li>
+		<!-- 2차 메뉴 -->
+		<li class="dep02"><a href="javascript:void(0);" class="arw_up" title = "2뎁스 메뉴 열기"></a><!-- 선택한 메뉴명출력 -->
+			<ul class="localnav2">
+			<li class="dept0201"  id="gnb0401"><a href="https://k-mice.visitkorea.or.kr/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4">국제회의</a></li>
+			<li class="dept0202"  id="gnb0402"><a href="https://k-mice.visitkorea.or.kr/convention_kr/incentive/incentive.jsp">기업회의/인센티브 관광단체</a></li>
+			<!-- <li class="dept0203"  id="gnb0403"><a href="/convention_kr/nto/guide_event.jsp">국제 이벤트</a></li>	 -->
+			<li class="dept0204"  id="gnb0404"><a href="https://k-mice.visitkorea.or.kr/convention_kr/expo/guide_expo.jsp">전시박람회/로드쇼</a></li>
+			<li class="dept0205"  id="gnb0405"><a href="https://k-mice.visitkorea.or.kr/convention_kr/regionalcvb/regionalcvb_info.jsp">지역 CVB 지원제도 소개</a></li>
+			<li class="dept0206"  id="gnb0406"><a href="https://k-mice.visitkorea.or.kr/cvbsupport.kto?func_name=list&Pgbn=C1">지역 CVB 지원</a></li>
+			</ul>
+		</li>
+		<!-- 3차 메뉴 -->
+		<li class="dep03"><a href="javascript:void(0);" class="arw_up" title = "3뎁스 메뉴 열기">국제회의</a>
+			<ul class="localnav2" id="dep03_040101" >
+					<li class="dept0301" id="gnb040101"><a href="https://k-mice.visitkorea.or.kr/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4&amp;tab=1">보조금 지원 안내 및 신청</a></li>
+					<li class="dept0302" id="gnb040102"><a href="javascript:logPage('/meetApply.kto?func_name=result');">지원 신청 현황</a></li>
+					<li class="dept0303" id="gnb040103"><a href="https://k-mice.visitkorea.or.kr/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4&amp;tab=2">패스트트랙 지원신청</a></li>
+			</ul>
+			<ul class="localnav2" id="dep03_040102" >
+				<li class="dept0301" id="gnb040401"><a href="/convention_kr/expo/guide_expo.jsp">전시박람회 지원안내</a></li>
+				<li class="dept0302" id="gnb040402"><a href="/convention_kr/expo/guide_expo2.jsp">로드쇼 지원안내</a></li>
+			<!-- 	<li class="dept0303" id="gnb040403"><a href="/roadshow_intra.kto?func_name=list">일정조회</a></li>			 -->	
+			</ul>
+			
+			<ul class="localnav2" id="dep03_040103" >
+				<li class="dept0309" id="gnb040501"><a href="/convention_kr/regionalcvb/regionalcvb_info.jsp">지역 CVB 지원제도 소개</a></li>
+			</ul>
+			
+			<ul class="localnav2"  id="dep03_040104" >
+				<li class="dept0312" id="gnb040601"><a href="javascript:logPage('/cvbsupport.kto?func_name=list&Pgbn=C1');">KTO 알림</a></li>
+				<li class="dept0313" id="gnb040602"><a href="/cvbsupport.kto?func_name=list&Pgbn=C2">지역 CVB 소식</a></li>
+				<li class="dept0314" id="gnb040603"><a href="javascript:logPage('/cvbsupport.kto?func_name=list&Pgbn=C4');">지역 CVB 문의</a></li>
+				<li class="dept0315" id="gnb040604"><a href="javascript:logPage('/cvbsupport.kto?func_name=list&Pgbn=C3');">사업 신청/관리</a></li>
+				 <li class="dept0316" id="gnb040605"><a href="javascript:menualert();">ICCA/UIA 국제회의</a></li> 
+			</ul>
+		</li>
+	</ul>
+	
+	<ul class="localnav" id="gnb05">
+		<li><a href="https://k-mice.visitkorea.or.kr/main.kto?func_name=mainStart" class="home">홈</a></li>
+		<!-- 1차 대메뉴 -->
+		<li class="dep01"><a href="javascript:void(0);" class="arw_up"  title = "1뎁스 메뉴 열기">Korea MICE뷰로</a>
+			<ul class="localnav2" >
+			<li class="dept0101"><a href="https://k-mice.visitkorea.or.kr/convention_kr/guidehtml/mice01.jsp">MICE 소개</a></li>
+			<li class="dept0106"><a href="https://k-mice.visitkorea.or.kr/convention_kr/continuemice/continuemice.jsp">지속가능한 MICE</a></li>			
+			<li class="dept0102"><a href="https://k-mice.visitkorea.or.kr/mice_intelligence_KR/intelliMain.kto?func_name=main" title="대한민국 MICE 지식플랫폼 홈페이지 새창열림" target="_blank">MICE 지식정보</a></li>
+			<li class="dept0103"><a href="https://k-mice.visitkorea.or.kr/convention_kr/infor/location_main.jsp">MICE 인프라</a></li>
+			<li class="dept0104"><a href="https://k-mice.visitkorea.or.kr/meetApplyTerm.kto?func_name=init&amp;meetApplyDTO.sup_typ_cd=4">사업지원</a></li>
+			<li class="dept0105"><a href="https://k-mice.visitkorea.or.kr/convention_kr/intro/introduction.jsp">Korea MICE뷰로</a></li>
+			</ul>
+		</li>
+		<li class="dep02"><a href="javascript:void(0);" class="arw_up" title = "2뎁스 메뉴 열기"></a><!-- 선택한 메뉴명출력 -->
+			<ul class="localnav2">
+			<li class="dept0201" id="gnb0501" ><a href="https://k-mice.visitkorea.or.kr/convention_kr/intro/introduction.jsp">사업소개</a></li>
+			<li class="dept0202" id="gnb0502" ><a href="https://k-mice.visitkorea.or.kr/convention_kr/intro/organization_chart.jsp">조직도</a></li>
+			<li class="dept0203" id="gnb0503" ><a href="https://k-mice.visitkorea.or.kr/convention_kr/intro/way.jsp">찾아오시는길</a></li>
+			<li class="dept0204" id="gnb0504" ><a href="https://k-mice.visitkorea.or.kr/convention_kr/intro/faqlist.jsp">FAQ</a></li>
+			</ul>
+		</li>
+	</ul>
+	
+	<ul class="localnav" id="gnb06">
+		<li><a href="https://k-mice.visitkorea.or.kr/main.kto?func_name=mainStart" class="home">홈</a></li>
+		<!-- 1차 대메뉴 -->
+		<li class="dep01"><a href="javascript:void(0);" class="arw_up"  title = "1뎁스 메뉴 열기">MYPAGE</a></li>
+		<!-- 2차 대메뉴 -->
+		<li  class="dep02"><a href="javascript:void(0);" class="arw_up"  title = "2뎁스 메뉴 열기"></a>
+			<ul class="localnav2"  >
+			<li class="dept1001" id="gnb1001"><a href="/convention_kr/mypage/memberInfoEdit.jsp" >회원정보수정</a></li>		
+			<li class="dept1002" id="gnb1002"><a href="/convention_kr/mypage/MemAplyGuide.jsp">회원가입절차</a></li>		
+			<li class="dept1003" id="gnb1003"><a href="/convention_kr/mypage/privacyCheck.jsp" >K-MICE 약관동의</a></li>		
+			<li class="dept1004" id="gnb1004"><a href="/member.kto?func_name=reg" >K-MICE 단체등록/가입</a></li>
+	        <li class="dept1005" id="gnb1005"><a href="/micememberGrpReg.kto?func_name=myptyinfolst" >내 단체정보 등록/수정</a></li>	
+			<li class="dept1006" id="gnb1006"><a href="/member_intra.kto?func_name=memAppList" >개인회원 조치/승인</a></li>			
+			</ul>
+		</li>
+	</ul>
+</div>
+<!-- ■■■■■■■ 페이지내 서브 GNB END ■■■■■ -->
+
+
+
+<script>
+jQuery(function($){
+	// ■■■■■■■ 페이지내 서브 GNB에대한 SCRIPT ■■■■■
+    var leftPageCode = "0306" ;
+	var leftMainMenu = leftPageCode.substring( 0, 2) ;
+	var leftSubMenu  = leftPageCode.substring( 2, 4) ;
+	var codelen = leftPageCode.length; //depth체크 
+	//alert("leftPageCode: "+leftPageCode);
+	//alert(leftPageCode.substring( 2, 6));
+	
+	//1dept 선택
+	$(".dept01"+leftMainMenu+" > a").addClass("on");
+	
+	
+	//서브 네비게이션 선택된 텍스트를 title과 동일하게 한다.
+	var  documentTitle= $(document).find("title").text();
+	if(codelen == 4){//2depth
+		//2dept 선택
+		$(".dept02"+leftSubMenu+" > a").addClass("on");
+		$('.dep03').css("display","none");
+		$('.dep04').css("display","none");
+		if(documentTitle.indexOf('(') > -1){
+			$('.dep02 > a').text(documentTitle.substring(0,documentTitle.indexOf('(')));	
+		}else{
+			if(leftPageCode == "0302"){
+				$('.dep02 > a').text("개최지소개");
+			}else{
+				$('.dep02 > a').text(documentTitle.substring(0,documentTitle.indexOf('|')));				
+			}
+		}
+	}else if(codelen == 6){//3edpth
+		//2dept 선택
+		$(".dept02"+leftSubMenu+" > a").addClass("on");
+		//3dept 선택
+		//alert(leftPageCode);
+		//alert(leftPageCode.substring( 4, 6));
+		$(".dept03"+leftPageCode.substring( 4, 6)+" > a").addClass("on");
+		$('.dep04').css("display","none");
+		$('.dep02 > a').text($('#gnb'+leftPageCode.substring( 0, 4)).text());
+		if(documentTitle.indexOf('(') > -1){
+			$('.dep03 > a').text(documentTitle.substring(0,documentTitle.indexOf('(')));	
+		}else{
+			if($.trim(documentTitle.substring(0,documentTitle.indexOf('|')))=="목록"){
+				
+				$('.dep03 > a').text((documentTitle.replace("목록 |","")).substring(0,(documentTitle.replace("목록 |","")).indexOf('|')));
+			}else{
+				
+				$('.dep03 > a').text(documentTitle.substring(0,documentTitle.indexOf('|')));	
+			}
+			
+		}
+		
+	}else if(codelen == 8){//4depth
+		//2dept 선택
+		$(".dept02"+leftSubMenu+" > a").addClass("on");
+		//3dept 선택
+		$(".dept03"+leftPageCode.substring( 4, 6)+" > a").addClass("on");
+		//4dept 선택
+		$(".dept04"+leftPageCode.substring( 6, 8)+" > a").addClass("on");
+		
+		$('.dep02 > a').text($('#gnb'+leftPageCode.substring( 0, 4)).text());
+	
+		if(documentTitle.indexOf('(') > -1){
+			$('.dep04 > a').text(documentTitle.substring(0,documentTitle.indexOf('(')));
+		}else{
+			$('.dep04 > a').text(documentTitle.substring(0,documentTitle.indexOf('|')));
+		}				
+	
+		
+	}
+	
+	//선택한 메뉴
+	$('#gnb'+leftPageCode+" > a").addClass("on");
+	
+	//left 대메뉴 및 title 이미지 변경.  20220401(573라인~829라인 부분 수정 주석은 4월1일자로)
+	if(leftMainMenu == "01"){
+		//서브페이지 상단이미지 및 alt변경
+		$('.top_visual').css("background-image","url(/convention_kr/images/subvisual/top_intro_01.jpg)");	 
+		$('.top_visual > p').text("MICE 소개");
+	}else if (leftMainMenu == "02"){
+		//서브페이지 상단이미지 및 alt변경
+		$('.top_visual').css("background-image","url(/convention_kr/images/subvisual/top_intro_02.jpg)");
+		$('.top_visual > p').text("MICE KNOWLEDGE AND INFORMATION");
+	}else if (leftMainMenu == "03"){
+		if(leftPageCode == "0308"){ //apec 임시
+			//서브페이지 상단이미지 및 alt변경
+			$('.top_visual').css("background-image","url(/convention_kr/images/subvisual/apec_top_intro_03..png)");
+			$('.top_visual > p').text("2025 APEC 정상회의");
+		}else{
+			//서브페이지 상단이미지 및 alt변경
+			$('.top_visual').css("background-image","url(/convention_kr/images/subvisual/top_intro_03.jpg)");
+			$('.top_visual > p').text("MICE 인프라");
+		}
+		
+
+	}else if (leftMainMenu == "04"){
+		//서브페이지 상단이미지 및 alt변경
+		$('.top_visual').css("background-image","url(/convention_kr/images/subvisual/top_intro_04.jpg)");	
+		$('.top_visual > p').text("사업지원");
+	}else if (leftMainMenu == "05"){
+		//서브페이지 상단이미지 및 alt변경
+		$('.top_visual').css("background-image","url(/convention_kr/images/subvisual/top_intro_05.jpg)");	
+		$('.top_visual > p').text("KOREA MICE 뷰로");
+	}else if (leftMainMenu == "07"){
+		//서브페이지 상단이미지 및 alt변경
+		$('.top_visual').css("background-image","url(/convention_kr/images/subvisual/top_intro_06.jpg)");	
+		$('.top_visual > p').text("지속가능한 MICE");
+	}else if (leftMainMenu == "10"){
+		//서브페이지 상단이미지 및 alt변경
+		$('.top_visual').css("background-image","url(/convention_kr/images/subvisual/top_intro_05.jpg)");	
+		$('.top_visual > p').text("MY PAGE");
+	}
+
+	
+});
+	function logPage(url){
+		alert('로그인이 필요한 화면입니다.');
+		location.href = "https://member.visitkorea.or.kr/kor/login.kto?next_url=" + "https://k-mice.visitkorea.or.kr" + encodeURIComponent(url);
+		//location.href = "https://member.visitkorea.or.kr/kor/login.kto?next_url=http://godo.visitkorea.or.kr" +encodeURIComponent(url);
+	}
+	
+	function menualert(){
+		alert('ICCA/UIA 메뉴가 새롭게 개편중입니다.');
+		return;
+	}
+
+</script>
+			<!-- //20220401 로그인 영역 & HEADER & SITEMAP END -->
+			<!-- container-->
+			<!-- container-->
+			<div id="container">
+				<!-- content -->
+				<div id="content">
+							
+					<h3>MICE 캘린더</h3>
+						
+						<form name="form" id="form" method="post">
+							<input type="hidden"   name="func_name" id="func_name" title="func_name히든" />        
+							<input type="hidden"   id="curr_page" name="curr_page" value="1" title="curr_page히든"/>
+							<input type="hidden" name="eventDetailDTO.APPR_ST" id="eventDetailDTO.APPR_ST"  title="내용 없음 " />
+							<input type="hidden" id="eventDetailDTO.EVENT_ID" name="eventDetailDTO.EVENT_ID" value="" title="내용 없음 " />
+							<input type="hidden"  id="calendarDTO.DAY" name="miceCalendarDTO.DAY" value="" title="DAY히든"></input>       
+							<input type="hidden"  id="setDate" name="setDate" value="" title="setDate히든"/> 	
+							<input type="hidden"  id="miceCalendarDTO.YEAR" name="miceCalendarDTO.YEAR" value="2026" title="SEARCH_DATE히든"/>
+							<input type="hidden"  id="miceCalendarDTO.MONTH" name="miceCalendarDTO.MONTH" value="07" title="SEARCH_DATE히든"/>
+							<input type="hidden"  id="miceCalendarDTO.EVENT_CITY_ABBR" name="miceCalendarDTO.EVENT_CITY_ABBR" value="" />
+							<input type="hidden"  id="miceCalendarDTO.EVENT_RGN" name="miceCalendarDTO.EVENT_RGN" value="" />
+							<input type="hidden"  name="searchYN" id="searchYN" value="N" />
+							<input type="hidden"  name="A.EVENT_CITY_ABBR" id="A.EVENT_CITY_ABBR" value="" />
+							<input type="hidden"  id="miceCalendarDTO.EVENT_NO" name="miceCalendarDTO.EVENT_NO" value="" />
+							<input type="hidden"  id="excelYn" name="miceCalendarDTO.excelYn" value="N" />
+							<input type="hidden" name="miceCalendarDTO.EVENT_START_DT"  id="miceCalendarDTO.EVENT_START_DT"  value="20260701"  title="내용 없음" />
+							<input type="hidden" name="miceCalendarDTO.EVENT_END_DT"  id="miceCalendarDTO.EVENT_END_DT"  value="20260731"  title="내용 없음" />
+							
+							<!--지역 popup -->
+							<input type="hidden" name="facilityPpDTO.INPUT_INFO" 	  id="facilityPpDTO.INPUT_INFO"  title="내용 없음 " /><!-- 지역 popup 관련  -->
+							<input type="hidden" name="facilityPpDTO.PARAM_VALUE"     id="facilityPpDTO.PARAM_VALUE" 	 value=""  title="내용 없음 " />
+							<input type="hidden" name="miceCalendarDTO.NAT_CD" id="miceCalendarDTO.NAT_CD" value=""  title="내용 없음 " />
+							<input type="hidden" name="miceCalendarDTO.RGN_CD" id="miceCalendarDTO.RGN_CD" value=""  title="내용 없음 " />
+							<input type="hidden" name="miceCalendarDTO.CITY_CD" id="miceCalendarDTO.CITY_CD" value=""  title="내용 없음 " />
+						<fieldset class="cal_detailsch"></fieldset>
+						<!-- 년, 검색 영역// -->				
+						<div class="calendarbox"> 
+							<div class="year">
+								<button onclick="changeDate(-1);" class="prev"><span class = "blind">이전 년도</span></button>
+								<p id="dateDisplay"></p>
+								<button onclick="changeDate(1);" class="next"><span class = "blind">다음 년도</span></button>
+							</div>
+							<div class="month-tab"> 
+								<ul>
+									<li><a href="javascript:changeMonth('01');"  >1월</a></li>
+									<li><a href="javascript:changeMonth('02');"  >2월</a></li>
+									<li><a href="javascript:changeMonth('03');"  >3월</a></li>
+									<li><a href="javascript:changeMonth('04');"  >4월</a></li>
+									<li><a href="javascript:changeMonth('05');"  >5월</a></li>
+									<li><a href="javascript:changeMonth('06');"  >6월</a></li>
+									<li><a href="javascript:changeMonth('07');" class="active" title="선택됨"  >7월</a></li>
+									<li><a href="javascript:changeMonth('08');"  >8월</a></li>
+									<li><a href="javascript:changeMonth('09');"  >9월</a></li>
+									<li><a href="javascript:changeMonth('10');"  >10월</a></li>
+									<li><a href="javascript:changeMonth('11');"  >11월</a></li>
+									<li><a href="javascript:changeMonth('12');"  >12월</a></li>
+								</ul>
+							</div>       
+
+							<div class="list-search">
+								<select name="miceCalendarDTO.MICE_FLD_CD" id="miceCalendarDTO.MICE_FLD_CD"  class="theme" title="카테고리 선택"  >
+								 <option value = "">카테고리</option>
+<option value=01 title='과학기술'>과학기술</option>
+<option value=02 title='의학'>의학</option>
+<option value=03 title='경제/금융'>경제/금융</option>
+<option value=04 title='교육'>교육</option>
+<option value=05 title='문화'>문화</option>
+<option value=06 title='사회과학'>사회과학</option>
+<option value=07 title='정치/법률'>정치/법률</option>
+<option value=08 title='환경'>환경</option>
+<option value=09 title='농수산/식품'>농수산/식품</option>
+<option value=10 title='정보통신'>정보통신</option>
+<option value=11 title='관광/교통'>관광/교통</option>
+<option value=12 title='예술'>예술</option>
+<option value=13 title='국방/안보'>국방/안보</option>
+<option value=14 title='종교'>종교</option>
+<option value=15 title='해양'>해양</option>
+<option value=16 title='스포츠/레저'>스포츠/레저</option>
+<option value=17 title='언론'>언론</option>
+<option value=18 title='기타'>기타</option>
+<option value=19 title='문화/교육'>문화/교육</option>
+<option value=22 title='컴퓨터/정보통신'>컴퓨터/정보통신</option>
+<option value=23 title='관광'>관광</option>
+<option value=24 title='스포츠'>스포츠</option>
+<option value=26 title='패션/섬유'>패션/섬유</option>
+<option value=27 title='주택/건설'>주택/건설</option>
+<option value=30 title='기업/경영'>기업/경영</option>
+<option value=31 title='역사'>역사</option>
+<option value=32 title='자연과학'>자연과학</option>
+<option value=33 title='에너지(원자력 등)'>에너지(원자력 등)</option>
+</select>
+								
+								<select id="sidoSelcect" name="miceCalendarDTO.EVENT_CITY_KOR"  class="theme"  title="시도 선택"  >
+										<option value="">도시</option>
+								</select>
+
+							   <input type="text" class="search" title="행사명 검색단어 입력" id="miceCalendarDTO.EVENT_NM_KOR" name="miceCalendarDTO.EVENT_NM_KOR" value=""  maxlength="20" onKeyDown="keyEnter(event);" placeholder="행사명을 입력해주세요." />
+								<div class="submit">
+									<button id="btn-search" type="button" class="btn-search" onclick="javascript:goDetailSearch();"><span>검색</span></button>
+								</div>
+							</div>
+					</div><!-- //.calendarbox -->
+								
+					<div id="count">
+						총 <span>24 </span>건
+					</div>
+
+					<!-- 행사목록 -->	
+					<h4>행사목록</h4>
+							
+					<!--<div class="gBtn1 calendar_btn3">
+						<a href="javascript:goExcelDown();" title="엑셀 파일다운"><span class="hidden">출력 리스트 엑셀로 다운로드</span></a>
+					</div>-->	
+					
+					<div class="webzine-list">
+					
+						
+					
+						<div class="list_box">
+							<div class="list_image">
+							   <div class="icon-box">
+								<span class="icon-img ico11"></span>
+								<span class="cate-txt">관광/교통</span>
+								</div>
+							</div>
+							<div class="list_txtbox">
+								<div class="txt-box1">
+									<p class="kor tit">2026 TPO 한국 지역회의</p>
+									<p class="eng tit">TPO Regional meeting In Korea</p>
+								</div>
+								<div class="txt-box2">
+									<span class="date">2026-07-00 ~ 2026-07-00</span>
+									<span class="region">김해</span>
+								</div>
+							</div>
+							<div class="detail">
+								<a class="view-btn" href="javascript:goView('15390');" ><span>상세보기</span></a>
+							</div>
+						</div>
+				
+							
+					
+						<div class="list_box">
+							<div class="list_image">
+							   <div class="icon-box">
+								<span class="icon-img ico02"></span>
+								<span class="cate-txt">의학</span>
+								</div>
+							</div>
+							<div class="list_txtbox">
+								<div class="txt-box1">
+									<p class="kor tit">제18회 세계기독의학치과협회 학술대회</p>
+									<p class="eng tit">World Congress of the International Christian Medical and Dental Association</p>
+								</div>
+								<div class="txt-box2">
+									<span class="date">2026-07-01 ~ 2026-07-05</span>
+									<span class="region">제주</span>
+								</div>
+							</div>
+							<div class="detail">
+								<a class="view-btn" href="javascript:goView('15372');" ><span>상세보기</span></a>
+							</div>
+						</div>
+				
+							
+					
+						<div class="list_box">
+							<div class="list_image">
+							   <div class="icon-box">
+								<span class="icon-img ico06"></span>
+								<span class="cate-txt">사회과학</span>
+								</div>
+							</div>
+							<div class="list_txtbox">
+								<div class="txt-box1">
+									<p class="kor tit">제16회 환태평양 국제 컨퍼런스</p>
+									<p class="eng tit">16th Trans-Pacific International Conference (TPIC) Call for papers</p>
+								</div>
+								<div class="txt-box2">
+									<span class="date">2026-07-02 ~ 2026-07-03</span>
+									<span class="region">부산</span>
+								</div>
+							</div>
+							<div class="detail">
+								<a class="view-btn" href="javascript:goView('15374');" ><span>상세보기</span></a>
+							</div>
+						</div>
+				
+							
+					
+						<div class="list_box">
+							<div class="list_image">
+							   <div class="icon-box">
+								<span class="icon-img ico04"></span>
+								<span class="cate-txt">교육</span>
+								</div>
+							</div>
+							<div class="list_txtbox">
+								<div class="txt-box1">
+									<p class="kor tit">2026 아시아금융학회 연례 학술대회</p>
+									<p class="eng tit">Asian Finance Conference -AsianFA-</p>
+								</div>
+								<div class="txt-box2">
+									<span class="date">2026-07-02 ~ 2026-07-04</span>
+									<span class="region">서울</span>
+								</div>
+							</div>
+							<div class="detail">
+								<a class="view-btn" href="javascript:goView('15376');" ><span>상세보기</span></a>
+							</div>
+						</div>
+				
+							
+					
+						<div class="list_box">
+							<div class="list_image">
+							   <div class="icon-box">
+								<span class="icon-img ico01"></span>
+								<span class="cate-txt">과학기술</span>
+								</div>
+							</div>
+							<div class="list_txtbox">
+								<div class="txt-box1">
+									<p class="kor tit">2026 퀀텀코리아</p>
+									<p class="eng tit">Quantum Korea 2026</p>
+								</div>
+								<div class="txt-box2">
+									<span class="date">2026-07-02 ~ 2026-07-04</span>
+									<span class="region">서울</span>
+								</div>
+							</div>
+							<div class="detail">
+								<a class="view-btn" href="javascript:goView('15375');" ><span>상세보기</span></a>
+							</div>
+						</div>
+				
+							
+					
+						<div class="list_box">
+							<div class="list_image">
+							   <div class="icon-box">
+								<span class="icon-img ico02"></span>
+								<span class="cate-txt">의학</span>
+								</div>
+							</div>
+							<div class="list_txtbox">
+								<div class="txt-box1">
+									<p class="kor tit">제14회 호남권 치과종합학술대회 및 기자재전시회</p>
+									<p class="eng tit">The 14th Honam Dental Congress & Exhibition (HODEX 2026)</p>
+								</div>
+								<div class="txt-box2">
+									<span class="date">2026-07-04 ~ 2026-07-05</span>
+									<span class="region">전남광주통합특별시</span>
+								</div>
+							</div>
+							<div class="detail">
+								<a class="view-btn" href="javascript:goView('12687');" ><span>상세보기</span></a>
+							</div>
+						</div>
+				
+							
+					
+						<div class="list_box">
+							<div class="list_image">
+							   <div class="icon-box">
+								<span class="icon-img ico01"></span>
+								<span class="cate-txt">과학기술</span>
+								</div>
+							</div>
+							<div class="list_txtbox">
+								<div class="txt-box1">
+									<p class="kor tit">제12회 아시아 공정시스템공학 심포지엄</p>
+									<p class="eng tit">12th Asian Symposium on Process Systems Engineering (PSE ASIA 2026)</p>
+								</div>
+								<div class="txt-box2">
+									<span class="date">2026-07-05 ~ 2026-07-08</span>
+									<span class="region">서울</span>
+								</div>
+							</div>
+							<div class="detail">
+								<a class="view-btn" href="javascript:goView('15378');" ><span>상세보기</span></a>
+							</div>
+						</div>
+				
+							
+					
+						<div class="list_box">
+							<div class="list_image">
+							   <div class="icon-box">
+								<span class="icon-img ico01"></span>
+								<span class="cate-txt">과학기술</span>
+								</div>
+							</div>
+							<div class="list_txtbox">
+								<div class="txt-box1">
+									<p class="kor tit">제32회 국제전기공학 학술대회 (ICEE 2026)</p>
+									<p class="eng tit">32nd International Council on Electrical Engineering Conference (ICEE 2026)</p>
+								</div>
+								<div class="txt-box2">
+									<span class="date">2026-07-05 ~ 2026-07-09</span>
+									<span class="region">서울</span>
+								</div>
+							</div>
+							<div class="detail">
+								<a class="view-btn" href="javascript:goView('15379');" ><span>상세보기</span></a>
+							</div>
+						</div>
+				
+							
+					
+						<div class="list_box">
+							<div class="list_image">
+							   <div class="icon-box">
+								<span class="icon-img ico08"></span>
+								<span class="cate-txt">환경</span>
+								</div>
+							</div>
+							<div class="list_txtbox">
+								<div class="txt-box1">
+									<p class="kor tit">2026 국제광산수학회(IMWA)</p>
+									<p class="eng tit">2026 International Mine Water Association Annual Conference -IMWA -</p>
+								</div>
+								<div class="txt-box2">
+									<span class="date">2026-07-05 ~ 2026-07-10</span>
+									<span class="region">정선</span>
+								</div>
+							</div>
+							<div class="detail">
+								<a class="view-btn" href="javascript:goView('15377');" ><span>상세보기</span></a>
+							</div>
+						</div>
+				
+							
+					
+						<div class="list_box">
+							<div class="list_image">
+							   <div class="icon-box">
+								<span class="icon-img ico32"></span>
+								<span class="cate-txt">자연과학</span>
+								</div>
+							</div>
+							<div class="list_txtbox">
+								<div class="txt-box1">
+									<p class="kor tit">제4회 베이지안 비모수 통계 네트워킹 워크숍</p>
+									<p class="eng tit">Bayesian Nonparametrics Networking Workshop -BNP-</p>
+								</div>
+								<div class="txt-box2">
+									<span class="date">2026-07-06 ~ 2026-07-10</span>
+									<span class="region">서울</span>
+								</div>
+							</div>
+							<div class="detail">
+								<a class="view-btn" href="javascript:goView('15380');" ><span>상세보기</span></a>
+							</div>
+						</div>
+				
+													
+												
+					</div>	
+					<!-- //행사목록 -->
+						
+					
+		            <div id="pager">
+		                <p id="pager_p">
+		                    <a id='start'>처음</a><a id='pre'>이전</a><span>l</span><a class="current">1</a> <a href="JavaScript:goPage('2')"> 2 </a>  <a href="JavaScript:goPage('3')"> 3 </a> <span>l</span><a id="next">다음</a><a id="end" href="javascript:goPage('3');">끝</a>
+		                </p>
+		            </div>
+		            
+		            <input type="submit" style="display:none">  	
+					<!-- //목록 -->
+						
+					</form>
+			
+				</div><!-- // content  -->
+			 </div>	<!-- //container -->
+               <!-- footer -->
+ 			   
+ <!-- 2022버전 : 퀵메뉴 위치는 꼭 footer 바로 위 여야 합니다.// -->
+<script>
+$(window).scroll(function(){
+	var scrollTop = $(document).scrollTop();
+	if(scrollTop < 610){
+		scrollTop = 610;
+	}
+	$("#quickm").stop();
+	$("#quickm").animate({"top" : scrollTop}, 300, "linear");
+});
+
+</script>
+<div id="quickm" >
+	<p><strong>바로가기</strong></p>
+	<ul>
+	<li><a href="/convention_kr/intro/introduction.jsp">코리아 MICE뷰로</a></li>
+	<li><a href="/uniquevenue/main.kto?lang=kor" title="코리아 유니크베뉴 홈페이지 새창 열림" target="_blank">유니크베뉴</a></li>
+	<li><a href="/mice_intelligence_KR/intelliMain.kto?func_name=main" title="대한민국 MICE 지식플랫폼 홈페이지 새창열림" target="_blank">MICE<span>지식마당</span></a></li>
+	<li><a href="/mice_main.kto?func_name=miMain">MICE<span>통계조사</span></a></li>
+	<!-- <li><a href="/miceCalendar.kto?func_name=list">MICE<span>캘린더</span></a></li>  -->
+	</ul>
+</div>
+
+<script>
+	if("0306" =="9999"){//서브네비게이션이 필요 없는 메뉴 검색, 
+		$('.visual_wrap').css("display","none");
+		$('.breadcrumb').css("display","none");
+		$('#quickm').css("display","none");
+	}
+</script> 
+               <!-- // footer -->	
+               
+               
+			   <!-- footer -->
+ 			   
+
+<!-- footer 20220401 약간씩 변동있음 확인하면서 작업필요// -->
+<div id="footer">
+	<div class="inner_footer">
+		<div class="footer_wrap">
+			<ul class="footer_menu">
+				<li class="on"><a href="https://knto.or.kr/helpdeskPolicyPrivacyHomepage" title="새창열림" target="_blank">개인정보처리방침</a></li>
+				<li><a href="https://knto.or.kr/helpdeskPolicyEmailrejection" title="새창열림" target="_blank">전자우편 무단수집거부</a></li>
+				<li><button id="RssOpen" title="레이어 팝업창 열림">RSS 안내</button></li>
+			</ul>
+			
+				<!-- RSS 시작 -->
+	<script>
+	$(document).ready(function(){
+		$('#RssOpen').click(function(){
+			$('.popRss').show();
+			$('.popRss').focus();
+		});
+
+		$('#RssClose').focus().on("keydown", function(event){
+			if(event.keyCode == 9){
+				event.preventDefault();
+				$('.popRssbtn').focus(); 
+			}
+		});
+		$('#RssClose').click(function(){
+			$('.popRss').hide();
+			$('#RssOpen').focus();
+			
+		});
+		
+		$('.site-select').click(function(){
+			if(document.getElementById("site_list").style.display == "block"){
+				document.getElementById("site_list").style.display = "none";
+				document.getElementById("site-select").title = "유관기관 바로가기 레이어 열기";
+
+			}else{
+				document.getElementById("site_list").style.display = "block";
+				document.getElementById("site-select").title = "유관기관 바로가기 레이어 닫기";
+				$('#site_list > li').focus();
+			}
+		});
+		
+		
+		
+		
+	});
+	
+	
+	function ClipUrl(url){		
+		var url =url;
+		
+		temp = prompt("해당 URL을 ctrl + c를 통해 복사 하시면 됩니다.",url);
+	}
+	</script>
+
+	<div class="popRss"  >
+		<div class="popBody">
+			<h3>RSS</h3>
+			<div class="RssBox">
+				<p class="tit">K-mice 홈페이지의 새로운 글을 RSS로 등록하여 빠르게 확인하세요.</p>
+				<p style="padding-bottom:10px;" >RSS는 사이트에 올라오는 글을 쉽게 구독할 수 있도록 하는 규칙이며 사용자가 보다 편리하게 내용을 구독할 수 있습니다.</p>
+				<span class="btn"><a class="popRssbtn"  tabindex = "0" href="https://chrome.google.com/webstore/detail/slick-rss-by-users/lloonpjjgockligalihhebapcafgbgef" title="새창" target="_blank" >RSS 리더 프로그램 다운로드(Chrome Slick RSS)</a></span><br><br>
+				<span class="btn"><a href="https://microsoftedge.microsoft.com/addons/detail/feeder-rss-feed-reader/jlkhefogiiibhgblliimeleiiiijbkjj?hl=ko-kr" title="새창" target="_blank">RSS 리더 프로그램 다운로드(Edge Feed RSS)</a></span>
+			</div>
+			<h4>RSS 서비스 안내</h4>
+			<p class="txt">RSS리더 프로그램을 설치하신 후, K-mice 홈페이지에서 RSS 서비스를 제공하는 게시물을 등록하시면 일일이 사이트에 방문하지 않아도 최근 게시물을 실시간으로 편리하게 받아볼 수 있으며, 홈페이지나 블로그에 복사하여 방문자에게 K-mice 홈페이지에서 제공하는 서비스를 제공할 수 있습니다.</p>
+			<h4>K-mice 에서 제공하는 RSS 목록</h4>
+			<p class="txt">아래 표에서 주소 복사를 선택한 후에 RSS리더 프로그램에 추가하시면 됩니다.</p>
+			<table class="RssTb">
+				<caption> K-MICE에서 제공하는 RSS 목록(MICE인텔리전스, 알림마당, 정규/계약직 채용, 행사운영요원 채용 항목으로 구성된 RSS주소 안내)</caption>
+				<colgroup>
+					<col style="width:20%;" />
+					<col style="width:auto;" />
+					<col style="width:17%;" />
+				</colgroup>
+				<tbody>
+					<tr>
+						<th style="border-top:2px solid #525252" scope="row">MICE 지식마당</th>
+						<td style="border-top:2px solid #525252">https://k-mice.visitkorea.or.kr/micerss.kto?func_name=intelList</td>
+						<td style="border-top:2px solid #525252" class="last"><a href="javascript:ClipUrl('https://k-mice.visitkorea.or.kr/micerss.kto?func_name=intelList');" >주소복사</a></td>
+					</tr>
+					<tr>
+						<th scope="row">알림마당</th>
+						<td>https://k-mice.visitkorea.or.kr/micerss.kto?func_name=bbsList</td>
+						<td class="last"><a href="javascript:ClipUrl('https://k-mice.visitkorea.or.kr/micerss.kto?func_name=bbsList');" >주소복사</a></td>
+					</tr>
+					<tr>
+						<th scope="row">정규/계약직 채용</th>
+						<td>https://k-mice.visitkorea.or.kr/micerss.kto?func_name=notiRecList</td>
+						<td class="last"><a href="javascript:ClipUrl('https://k-mice.visitkorea.or.kr/micerss.kto?func_name=notiRecList');" >주소복사</a></td>
+					</tr>
+					<tr>
+						<th scope="row">행사운영요원 채용</th>
+						<td>https://k-mice.visitkorea.or.kr/micerss.kto?func_name=notiList</td>
+						<td class="last"><a href="javascript:ClipUrl('https://k-mice.visitkorea.or.kr/micerss.kto?func_name=notiList');"  >주소복사</a></td>
+					</tr>
+				</tbody>
+			</table>
+
+
+			<button id="RssClose">닫기</button>
+		</div>
+	</div>
+	<!-- // RSS 끝 -->
+	
+			<div class="family-site">
+				<button type="button" class="site-select"  id = "site-select" title="유관기관 바로가기 레이어 열기">유관기관 바로가기</button>
+				<ul id = "site_list" class="site-list active" style = "display : none;">
+					<li><a href="http://www.mcst.go.kr/main.jsp"  title="새창" target="_blank">문화체육관광부</a></li>
+					<li><a href="https://knto.or.kr" title="새창" target="_blank">한국관광공사</a></li>
+					<li><a href="http://korean.visitkorea.or.kr" title="새창" target="_blank">대한민국 구석구석</a></li>
+					<li><a href="http://www.benikea.com/" title="새창" target="_blank">BENIKEA 베니키아</a></li>
+					<li><a href="https://www.investkorea.org/ik-en" title="새창" target="_blank">investKOREA</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="addr">
+			<div class="left">
+				[26464] 강원특별자치도 원주시 세계로 10 (반곡동)<br>TEL : 033-738-3000
+				<br> 직업정보제공사업 신고번호 : J1524020200003
+				<p>ⓒ  2017. KOREA TOURISM ORGANIZATION All rights reserved.</p>
+			</div>
+			<div class="right">
+				<span><img src="/convention_kr/images/common/logo_kto.png" alt="한국관광공사 Korea Tourism Organization" /></span>
+				<span><img src="/convention_kr/images/common/logo_webacc.png" alt="WA 품질인증 마크, 웹와치(WebWatch) 2024.12.23 ~ 2025.12.22" /></span>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- //footer 20220401 약간씩 변동있음 확인하면서 작업필요 -->
+
+ 
+               <!-- // footer -->			 
+			</div>
+		</div>
+		<div id="loading" style="display:none; position: fixed; top:50%; left:50%; ">	
+				<img src="/convention_kr/images/common/loading.gif" alt="로딩 중 입니다"></img>
+		</div>
+		
+
+ </body>
+<script>
+
+//최초 페이지 로딩시 시도 데이터 가지고 온다
+$(document).ready(function() {   
+		getSidoList();
+		updateDateDisplay();
+});
+</script>
+</html>

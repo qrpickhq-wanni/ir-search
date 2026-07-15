@@ -1,0 +1,38 @@
+STATUS=200
+URL=https://myfair.co/sitemap.xml
+CT=application/xml
+LEN=961
+---
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://myfair.co/sitemap/content.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://myfair.co/sitemap/expo_list.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://myfair.co/sitemap/expo_detail.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://myfair.co/sitemap/slug_exhibition.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://myfair.co/sitemap/expo_estimate.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://myfair.co/sitemap/stands.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://myfair.co/sitemap/stands_detail.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://myfair.co/sitemap/stands_by_budget.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://myfair.co/sitemap/popular_expo_detail.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://myfair.co/sitemap/blog.xml</loc>
+  </sitemap>
+</sitemapindex>
