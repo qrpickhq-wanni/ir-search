@@ -3,6 +3,8 @@
 감사일: 2026-07-15  
 범위: 공개 페이지 소수 샘플만(사이트당 목록·상세 최대 3). 로그인/CAPTCHA/접근제한 우회·비공개 API·전량 수집 없음.
 
+후속(1B 소스 지도, 본 문서 등급 유지·비대체): `docs/mice-source-landscape.md`, `docs/mice-source-audit-policy.md`, `config/mice-source-registry.yaml`
+
 등급: **A** 공개 API/정적 HTML 가능 · **B** 브라우저·추가 검증 · **C** 허락·제휴 후 · **D** 제외
 
 ## 종합

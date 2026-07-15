@@ -1,0 +1,1597 @@
+registry_version: '1.0'
+# Sole source of truth for MICE source metadata. CSV under reports/ is a generated artifact.
+authority: config/mice-source-registry.yaml
+artifact_csv: reports/mice-source-audit.csv
+generated_at: '2026-07-15'
+purpose: QRPick/Showda MICE source landscape and crawler priority (no bulk crawl)
+baseline_audit: docs/mice-source-feasibility-audit.md
+policies:
+- docs/mice-source-audit-policy.md
+- docs/mice-source-landscape.md
+sources:
+- source_id: mice_or_kr
+  source_name: 마이스워크넷
+  source_category: NATIONAL_PUBLIC_MICE
+  owner_organization: (사)부산관광마이스진흥회
+  base_url: https://mice.or.kr/
+  list_urls:
+  - https://www.mice.or.kr/bbs/board.php?bo_table=event
+  - https://www.mice.or.kr/bbs/board.php?bo_table=announcement
+  coverage_region: 전국(부산 중심 게시)
+  data_types:
+  - MICE_EVENT
+  - MICE_SUPPORT_NOTICE
+  - ORGANIZER_SIGNAL
+  - SALES_LEAD
+  source_role: PRIMARY_OFFICIAL
+  original_or_aggregator: AGGREGATOR_WITH_SOURCE_LINKS
+  official_source_priority: 4
+  login_required: false
+  robots_status: ALLOW_EXCEPT_ADM_INSTALL
+  terms_status: COPY_RESTRICTED_WITHOUT_PRIOR_APPROVAL
+  commercial_use_status: INTERNAL_USE_CAUTION_NO_REPUBLISH
+  rendering_type: SSR_HTML
+  api_or_xhr_status: NONE_OBSERVED
+  pagination_type: GET_PAGE
+  update_frequency: BOARD_POSTING
+  sample_fields:
+  - title
+  - period
+  - time
+  - venue
+  - body
+  - source_homepage
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: true
+  procurement_information_available: true
+  historical_event_available: true
+  technical_grade: A
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: P0
+  audit_status: INHERITED_EXISTING_AUDIT
+  evidence_urls:
+  - docs/mice-source-feasibility-audit.md
+  - logs/mice-feasibility-audit/
+  existing_audit_reference: docs/mice-source-feasibility-audit.md
+  audit_date: '2026-07-15'
+  notes: Existing single grade A kept as technical_grade. Legal B due to copy restriction in terms. No re-crawl of robots/sitemap
+    in landscape phase.
+- source_id: k_mice
+  source_name: K-MICE (Korea Beyond Meetings)
+  source_category: NATIONAL_PUBLIC_MICE
+  owner_organization: 한국관광공사(KTO)
+  base_url: https://k-mice.visitkorea.or.kr/
+  list_urls:
+  - https://k-mice.visitkorea.or.kr/miceCalendar.kto?func_name=list
+  - https://k-mice.visitkorea.or.kr/convention_kr/guidehtml/mice07_5_cvb.jsp
+  coverage_region: 전국
+  data_types:
+  - MICE_EVENT
+  - MICE_SUPPORT_NOTICE
+  - ORGANIZER_SIGNAL
+  source_role: PRIMARY_OFFICIAL
+  original_or_aggregator: OFFICIAL_AGGREGATOR
+  official_source_priority: 4
+  login_required: false
+  robots_status: DISALLOW_SEARCH_ONLY
+  terms_status: KTO_COPYRIGHT_RSS_AVAILABLE
+  commercial_use_status: INTERNAL_USE_POLITE_CRAWL
+  rendering_type: SSR_HTML_FORM_POST
+  api_or_xhr_status: NONE_OBSERVED_PUBLIC_JSON
+  pagination_type: POST_CURR_PAGE
+  update_frequency: CALENDAR_CONTINUOUS
+  sample_fields:
+  - name_ko
+  - name_en
+  - category
+  - period
+  - organizer
+  - region
+  - venue
+  - official_website
+  contact_fields_available: false
+  organizer_fields_available: true
+  official_event_url_available: true
+  procurement_information_available: true
+  historical_event_available: true
+  technical_grade: A
+  legal_operational_grade: B
+  business_value_grade: A
+  implementation_priority: P0
+  audit_status: INHERITED_EXISTING_AUDIT
+  evidence_urls:
+  - docs/mice-source-feasibility-audit.md
+  - logs/mice-feasibility-audit/
+  existing_audit_reference: docs/mice-source-feasibility-audit.md
+  audit_date: '2026-07-15'
+  notes: 'Inherited A; implement detail via public HTML form POST calView (not private API). Existing note: POST dependency
+    may need B verification at implementation time without changing inherited technical A unless new failure evidence.'
+- source_id: myfair
+  source_name: 마이페어
+  source_category: COMMERCIAL_PLATFORM
+  owner_organization: 주식회사 마이페어
+  base_url: https://myfair.co/
+  list_urls:
+  - https://myfair.co/exhibition-list?v=1&zn=1
+  coverage_region: 글로벌(해외박람회 중심)
+  data_types:
+  - MICE_EVENT
+  - EXHIBITOR_RECRUITMENT
+  - SALES_LEAD
+  source_role: COMMERCIAL_AGGREGATOR
+  original_or_aggregator: COMMERCIAL_AGGREGATOR
+  official_source_priority: 6
+  login_required: false
+  robots_status: ALLOW_WITH_PATH_DISALLOWS_INCL_TERM_USE
+  terms_status: PRIOR_APPROVAL_REQUIRED_FOR_REPRODUCTION
+  commercial_use_status: PARTNERSHIP_REQUIRED
+  rendering_type: NEXT_SSR_HTML
+  api_or_xhr_status: NO_PUBLIC_API_OBSERVED
+  pagination_type: FILTER_ZN_APP_UI
+  update_frequency: SITEMAP_DAILY
+  sample_fields:
+  - fair_name
+  - period
+  - country
+  - booth_cta
+  - member_insights_gated
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: false
+  procurement_information_available: false
+  historical_event_available: false
+  technical_grade: B
+  legal_operational_grade: C
+  business_value_grade: C
+  implementation_priority: HOLD
+  audit_status: INHERITED_EXISTING_AUDIT
+  evidence_urls:
+  - docs/mice-source-feasibility-audit.md
+  - logs/mice-feasibility-audit/
+  existing_audit_reference: docs/mice-source-feasibility-audit.md
+  audit_date: '2026-07-15'
+  notes: Inherited overall C maps to legal C + HOLD. Technical noted as Next HTML capable (B). Not used as canonical schedule
+    source.
+- source_id: opendata_kintex_gg
+  source_name: 경기도 공공데이터 KINTEX 행사 일정
+  source_category: NATIONAL_PUBLIC_MICE
+  owner_organization: 경기도 / KINTEX 연계 공개데이터
+  base_url: https://www.data.go.kr/data/15119881/fileData.do
+  list_urls:
+  - https://www.data.go.kr/data/15119881/fileData.do
+  - https://data.gg.go.kr/portal/data/service/selectServicePage.do?infId=TM03IWAWFH17G6VM827729982969&infSeq=1
+  coverage_region: 경기(KINTEX)
+  data_types:
+  - MICE_EVENT
+  - ORGANIZER_SIGNAL
+  source_role: VENUE_CALENDAR
+  original_or_aggregator: OFFICIAL_OPEN_DATA
+  official_source_priority: 3
+  login_required: false
+  robots_status: PORTAL_PUBLIC_DOWNLOAD
+  terms_status: PUBLIC_DATA_PORTAL_TERMS
+  commercial_use_status: PUBLIC_DATA_LICENSE_CHECK_REQUIRED
+  rendering_type: FILE_DOWNLOAD_CSV
+  api_or_xhr_status: FILE_OR_PORTAL_URL
+  pagination_type: FILE
+  update_frequency: 수시(포털 표기)
+  sample_fields:
+  - 행사명
+  - 기간
+  - 장소
+  - 주최주관
+  - 전화팩스
+  - 홈페이지
+  contact_fields_available: true
+  organizer_fields_available: true
+  official_event_url_available: true
+  procurement_information_available: false
+  historical_event_available: true
+  technical_grade: A
+  legal_operational_grade: A
+  business_value_grade: A
+  implementation_priority: P0
+  audit_status: NEWLY_AUDITED
+  evidence_urls:
+  - https://www.data.go.kr/data/15119881/fileData.do
+  - logs/mice-landscape-sample/data_gg_kintex.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Portal metadata claims CSV with organizer contacts and homepage. Prefer over site scrape where license permits.
+- source_id: kintex
+  source_name: KINTEX 행사일정
+  source_category: VENUE
+  owner_organization: KINTEX
+  base_url: https://www.kintex.com/
+  list_urls:
+  - https://www.kintex.com/web/ko/event/clist.do
+  - https://www.kintex.com/web/ko/event/clist.do?searchType=11
+  coverage_region: 경기
+  data_types:
+  - MICE_EVENT
+  - ORGANIZER_SIGNAL
+  - EXHIBITOR_RECRUITMENT
+  source_role: VENUE_CALENDAR
+  original_or_aggregator: ORIGINAL_VENUE
+  official_source_priority: 3
+  login_required: false
+  robots_status: ALLOW_EXCEPT_ADMIN_LOGIN_SITEMAP_DECLARED
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: INTERNAL_USE_POLITE_CRAWL
+  rendering_type: SSR_HTML
+  api_or_xhr_status: NONE_CONFIRMED
+  pagination_type: SITE_LIST_FILTERS
+  update_frequency: VENUE_SCHEDULE
+  sample_fields:
+  - event_name
+  - period
+  - hall
+  - organizer_hints
+  contact_fields_available: false
+  organizer_fields_available: true
+  official_event_url_available: true
+  procurement_information_available: false
+  historical_event_available: true
+  technical_grade: A
+  legal_operational_grade: B
+  business_value_grade: A
+  implementation_priority: P0
+  audit_status: NEWLY_AUDITED
+  evidence_urls:
+  - logs/mice-landscape-sample/kintex_robots.txt
+  - logs/mice-landscape-sample/kintex_clist.txt
+  - logs/mice-landscape-sample/kintex_clist_ex.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Legacy /exhibition/schedule.asp returned 400; current list is /web/ko/event/clist.do. Sitemap URL returned 400 in
+    sample client.
+- source_id: coex
+  source_name: COEX 행사일정
+  source_category: VENUE
+  owner_organization: 코엑스(COEX)
+  base_url: https://www.coex.co.kr/
+  list_urls:
+  - https://www.coex.co.kr/
+  coverage_region: 서울
+  data_types:
+  - MICE_EVENT
+  - PARTICIPANT_RECRUITMENT
+  - ORGANIZER_SIGNAL
+  source_role: VENUE_CALENDAR
+  original_or_aggregator: ORIGINAL_VENUE
+  official_source_priority: 3
+  login_required: false
+  robots_status: ALLOW_EXCEPT_WP_ADMIN_UPLOADS_SITEMAP
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: INTERNAL_USE_POLITE_CRAWL
+  rendering_type: SSR_HTML_WP
+  api_or_xhr_status: ADMIN_AJAX_ALLOWED_IN_ROBOTS
+  pagination_type: SITE_UI
+  update_frequency: VENUE_SCHEDULE
+  sample_fields:
+  - event_name
+  - period
+  - ticket_signals
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: true
+  procurement_information_available: true
+  historical_event_available: true
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: A
+  implementation_priority: P0
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/coex_robots.txt
+  - logs/mice-landscape-sample/coex_home.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Home confirms live schedule cards; dedicated list URL adapter still needed (detail pages not exhaustively sampled).
+- source_id: bexco
+  source_name: BEXCO 행사일정
+  source_category: VENUE
+  owner_organization: 벡스코
+  base_url: https://www.bexco.co.kr/
+  list_urls:
+  - https://www.bexco.co.kr/kor/CMS/EventScheduleMgr/list.do?mCode=MN214
+  coverage_region: 부산
+  data_types:
+  - MICE_EVENT
+  - ORGANIZER_SIGNAL
+  source_role: VENUE_CALENDAR
+  original_or_aggregator: ORIGINAL_VENUE
+  official_source_priority: 3
+  login_required: false
+  robots_status: DISALLOW_ALL_EXCEPT_ROOT
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: HOLD_PENDING_ROBOTS_CLARIFICATION
+  rendering_type: SSR_HTML
+  api_or_xhr_status: NONE_CONFIRMED
+  pagination_type: SITE_FILTERS
+  update_frequency: VENUE_SCHEDULE
+  sample_fields:
+  - event_name
+  - period
+  - hall
+  - status
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: true
+  procurement_information_available: true
+  historical_event_available: true
+  technical_grade: A
+  legal_operational_grade: C
+  business_value_grade: A
+  implementation_priority: HOLD
+  audit_status: NEWLY_AUDITED
+  evidence_urls:
+  - logs/mice-landscape-sample/bexco_robots.txt
+  - logs/mice-landscape-sample/bexco_sched.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: HTML schedule is rich, but robots Disallow:/ Allow:/$ only — automated crawl held until permission/clarification.
+- source_id: songdo_convenia
+  source_name: 송도컨벤시아 행사일정/OpenAPI
+  source_category: VENUE
+  owner_organization: 인천관광공사(송도컨벤시아)
+  base_url: https://songdoconvensia.visitincheon.or.kr/
+  list_urls:
+  - https://songdoconvensia.visitincheon.or.kr/page/schedule.do
+  - https://songdoconvensia.visitincheon.or.kr/page/openApiEvent.do
+  coverage_region: 인천
+  data_types:
+  - MICE_EVENT
+  - ORGANIZER_SIGNAL
+  source_role: VENUE_CALENDAR
+  original_or_aggregator: ORIGINAL_VENUE
+  official_source_priority: 3
+  login_required: false
+  robots_status: NOT_FETCHED_THIS_PASS
+  terms_status: OPENAPI_KEY_REGISTRATION_INDICATED
+  commercial_use_status: OPENAPI_AFTER_KEY_APPROVAL
+  rendering_type: VUE_SPA_SHELL_PLUS_OPENAPI
+  api_or_xhr_status: PUBLIC_OPENAPI_DOCUMENTED_JSON_XML_KEY_REQUIRED
+  pagination_type: CALENDAR_UI_OR_API
+  update_frequency: VENUE_SCHEDULE
+  sample_fields:
+  - event_type
+  - period
+  - excel_download_hint
+  - openapi_fields
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: true
+  procurement_information_available: false
+  historical_event_available: true
+  technical_grade: A
+  legal_operational_grade: B
+  business_value_grade: A
+  implementation_priority: P0
+  audit_status: NEWLY_AUDITED
+  evidence_urls:
+  - logs/mice-landscape-sample/songdo_sched.txt
+  - logs/mice-landscape-sample/songdo_openapi.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Prefer OpenAPI after key approval over scraping Vue schedule. Page documents json/xml result types and API key status
+    codes.
+- source_id: exco
+  source_name: 'EXCO(대구) '
+  source_category: VENUE
+  owner_organization: EXCO
+  base_url: https://www.exco.co.kr/
+  list_urls:
+  - https://www.exco.co.kr/
+  coverage_region: 대구
+  data_types:
+  - MICE_EVENT
+  - ORGANIZER_SIGNAL
+  source_role: VENUE_CALENDAR
+  original_or_aggregator: ORIGINAL_VENUE
+  official_source_priority: 3
+  login_required: false
+  robots_status: FETCHED_SAMPLE
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: INTERNAL_USE_POLITE_CRAWL
+  rendering_type: SSR_HTML
+  api_or_xhr_status: UNKNOWN
+  pagination_type: UNKNOWN
+  update_frequency: VENUE_SCHEDULE
+  sample_fields:
+  - home_has_events_procure_hints
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: true
+  procurement_information_available: true
+  historical_event_available: true
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: P1
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/exco_robots.txt
+  - logs/mice-landscape-sample/exco_home.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Guessed EventScheduleMgr URL 404; need confirmed list URL from site nav before adapter.
+- source_id: dcc
+  source_name: 대전컨벤션센터(DCC)
+  source_category: VENUE
+  owner_organization: 대전관광공사/DCC
+  base_url: https://www.dcckorea.or.kr/
+  list_urls:
+  - https://www.dcckorea.or.kr/
+  coverage_region: 대전
+  data_types:
+  - MICE_EVENT
+  - MICE_TENDER
+  - ORGANIZER_SIGNAL
+  source_role: VENUE_CALENDAR
+  original_or_aggregator: ORIGINAL_VENUE
+  official_source_priority: 3
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: UNKNOWN
+  rendering_type: SSR_HTML
+  api_or_xhr_status: UNKNOWN
+  pagination_type: UNKNOWN
+  update_frequency: VENUE_SCHEDULE
+  sample_fields:
+  - home_org_procure_hints
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: true
+  procurement_information_available: true
+  historical_event_available: true
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: P1
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/dcc_home.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Home reachable; schedule endpoint not isolated in this pass.
+- source_id: icc_jeju
+  source_name: 제주국제컨벤션센터(ICC JEJU)
+  source_category: VENUE
+  owner_organization: ICC JEJU
+  base_url: https://www.iccjeju.co.kr/
+  list_urls:
+  - https://www.iccjeju.co.kr/main/main.php
+  coverage_region: 제주
+  data_types:
+  - MICE_EVENT
+  - ORGANIZER_SIGNAL
+  source_role: VENUE_CALENDAR
+  original_or_aggregator: ORIGINAL_VENUE
+  official_source_priority: 3
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: UNKNOWN
+  rendering_type: SSR_WITH_DYNAMIC_HINTS
+  api_or_xhr_status: UNKNOWN
+  pagination_type: WHATS_ON_LIST
+  update_frequency: VENUE_SCHEDULE
+  sample_fields:
+  - event_name
+  - period
+  - type_convention_event
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: true
+  procurement_information_available: true
+  historical_event_available: true
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: P1
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/icc_home.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: What's ON list visible in SSR sample.
+- source_id: kdj_center
+  source_name: 김대중컨벤션센터
+  source_category: VENUE
+  owner_organization: 광주관광공사
+  base_url: https://kdjcenter.gjto.or.kr/
+  list_urls:
+  - https://kdjcenter.gjto.or.kr/events/gallery
+  coverage_region: 광주
+  data_types:
+  - MICE_EVENT
+  - ORGANIZER_SIGNAL
+  source_role: VENUE_CALENDAR
+  original_or_aggregator: ORIGINAL_VENUE
+  official_source_priority: 3
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: UNKNOWN
+  rendering_type: SSR_HTML_API_HINT
+  api_or_xhr_status: API_HINT_IN_HTML
+  pagination_type: GALLERY_CALENDAR
+  update_frequency: VENUE_SCHEDULE
+  sample_fields:
+  - event_name
+  - period
+  - hall
+  - type
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: true
+  procurement_information_available: true
+  historical_event_available: true
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: P1
+  audit_status: NEWLY_AUDITED
+  evidence_urls:
+  - logs/mice-landscape-sample/kdj_home.txt
+  - logs/mice-landscape-sample/kdj_events.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Wrong DNS kjdc.co.kr discarded; official is kdjcenter.gjto.or.kr.
+- source_id: ceco
+  source_name: CECO 창원컨벤션센터
+  source_category: VENUE
+  owner_organization: CECO
+  base_url: https://www.ceco.co.kr/
+  list_urls:
+  - https://www.ceco.co.kr/bbx/board.php?bx_table=01_01&vtype=calendar
+  coverage_region: 경남
+  data_types:
+  - MICE_EVENT
+  - ORGANIZER_SIGNAL
+  source_role: VENUE_CALENDAR
+  original_or_aggregator: ORIGINAL_VENUE
+  official_source_priority: 3
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: PRIVACY_NOTICE_ON_SITE
+  commercial_use_status: UNKNOWN
+  rendering_type: SSR_HTML_BOARD
+  api_or_xhr_status: NONE_CONFIRMED
+  pagination_type: CALENDAR_MONTH
+  update_frequency: VENUE_SCHEDULE
+  sample_fields:
+  - event_name
+  - period
+  - hall
+  - type
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: true
+  procurement_information_available: true
+  historical_event_available: true
+  technical_grade: A
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: P1
+  audit_status: NEWLY_AUDITED
+  evidence_urls:
+  - logs/mice-landscape-sample/ceco_home.txt
+  - logs/mice-landscape-sample/ceco_cal.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Board/calendar HTML confirmed.
+- source_id: suwon_cc
+  source_name: 수원컨벤션센터
+  source_category: VENUE
+  owner_organization: 수원컨벤션센터
+  base_url: https://www.suwoncc.co.kr/
+  list_urls:
+  - https://www.suwoncc.co.kr/
+  coverage_region: 경기
+  data_types:
+  - MICE_EVENT
+  source_role: VENUE_CALENDAR
+  original_or_aggregator: ORIGINAL_VENUE
+  official_source_priority: 3
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: UNKNOWN
+  rendering_type: NEXT
+  api_or_xhr_status: UNKNOWN
+  pagination_type: UNKNOWN
+  update_frequency: UNKNOWN
+  sample_fields:
+  - home_next_shell
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: false
+  procurement_information_available: false
+  historical_event_available: false
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: C
+  implementation_priority: P2
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/suwon_cc.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: /event path 404 in sample; schedule route TBD.
+- source_id: setec
+  source_name: SETEC
+  source_category: VENUE
+  owner_organization: SETEC
+  base_url: https://www.setec.or.kr/
+  list_urls:
+  - https://www.setec.or.kr/
+  coverage_region: 서울
+  data_types:
+  - MICE_EVENT
+  source_role: VENUE_CALENDAR
+  original_or_aggregator: ORIGINAL_VENUE
+  official_source_priority: 3
+  login_required: false
+  robots_status: FETCHED_SHORT
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: UNKNOWN
+  rendering_type: UNKNOWN_SHORT_RESPONSE
+  api_or_xhr_status: UNKNOWN
+  pagination_type: UNKNOWN
+  update_frequency: UNKNOWN
+  sample_fields: []
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: false
+  procurement_information_available: false
+  historical_event_available: false
+  technical_grade: C
+  legal_operational_grade: B
+  business_value_grade: C
+  implementation_priority: P2
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/setec_home.txt
+  - logs/mice-landscape-sample/setec_robots.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Home returned very short body in sample; needs browser verification.
+- source_id: at_center
+  source_name: aT센터
+  source_category: VENUE
+  owner_organization: 한국농수산식품유통공사(aT)
+  base_url: https://www.atcenter.co.kr/
+  list_urls:
+  - https://www.atcenter.co.kr/
+  coverage_region: 서울
+  data_types:
+  - MICE_EVENT
+  - ORGANIZER_SIGNAL
+  source_role: VENUE_CALENDAR
+  original_or_aggregator: ORIGINAL_VENUE
+  official_source_priority: 3
+  login_required: false
+  robots_status: FETCHED
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: UNKNOWN
+  rendering_type: SSR_HTML
+  api_or_xhr_status: UNKNOWN
+  pagination_type: UNKNOWN
+  update_frequency: VENUE_SCHEDULE
+  sample_fields:
+  - home_org_hints
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: true
+  procurement_information_available: false
+  historical_event_available: true
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: P1
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/aTcenter.txt
+  - logs/mice-landscape-sample/atcenter_robots.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Home OK; list URL for exhibitions not isolated this pass.
+- source_id: mice_seoul_cvb
+  source_name: 서울컨벤션뷰로
+  source_category: REGIONAL_CVB
+  owner_organization: 서울관광재단
+  base_url: https://miceseoul.com/
+  list_urls:
+  - https://miceseoul.com/kor/bbs/BMSR00001/list.do?menuNo=800040
+  coverage_region: 서울
+  data_types:
+  - MICE_SUPPORT_NOTICE
+  - MICE_OPEN_INNOVATION
+  - ORGANIZER_SIGNAL
+  - SALES_LEAD
+  source_role: REGIONAL_OFFICIAL
+  original_or_aggregator: OFFICIAL_REGIONAL
+  official_source_priority: 4
+  login_required: false
+  robots_status: YETI_DISALLOW_CMS_UPLOAD_ONLY
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: INTERNAL_USE_LIKELY
+  rendering_type: JS_BOARD_HEAVY
+  api_or_xhr_status: UNKNOWN
+  pagination_type: BOARD_JS
+  update_frequency: SUPPORT_NOTICES
+  sample_fields:
+  - notice_title
+  - date
+  - support_program_signals
+  contact_fields_available: true
+  organizer_fields_available: true
+  official_event_url_available: false
+  procurement_information_available: true
+  historical_event_available: true
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: A
+  implementation_priority: P0
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/miceseoul_robots.txt
+  - logs/mice-landscape-sample/miceseoul_notice.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Notice list via simple fetch returned short body (likely JS). Search snippets and known view URLs show rich support/recruitment
+    notices — prioritize browser/XHR verification.
+- source_id: busan_cvb_bto
+  source_name: 부산컨벤션뷰로
+  source_category: REGIONAL_CVB
+  owner_organization: 부산관광공사
+  base_url: https://bto.or.kr/cvb/Main.do
+  list_urls:
+  - https://bto.or.kr/cvb/Main.do
+  coverage_region: 부산
+  data_types:
+  - MICE_SUPPORT_NOTICE
+  - ORGANIZER_SIGNAL
+  - SALES_LEAD
+  source_role: REGIONAL_OFFICIAL
+  original_or_aggregator: OFFICIAL_REGIONAL
+  official_source_priority: 4
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: UNKNOWN
+  rendering_type: SSR_HTML_AJAX_BOARDS
+  api_or_xhr_status: AJAX_BOARD_HINT_ON_HOME
+  pagination_type: UNKNOWN
+  update_frequency: PROGRAM_PAGES
+  sample_fields:
+  - support_program
+  - alliance
+  contact_fields_available: false
+  organizer_fields_available: true
+  official_event_url_available: false
+  procurement_information_available: false
+  historical_event_available: false
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: P1
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/bto_cvb.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Support/attraction programs; event master calendar weaker than BEXCO/MiceWorkNet.
+- source_id: busan_mice_platform
+  source_name: 부산 MICE 플랫폼
+  source_category: REGIONAL_CVB
+  owner_organization: 부산 MICE 관련 공공·협회 연계
+  base_url: https://www.busanmice.or.kr/
+  list_urls:
+  - https://www.busanmice.or.kr/main.do
+  coverage_region: 부산
+  data_types:
+  - ORGANIZER_SIGNAL
+  - SALES_LEAD
+  - MICE_SUPPORT_NOTICE
+  source_role: DISCOVERY_ONLY
+  original_or_aggregator: REGIONAL_DIRECTORY
+  official_source_priority: 5
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: UNKNOWN
+  rendering_type: SSR_HTML
+  api_or_xhr_status: UNKNOWN
+  pagination_type: UNKNOWN
+  update_frequency: DIRECTORY
+  sample_fields:
+  - supplier_directory
+  - institution_links
+  contact_fields_available: true
+  organizer_fields_available: true
+  official_event_url_available: false
+  procurement_information_available: true
+  historical_event_available: false
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: P1
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/busanmice_home.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Useful PCO/PEO/supplier discovery and institution deep-links.
+- source_id: incheon_cvb
+  source_name: 인천MICE뷰로
+  source_category: REGIONAL_CVB
+  owner_organization: 인천관광공사
+  base_url: https://www.incheoncvb.or.kr/
+  list_urls:
+  - https://www.incheoncvb.or.kr/biz/cvb/cvbMain.do
+  coverage_region: 인천
+  data_types:
+  - MICE_SUPPORT_NOTICE
+  - ORGANIZER_SIGNAL
+  - SALES_LEAD
+  source_role: REGIONAL_OFFICIAL
+  original_or_aggregator: OFFICIAL_REGIONAL
+  official_source_priority: 4
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: UNKNOWN
+  rendering_type: SSR_HTML
+  api_or_xhr_status: UNKNOWN
+  pagination_type: UNKNOWN
+  update_frequency: PROGRAM_PAGES
+  sample_fields:
+  - org_chart_roles
+  - attraction_support
+  contact_fields_available: true
+  organizer_fields_available: true
+  official_event_url_available: false
+  procurement_information_available: true
+  historical_event_available: false
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: P1
+  audit_status: NEWLY_AUDITED
+  evidence_urls:
+  - logs/mice-landscape-sample/incheon_cvb.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Strong sales/outreach to CVB staff roles; calendar secondary to Songdo venue.
+- source_id: daejeon_cvb
+  source_name: 대전MICE뷰로
+  source_category: REGIONAL_CVB
+  owner_organization: 대전관광공사
+  base_url: https://www.daejeoncvb.kr/
+  list_urls:
+  - https://www.daejeoncvb.kr/
+  - https://www.daejeoncvb.kr/introduction-project
+  coverage_region: 대전
+  data_types:
+  - MICE_SUPPORT_NOTICE
+  - ORGANIZER_SIGNAL
+  source_role: REGIONAL_OFFICIAL
+  original_or_aggregator: OFFICIAL_REGIONAL
+  official_source_priority: 4
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: UNKNOWN
+  rendering_type: SSR_HTML
+  api_or_xhr_status: UNKNOWN
+  pagination_type: UNKNOWN
+  update_frequency: PROGRAM_PAGES
+  sample_fields:
+  - smart_mice_district_projects
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: false
+  procurement_information_available: false
+  historical_event_available: false
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: C
+  implementation_priority: P2
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/daejeon_cvb.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Program/marketing pages confirmed; event calendar weak in sample.
+- source_id: jeju_cvb
+  source_name: 제주컨벤션뷰로
+  source_category: REGIONAL_CVB
+  owner_organization: (사)제주컨벤션뷰로
+  base_url: https://www.jejucvb.or.kr/
+  list_urls: []
+  coverage_region: 제주
+  data_types:
+  - MICE_SUPPORT_NOTICE
+  - ORGANIZER_SIGNAL
+  source_role: REGIONAL_OFFICIAL
+  original_or_aggregator: OFFICIAL_REGIONAL
+  official_source_priority: 4
+  login_required: false
+  robots_status: UNKNOWN
+  terms_status: UNKNOWN
+  commercial_use_status: UNKNOWN
+  rendering_type: UNKNOWN
+  api_or_xhr_status: UNKNOWN
+  pagination_type: UNKNOWN
+  update_frequency: UNKNOWN
+  sample_fields: []
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: false
+  procurement_information_available: false
+  historical_event_available: false
+  technical_grade: D
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: HOLD
+  audit_status: PENDING
+  evidence_urls:
+  - https://k-mice.visitkorea.or.kr/convention_kr/guidehtml/mice07_5_cvb.jsp
+  - logs/mice-landscape-sample/k-mice_cvb_list.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Listed on K-MICE CVB directory as www.jejucvb.or.kr but DNS resolve failed in sample. HOLD until reachable URL confirmed
+    — do not invent alternate URL.
+- source_id: kmice_cvb_directory
+  source_name: K-MICE 지역 CVB 안내
+  source_category: NATIONAL_PUBLIC_MICE
+  owner_organization: 한국관광공사
+  base_url: https://k-mice.visitkorea.or.kr/convention_kr/guidehtml/mice07_5_cvb.jsp
+  list_urls:
+  - https://k-mice.visitkorea.or.kr/convention_kr/guidehtml/mice07_5_cvb.jsp
+  coverage_region: 전국
+  data_types:
+  - ORGANIZER_SIGNAL
+  source_role: DISCOVERY_ONLY
+  original_or_aggregator: OFFICIAL_DIRECTORY
+  official_source_priority: 4
+  login_required: false
+  robots_status: SAME_AS_K_MICE
+  terms_status: KTO
+  commercial_use_status: INTERNAL_USE
+  rendering_type: SSR_HTML
+  api_or_xhr_status: NONE
+  pagination_type: STATIC_PAGE
+  update_frequency: OCCASIONAL
+  sample_fields:
+  - cvb_name
+  - website
+  - description
+  contact_fields_available: true
+  organizer_fields_available: true
+  official_event_url_available: false
+  procurement_information_available: false
+  historical_event_available: false
+  technical_grade: A
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: P1
+  audit_status: NEWLY_AUDITED
+  evidence_urls:
+  - logs/mice-landscape-sample/k-mice_cvb_list.txt
+  existing_audit_reference: docs/mice-source-feasibility-audit.md
+  audit_date: '2026-07-15'
+  notes: Use to expand regional CVB registry; not an event master calendar. Notes Daegu CVB dissolution into EXCO (press,
+    unverified via EXCO).
+- source_id: akei
+  source_name: 한국전시산업진흥회(AKEI)
+  source_category: ASSOCIATION
+  owner_organization: 한국전시산업진흥회
+  base_url: https://akei.or.kr/
+  list_urls:
+  - https://akei.or.kr/
+  coverage_region: 전국
+  data_types:
+  - MICE_SUPPORT_NOTICE
+  - ORGANIZER_SIGNAL
+  - MICE_TENDER
+  source_role: ASSOCIATION_CALENDAR
+  original_or_aggregator: ASSOCIATION
+  official_source_priority: 5
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: UNKNOWN
+  rendering_type: SSR_HTML
+  api_or_xhr_status: UNKNOWN
+  pagination_type: UNKNOWN
+  update_frequency: ASSOCIATION_NOTICES
+  sample_fields:
+  - notices
+  - family_site_links
+  contact_fields_available: true
+  organizer_fields_available: true
+  official_event_url_available: false
+  procurement_information_available: true
+  historical_event_available: false
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: P1
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/akei_home.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Hub to SHOWALA / ExpoUP; use for industry notices and organizer network.
+- source_id: showala
+  source_name: SHOWALA 전시포털
+  source_category: ASSOCIATION
+  owner_organization: 한국전시산업진흥회
+  base_url: https://www.showala.com/
+  list_urls:
+  - https://showala.com/ex/ex_list.php
+  coverage_region: 전국
+  data_types:
+  - MICE_EVENT
+  - EXHIBITOR_RECRUITMENT
+  - PARTICIPANT_RECRUITMENT
+  - ORGANIZER_SIGNAL
+  source_role: ASSOCIATION_CALENDAR
+  original_or_aggregator: OFFICIAL_INDUSTRY_AGGREGATOR
+  official_source_priority: 5
+  login_required: false
+  robots_status: ALLOW_EXCEPT_ADM_MEMBER
+  terms_status: MEMBERSHIP_TERMS_PRESENT
+  commercial_use_status: INTERNAL_USE_VERIFY_TERMS_BEFORE_BULK
+  rendering_type: SSR_HTML
+  api_or_xhr_status: UNKNOWN
+  pagination_type: FILTER_SEARCH
+  update_frequency: INDUSTRY_PORTAL
+  sample_fields:
+  - exhibition_search_filters
+  - venue_taxonomy
+  contact_fields_available: false
+  organizer_fields_available: true
+  official_event_url_available: true
+  procurement_information_available: false
+  historical_event_available: true
+  technical_grade: A
+  legal_operational_grade: B
+  business_value_grade: A
+  implementation_priority: P0
+  audit_status: NEWLY_AUDITED
+  evidence_urls:
+  - logs/mice-landscape-sample/showala_robots.txt
+  - logs/mice-landscape-sample/showala_list.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Strong discovery index; always refresh date/contact via venue/official event URL (priority policy).
+- source_id: keoa
+  source_name: 한국전시주최자협회
+  source_category: ASSOCIATION
+  owner_organization: (사)한국전시주최자협회
+  base_url: https://www.keoa.org/
+  list_urls:
+  - https://www.keoa.org/?home=
+  coverage_region: 전국
+  data_types:
+  - MICE_TENDER
+  - MICE_EVENT
+  - ORGANIZER_SIGNAL
+  - SALES_LEAD
+  source_role: ASSOCIATION_CALENDAR
+  original_or_aggregator: ASSOCIATION
+  official_source_priority: 5
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: UNKNOWN
+  rendering_type: SSR_HTML
+  api_or_xhr_status: UNKNOWN
+  pagination_type: BOARD
+  update_frequency: BOARD
+  sample_fields:
+  - bid_board
+  - event_guide
+  - organizer_directory
+  contact_fields_available: true
+  organizer_fields_available: true
+  official_event_url_available: false
+  procurement_information_available: true
+  historical_event_available: true
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: A
+  implementation_priority: P0
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/keoa_home.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Home exposes 입찰정보 menu; adapter for bid board URL pending deeper list sample.
+- source_id: micekorea_assoc
+  source_name: 한국MICE협회
+  source_category: ASSOCIATION
+  owner_organization: (사)한국MICE협회
+  base_url: https://micekorea.or.kr/
+  list_urls:
+  - https://micekorea.or.kr/
+  coverage_region: 전국
+  data_types:
+  - ORGANIZER_SIGNAL
+  - MICE_SUPPORT_NOTICE
+  - SALES_LEAD
+  source_role: ASSOCIATION_CALENDAR
+  original_or_aggregator: ASSOCIATION
+  official_source_priority: 5
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: UNKNOWN
+  rendering_type: SSR_HTML
+  api_or_xhr_status: UNKNOWN
+  pagination_type: UNKNOWN
+  update_frequency: ASSOCIATION
+  sample_fields:
+  - member_network_signals
+  - notices
+  contact_fields_available: true
+  organizer_fields_available: true
+  official_event_url_available: false
+  procurement_information_available: false
+  historical_event_available: false
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: P1
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/micekorea_home.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Member ecosystem / alliance outreach value more than event master calendar.
+- source_id: kapco
+  source_name: 한국PCO협회
+  source_category: ASSOCIATION
+  owner_organization: 한국PCO협회
+  base_url: https://www.kapco.or.kr/
+  list_urls:
+  - https://www.kapco.or.kr/
+  coverage_region: 전국
+  data_types:
+  - ORGANIZER_SIGNAL
+  - SALES_LEAD
+  source_role: ASSOCIATION_CALENDAR
+  original_or_aggregator: ASSOCIATION
+  official_source_priority: 5
+  login_required: false
+  robots_status: UNKNOWN
+  terms_status: UNKNOWN
+  commercial_use_status: UNKNOWN
+  rendering_type: UNKNOWN
+  api_or_xhr_status: UNKNOWN
+  pagination_type: UNKNOWN
+  update_frequency: UNKNOWN
+  sample_fields: []
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: false
+  procurement_information_available: false
+  historical_event_available: false
+  technical_grade: D
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: HOLD
+  audit_status: PENDING
+  evidence_urls:
+  - https://songdoconvensia.visitincheon.or.kr/page/openApiEvent.do
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Linked from Songdo footer. Sample GET returned 45-byte body — HOLD until working page confirmed.
+- source_id: daara
+  source_name: 다아라 산업전시회 일정
+  source_category: COMMERCIAL_PLATFORM
+  owner_organization: 다아라
+  base_url: https://www.daara.co.kr/
+  list_urls:
+  - https://www.daara.co.kr/calendar.php
+  coverage_region: 국내·해외
+  data_types:
+  - MICE_EVENT
+  - SALES_LEAD
+  source_role: COMMERCIAL_AGGREGATOR
+  original_or_aggregator: COMMERCIAL_AGGREGATOR
+  official_source_priority: 6
+  login_required: false
+  robots_status: SEARCH_ENGINES_ALLOW_SOME_AI_DISALLOW
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: HOLD_TERMS_UNCLEAR
+  rendering_type: DYNAMIC_HINTS
+  api_or_xhr_status: UNKNOWN
+  pagination_type: MONTH_YEAR_FILTER
+  update_frequency: CALENDAR
+  sample_fields:
+  - event_name
+  - period
+  - venue
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: false
+  procurement_information_available: false
+  historical_event_available: true
+  technical_grade: B
+  legal_operational_grade: C
+  business_value_grade: B
+  implementation_priority: HOLD
+  audit_status: NEWLY_AUDITED
+  evidence_urls:
+  - logs/mice-landscape-sample/daara_robots.txt
+  - logs/mice-landscape-sample/daara_cal.txt
+  existing_audit_reference: docs/mice-source-feasibility-audit.md
+  audit_date: '2026-07-15'
+  notes: Discovery-only until commercial terms reviewed. Prefer venue/SHOWALA/K-MICE for canonical.
+- source_id: contentour
+  source_name: 콘텐츄어 국내전시회
+  source_category: COMMERCIAL_PLATFORM
+  owner_organization: 콘텐츄어
+  base_url: https://contentour.co.kr/
+  list_urls:
+  - https://contentour.co.kr/%EC%A0%84%EC%8B%9C%ED%9A%8C-%EC%A0%95%EB%B3%B4/%EA%B5%AD%EB%82%B4%EC%A0%84%EC%8B%9C%ED%9A%8C/
+  coverage_region: 국내
+  data_types:
+  - MICE_EVENT
+  source_role: COMMERCIAL_AGGREGATOR
+  original_or_aggregator: COMMERCIAL_AGGREGATOR
+  official_source_priority: 6
+  login_required: false
+  robots_status: WP_ALLOW_SITEMAP
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: HOLD_TERMS_UNCLEAR
+  rendering_type: SSR_HTML_WP
+  api_or_xhr_status: UNKNOWN
+  pagination_type: WP_LIST
+  update_frequency: UNKNOWN
+  sample_fields:
+  - region
+  - industry
+  - name
+  - period
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: false
+  procurement_information_available: false
+  historical_event_available: true
+  technical_grade: A
+  legal_operational_grade: C
+  business_value_grade: C
+  implementation_priority: HOLD
+  audit_status: NEWLY_AUDITED
+  evidence_urls:
+  - logs/mice-landscape-sample/contentour_robots.txt
+  - logs/mice-landscape-sample/contentour_list.txt
+  existing_audit_reference: docs/mice-source-feasibility-audit.md
+  audit_date: '2026-07-15'
+  notes: Prior audit marked A-candidate technically; legal remains HOLD pending ToS.
+- source_id: gep_kotra
+  source_name: KOTRA GEP 글로벌전시플랫폼
+  source_category: ORGANIZER_EXPORT
+  owner_organization: KOTRA
+  base_url: https://www.gep.or.kr/
+  list_urls:
+  - https://www.gep.or.kr/gept/ovrss/main/mainPage.do
+  coverage_region: 해외전시(한국기업 참가 지원)
+  data_types:
+  - MICE_EVENT
+  - MICE_SUPPORT_NOTICE
+  - EXHIBITOR_RECRUITMENT
+  - SALES_LEAD
+  source_role: ORGANIZER_SOURCE
+  original_or_aggregator: OFFICIAL_SUPPORT_PORTAL
+  official_source_priority: 2
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: INTERNAL_USE_LIKELY_PUBLIC_SUPPORT
+  rendering_type: SSR_HTML
+  api_or_xhr_status: UNKNOWN
+  pagination_type: UNKNOWN
+  update_frequency: SUPPORT_CYCLES
+  sample_fields:
+  - overseas_fair
+  - support_program
+  contact_fields_available: false
+  organizer_fields_available: true
+  official_event_url_available: true
+  procurement_information_available: true
+  historical_event_available: true
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: B
+  implementation_priority: P1
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/gep_home.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Useful for exporter pavilion / overseas show support signals; not domestic venue master.
+- source_id: g2b
+  source_name: 나라장터(G2B)
+  source_category: PROCUREMENT
+  owner_organization: 조달청
+  base_url: https://www.g2b.go.kr/
+  list_urls:
+  - https://www.g2b.go.kr/
+  coverage_region: 전국
+  data_types:
+  - MICE_TENDER
+  source_role: PROCUREMENT_SOURCE
+  original_or_aggregator: OFFICIAL_PROCUREMENT
+  official_source_priority: 1
+  login_required: false
+  robots_status: FETCHED_SHORT_LANDING
+  terms_status: PUBLIC_PROCUREMENT
+  commercial_use_status: PUBLIC_BID_INFO
+  rendering_type: COMPLEX_PORTAL
+  api_or_xhr_status: OFFICIAL_OPENAPI_ECOSYSTEM_EXISTS_NOT_REVALIDATED_HERE
+  pagination_type: PORTAL
+  update_frequency: CONTINUOUS
+  sample_fields:
+  - bid_title
+  - agency
+  - deadline
+  contact_fields_available: true
+  organizer_fields_available: true
+  official_event_url_available: false
+  procurement_information_available: true
+  historical_event_available: true
+  technical_grade: B
+  legal_operational_grade: A
+  business_value_grade: A
+  implementation_priority: P0
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/g2b_hint.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Connect via existing opportunity pipeline tender keyword filters (행사/등록/체크인/MICE 시스템). Full API audit out of scope
+    this pass.
+- source_id: pipeline_kstartup
+  source_name: K-Startup(기존 파이프라인)
+  source_category: PROCUREMENT
+  owner_organization: 창업진흥원 등
+  base_url: https://www.k-startup.go.kr/
+  list_urls: []
+  coverage_region: 전국
+  data_types:
+  - MICE_SUPPORT_NOTICE
+  - MICE_OPEN_INNOVATION
+  - MICE_TENDER
+  source_role: PROCUREMENT_SOURCE
+  original_or_aggregator: OFFICIAL
+  official_source_priority: 1
+  login_required: false
+  robots_status: COVERED_BY_EXISTING_PIPELINE
+  terms_status: COVERED_BY_EXISTING_PIPELINE
+  commercial_use_status: INTERNAL_PIPELINE
+  rendering_type: EXISTING_COLLECTOR
+  api_or_xhr_status: EXISTING
+  pagination_type: EXISTING
+  update_frequency: PIPELINE
+  sample_fields:
+  - announcement_fields_per_phase1
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: true
+  procurement_information_available: true
+  historical_event_available: true
+  technical_grade: A
+  legal_operational_grade: A
+  business_value_grade: A
+  implementation_priority: P0
+  audit_status: VERIFIED_EXISTING_AUDIT
+  evidence_urls:
+  - README.md
+  - docs/phase2-normalization-and-filter-policy.md
+  existing_audit_reference: docs/phase2-normalization-and-filter-policy.md
+  audit_date: '2026-07-15'
+  notes: Already implemented in opportunity pipeline; keep as MICE tender/support feed via keyword routing.
+- source_id: pipeline_bizinfo_sources
+  source_name: 기업마당 등 기존 sources 수집기
+  source_category: PROCUREMENT
+  owner_organization: 복수 공공 포털
+  base_url: https://www.bizinfo.go.kr/
+  list_urls: []
+  coverage_region: 전국
+  data_types:
+  - MICE_SUPPORT_NOTICE
+  - MICE_TENDER
+  - MICE_OPEN_INNOVATION
+  source_role: PROCUREMENT_SOURCE
+  original_or_aggregator: OFFICIAL
+  official_source_priority: 1
+  login_required: false
+  robots_status: COVERED_BY_EXISTING_PIPELINE
+  terms_status: COVERED_BY_EXISTING_PIPELINE
+  commercial_use_status: INTERNAL_PIPELINE
+  rendering_type: EXISTING_COLLECTOR
+  api_or_xhr_status: EXISTING
+  pagination_type: EXISTING
+  update_frequency: PIPELINE
+  sample_fields:
+  - announcement_fields_per_phase1
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: true
+  procurement_information_available: true
+  historical_event_available: true
+  technical_grade: A
+  legal_operational_grade: A
+  business_value_grade: A
+  implementation_priority: P0
+  audit_status: VERIFIED_EXISTING_AUDIT
+  evidence_urls:
+  - README.md
+  existing_audit_reference: README.md
+  audit_date: '2026-07-15'
+  notes: Existing multi-source collectors; MICE keyword bridge only.
+- source_id: micetoday
+  source_name: 마이스투데이
+  source_category: MEDIA
+  owner_organization: 마이스투데이
+  base_url: https://www.micetoday.co.kr/
+  list_urls:
+  - https://www.micetoday.co.kr/article/list/mtd006000000
+  coverage_region: 전국
+  data_types:
+  - MICE_EVENT
+  - ORGANIZER_SIGNAL
+  source_role: DISCOVERY_ONLY
+  original_or_aggregator: MEDIA
+  official_source_priority: 6
+  login_required: false
+  robots_status: PARTIAL_BOT_BLOCKS
+  terms_status: MEDIA_COPYRIGHT_ASSUMED
+  commercial_use_status: EXCLUDE_BULK_SCRAPE
+  rendering_type: CMS
+  api_or_xhr_status: UNKNOWN
+  pagination_type: ARTICLE_LIST
+  update_frequency: EDITORIAL
+  sample_fields:
+  - weekly_exhibition_roundup
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: false
+  procurement_information_available: false
+  historical_event_available: false
+  technical_grade: B
+  legal_operational_grade: D
+  business_value_grade: C
+  implementation_priority: EXCLUDE
+  audit_status: NEWLY_AUDITED
+  evidence_urls:
+  - logs/mice-landscape-sample/micetoday_robots.txt
+  - docs/mice-source-feasibility-audit.md
+  existing_audit_reference: docs/mice-source-feasibility-audit.md
+  audit_date: '2026-07-15'
+  notes: News roundups only; not a structured calendar. Exclude bulk collection.
+- source_id: newswire_fairs
+  source_name: 뉴스와이어 박람회 일정
+  source_category: MEDIA
+  owner_organization: 뉴스와이어
+  base_url: https://www.newswire.co.kr/
+  list_urls:
+  - https://www.newswire.co.kr/?md=A07
+  coverage_region: 전국
+  data_types:
+  - MICE_EVENT
+  source_role: DISCOVERY_ONLY
+  original_or_aggregator: MEDIA
+  official_source_priority: 6
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: MEDIA_COPYRIGHT_ASSUMED
+  commercial_use_status: HOLD
+  rendering_type: UNKNOWN
+  api_or_xhr_status: UNKNOWN
+  pagination_type: UNKNOWN
+  update_frequency: EDITORIAL
+  sample_fields:
+  - press_fair_titles
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: false
+  procurement_information_available: false
+  historical_event_available: false
+  technical_grade: C
+  legal_operational_grade: C
+  business_value_grade: D
+  implementation_priority: EXCLUDE
+  audit_status: PENDING
+  evidence_urls:
+  - docs/mice-source-feasibility-audit.md
+  existing_audit_reference: docs/mice-source-feasibility-audit.md
+  audit_date: '2026-07-15'
+  notes: Prior landscape mention only; not re-sampled. EXCLUDE as master source.
+- source_id: ijto_jeju
+  source_name: 제주관광공사(IJTO)
+  source_category: REGIONAL_CVB
+  owner_organization: 제주관광공사
+  base_url: https://ijto.or.kr/
+  list_urls:
+  - https://ijto.or.kr/korean/
+  coverage_region: 제주
+  data_types:
+  - MICE_SUPPORT_NOTICE
+  - ORGANIZER_SIGNAL
+  source_role: REGIONAL_OFFICIAL
+  original_or_aggregator: OFFICIAL_REGIONAL
+  official_source_priority: 4
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: NOT_FULLY_REVIEWED
+  commercial_use_status: UNKNOWN
+  rendering_type: SSR_HTML
+  api_or_xhr_status: API_HINT
+  pagination_type: UNKNOWN
+  update_frequency: UNKNOWN
+  sample_fields:
+  - tourism_org_home
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: false
+  procurement_information_available: false
+  historical_event_available: false
+  technical_grade: B
+  legal_operational_grade: B
+  business_value_grade: C
+  implementation_priority: P2
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/jejumice.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Fallback while jejucvb DNS unresolved; MICE-specific list URL not confirmed.
+- source_id: gnto
+  source_name: 경남관광재단/경남관광 조직
+  source_category: REGIONAL_CVB
+  owner_organization: 경남관광 관련 공공
+  base_url: https://www.gnto.or.kr/
+  list_urls:
+  - https://www.gnto.or.kr/
+  coverage_region: 경남
+  data_types:
+  - ORGANIZER_SIGNAL
+  source_role: REGIONAL_OFFICIAL
+  original_or_aggregator: OFFICIAL_REGIONAL
+  official_source_priority: 4
+  login_required: false
+  robots_status: NOT_FETCHED
+  terms_status: UNKNOWN
+  commercial_use_status: UNKNOWN
+  rendering_type: UNKNOWN_SHORT
+  api_or_xhr_status: UNKNOWN
+  pagination_type: UNKNOWN
+  update_frequency: UNKNOWN
+  sample_fields: []
+  contact_fields_available: false
+  organizer_fields_available: false
+  official_event_url_available: false
+  procurement_information_available: false
+  historical_event_available: false
+  technical_grade: C
+  legal_operational_grade: B
+  business_value_grade: C
+  implementation_priority: P2
+  audit_status: PARTIAL
+  evidence_urls:
+  - logs/mice-landscape-sample/gyeongnam_cvb.txt
+  existing_audit_reference: ''
+  audit_date: '2026-07-15'
+  notes: Home short response; prefer CECO for event calendar in Gyeongnam.

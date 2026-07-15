@@ -36,8 +36,15 @@
 아직 포함하지 않음:
 - 웹 대시보드, SQLite, LLM/유료 AI API
 - 상세공고·첨부 전수 다운로드
-- 관광기관·컨벤션뷰로 신규 크롤러
+- 관광기관·컨벤션뷰로 신규 크롤러(구현 전)
 - 자동 이메일·제안서 작성·최종 GO/NO-GO·자동 제출
+
+### MICE 소스 레지스트리 (크롤러 미구현)
+
+- **기준 데이터(source of truth):** [`config/mice-source-registry.yaml`](config/mice-source-registry.yaml)
+- **생성 산출물:** [`reports/mice-source-audit.csv`](reports/mice-source-audit.csv) — YAML을 읽어 검증·생성하며 수동 편집하지 않는다.
+- 검증·CSV 생성: `python scripts/build_mice_source_registry.py`
+- 지도·정책: [`docs/mice-source-landscape.md`](docs/mice-source-landscape.md), [`docs/mice-source-audit-policy.md`](docs/mice-source-audit-policy.md)
 
 ## 실행 방법
 

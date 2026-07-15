@@ -14,6 +14,7 @@ scratch/
 .venv/
 logs/*.log
 logs/mice-feasibility-audit/
+logs/mice-landscape-sample/
 !logs/.gitkeep
 # Ignore dated raw run folders; keep scaffold + manual-test marker
 data/raw/*/
@@ -26,3 +27,5 @@ reports/*/
 !reports/.gitkeep
 reports/**/*.csv
 reports/**/*.md
+# Keep curated MICE landscape audit (not dated run artifacts)
+!reports/mice-source-audit.csv
