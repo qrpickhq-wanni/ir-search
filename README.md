@@ -39,12 +39,23 @@
 - 관광기관·컨벤션뷰로 신규 크롤러(구현 전)
 - 자동 이메일·제안서 작성·최종 GO/NO-GO·자동 제출
 
-### MICE 소스 레지스트리 (크롤러 미구현)
+### MICE 소스 레지스트리 (1B-0)
 
 - **기준 데이터(source of truth):** [`config/mice-source-registry.yaml`](config/mice-source-registry.yaml)
 - **생성 산출물:** [`reports/mice-source-audit.csv`](reports/mice-source-audit.csv) — YAML을 읽어 검증·생성하며 수동 편집하지 않는다.
 - 검증·CSV 생성: `python scripts/build_mice_source_registry.py`
 - 지도·정책: [`docs/mice-source-landscape.md`](docs/mice-source-landscape.md), [`docs/mice-source-audit-policy.md`](docs/mice-source-audit-policy.md)
+
+### 서비스 1B-1A — MICE 행사 수집 MVP (신규)
+
+대상 소스: `opendata_kintex_gg`, `songdo_convenia`, `k_mice`
+
+- 수집·정규화·중복·영업신호 CSV까지 **로컬 검토용** 파이프라인 (아직 DB·CRM 아님)
+- 실행: `scripts\run_mice_mvp.bat` 또는 `python app\run_mice_mvp.py`
+- 정책: [`config/mice-collection-policy.yaml`](config/mice-collection-policy.yaml)
+- 스키마·운영: [`docs/mice-event-schema.md`](docs/mice-event-schema.md), [`docs/mice-mvp-operation-guide.md`](docs/mice-mvp-operation-guide.md)
+- 결과: `data/raw/mice/YYYY-MM-DD/`, `data/normalized/mice/YYYY-MM-DD/`, `reports/YYYY-MM-DD/mice-*.csv`
+- 다음 단계: 추가 소스 수집기 + 주최·운영기관 통합 (본 MVP 범위 밖)
 
 ## 실행 방법
 
@@ -98,6 +109,11 @@ scripts\run_phase2_pipeline.bat
 | 후보 CSV (HIGH/REVIEW/DETAIL) | `reports/YYYY-MM-DD/candidate-list.csv` |
 | 상태별 CSV | `high-priority-list.csv`, `review-list.csv`, `needs-detail-review.csv`, `low-fit-list.csv` |
 | Phase-2 로그 | `logs/YYYY-MM-DD_phase2.log` |
+| MICE 원본 | `data/raw/mice/YYYY-MM-DD/*.jsonl` |
+| MICE 정규화 | `data/normalized/mice/YYYY-MM-DD/events.jsonl` |
+| MICE 검토 CSV | `reports/YYYY-MM-DD/mice-events.csv`, `mice-sales-signals.csv`, `mice-contact-presence.csv` |
+| MICE 요약 | `reports/YYYY-MM-DD/mice-collection-summary.md` |
+| MICE MVP 로그 | `logs/YYYY-MM-DD_mice_mvp.log` |
 
 CSV는 Excel 한글 호환을 위해 **UTF-8 BOM(`utf-8-sig`)** 으로 저장한다.
 

@@ -1,0 +1,48 @@
+# MICE MVP collection policy (Service 1B-1A)
+# Scope-limiting defaults — do not crawl unbounded history.
+
+policy_version: "1.0"
+collector_version: "1.0.0"
+
+date_window:
+  past_days: 60
+  future_days: 550
+
+limits:
+  max_records_per_source: 500
+  max_requests_per_source: 600
+  max_pages_per_source: 50
+
+http:
+  user_agent: "QRPickMiceMVP/1.0 (+internal research; polite; delay>=0.5s)"
+  request_delay_seconds: 0.5
+  request_timeout_seconds: 20
+  max_retries: 2
+  retry_backoff_seconds: 1.0
+
+sources:
+  opendata_kintex_gg:
+    enabled: true
+    notes: >
+      data.go.kr metadata links to GG Sheet UI. HTTP CSV/OpenAPI requires
+      GG_OPENAPI_KEY + GG_KINTEX_OPENAPI_SERVICE when OpenAPI is used.
+      Without keys, collector records PARTIAL after verifying public portal reachability.
+  songdo_convenia:
+    enabled: true
+    api_url: "https://songdoconvensia.visitincheon.or.kr/openApi/event.do"
+    optional_env_key: SONGDO_OPENAPI_KEY
+    notes: >
+      Documented params: resultType, stdate, eddate only. Response has no totalCount/page*.
+      Observed hard cap of 10 rows per call. Collector uses documented date-window splits
+      (month then binary) to recover more events; do not invent pageNo/numOfRows.
+  k_mice:
+    enabled: true
+    list_url: "https://k-mice.visitkorea.or.kr/miceCalendar.kto?func_name=list"
+    post_url: "https://k-mice.visitkorea.or.kr/miceCalendar.kto"
+    notes: >
+      Public HTML form POST for list pagination (curr_page) and detail (calView).
+      Do not use Disallow /*search* paths.
+
+integrity:
+  # raw_ok == sum(source_occurrences over representatives) + normalization_errors
+  formula: "raw_ok = sum(len(source_occurrences)) + normalization_error_count"
