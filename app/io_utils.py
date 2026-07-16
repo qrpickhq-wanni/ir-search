@@ -115,6 +115,89 @@ QUEUE_CSV_MAP = {
     "NO_ACTION": "no-action.csv",
 }
 
+# Phase-2 procurement-like bid assessment CSVs (not G2B-native collector output).
+# One notice may appear in multiple CSVs when it has multiple opportunity_routes.
+_BID_ROUTE_COMMON = [
+    ("데이터범위", "source_scope"),
+    ("입찰판정적용", "bid_assessment_applicable"),
+    ("기회경로", "opportunity_routes"),
+    ("대표경로", "primary_route"),
+    ("입찰판정", "bid_go_no_go"),
+    ("직접입찰적합경로", "direct_bid_fit_path"),
+    ("입찰참여준비상태", "bid_participation_readiness"),
+    ("자격충족상태", "eligibility_status"),
+    ("사업명", "title"),
+    ("발주기관", "organization"),
+    ("공고번호", "source_id"),
+    ("사업예산", "support_amount"),
+    ("공고일", "posted_at"),
+    ("제안마감일", "deadline"),
+    ("남은일수", "dday"),
+]
+
+DIRECT_BID_COLUMNS = [
+    *_BID_ROUTE_COMMON,
+    ("입찰자격", "mandatory_qualification_requirements"),
+    ("유사실적요건", "performance_requirements"),
+    ("공동수급허용", "joint_contract_allowed"),
+    ("하도급허용", "subcontract_allowed"),
+    ("필수인력", "required_personnel"),
+    ("QRPick·Showda수행범위", "qrpick_showda_delivery_scope"),
+    ("파트너필요범위", "partner_needed_scope"),
+    ("차단요인", "bid_blocking_reasons"),
+    ("권장다음행동", "recommended_bid_action"),
+    ("제안요청서URL", "attachment_urls"),
+    ("원문URL", "url"),
+]
+
+CONSORTIUM_COLUMNS = [
+    *_BID_ROUTE_COMMON,
+    ("입찰역할", "bid_role"),
+    ("공동수급허용", "joint_contract_allowed"),
+    ("하도급허용", "subcontract_allowed"),
+    ("QRPick·Showda수행범위", "qrpick_showda_delivery_scope"),
+    ("파트너필요범위", "partner_needed_scope"),
+    ("파트너의존도", "estimated_partner_dependency"),
+    ("차단요인", "bid_blocking_reasons"),
+    ("권장다음행동", "recommended_bid_action"),
+    ("원문URL", "url"),
+]
+
+SOLUTION_PARTNER_COLUMNS = [
+    *_BID_ROUTE_COMMON,
+    ("입찰역할", "bid_role"),
+    ("공동수급허용", "joint_contract_allowed"),
+    ("하도급허용", "subcontract_allowed"),
+    ("QRPick·Showda수행범위", "qrpick_showda_delivery_scope"),
+    ("파트너필요범위", "partner_needed_scope"),
+    ("파트너의존도", "estimated_partner_dependency"),
+    ("차단요인", "bid_blocking_reasons"),
+    ("권장다음행동", "recommended_bid_action"),
+    ("원문URL", "url"),
+]
+
+# Backward-compatible aliases
+G2B_DIRECT_BID_COLUMNS = DIRECT_BID_COLUMNS
+G2B_CONSORTIUM_COLUMNS = CONSORTIUM_COLUMNS
+
+
+def write_mapped_csv_bom(path: Path, columns: list[tuple[str, str]], rows: list[dict[str, Any]]) -> None:
+    ensure_dir(path.parent)
+    ordered = sort_for_csv(rows)
+    with path.open("w", encoding="utf-8-sig", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([c[0] for c in columns])
+        for row in ordered:
+            url = row.get("url") or row.get("detail_url") or ""
+            cells = []
+            for _header, key in columns:
+                if key == "url":
+                    cells.append(_cell(url))
+                else:
+                    cells.append(_cell(row.get(key)))
+            writer.writerow(cells)
+
+
 
 def _cell(value: Any) -> str:
     if value is None:

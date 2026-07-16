@@ -1,0 +1,328 @@
+# Direct / consortium bid assessment rules for Showda · QRPick.
+# Used by app/evaluators/bid_assessment.py — keyword evidence only; never invent qualifications.
+
+# Industry names alone must not exclude direct-bid routes when SW/ops role signals exist.
+never_exclude_on_industry_alone: true
+
+# Scope gate: only contract-counterparty / procurement-like notices get bid assessment.
+bid_scope_positive_signals:
+  - 입찰
+  - 용역
+  - 나라장터
+  - 제안요청
+  - RFP
+  - RFQ
+  - 위탁운영
+  - 위탁 운영
+  - 구축용역
+  - 구축 용역
+  - 시스템 개발 용역
+  - 시스템구축 용역
+  - 시스템 구축 용역
+  - 플랫폼 구축 용역
+  - 플랫폼 제작 용역
+  - 운영 대행
+  - 운영대행
+  - 운영사업자
+  - 운영 사업자
+  - 운영사 모집
+  - 운영사 선정
+  - 수행기관 선정
+  - 사업자 선정
+  - 수행사 선정
+  - 수행기관 모집
+  - 대행기관
+  - 계약상대자
+  - 과업지시
+  - 우선협상
+  - 협상에 의한 계약
+  - 제한경쟁
+  - 일반경쟁
+  - 입찰공고
+  - 용역공고
+  - 사업수행자
+  - 용역업체 선정
+  - 개발용역
+  - 정보화용역
+  - 유지관리용역
+
+# Avoid bare 조달/수의계약/플랫폼 구축 — they match 조달청·임대 수의계약·지원사업 titles
+
+bid_scope_negative_signals:
+  - 지원금
+  - 보조금
+  - 입주기업
+  - 입주 모집
+  - 입주기업 모집
+  - 교육생
+  - 연수생
+  - 수강생
+  - 참가기업 모집
+  - 참가기업 모집공고
+  - 부스 참가
+  - 전시 참가 모집
+  - 융자
+  - 보증
+  - 정책자금
+  - 바우처
+  - 사업화 지원
+  - 예비창업
+  - 창업지원금
+  - 지원사업 모집
+  - 지원사업
+  - 수혜기업
+  - 수혜기업 모집
+  - 과제 참여기업 모집
+  - 수요기업 모집
+  - 참여기업 모집
+  - 참여 안내
+  - 선정 결과
+  - 선정결과
+  - 모집 연장
+  - 기업지원사업
+  - 지원계획 공고
+  - 지원 안내
+  - 임대공급
+  - 입점기업
+  - 추천기업 모집
+  - 추천 희망기업
+  - 벤처나라
+  - 공공조달 진출
+
+# Negative "참가기업 모집" etc. overridden only by strong operator-selection cues
+# (bare 용역/입찰 alone must NOT override — opportunity_kind labels are noisy)
+bid_scope_override_positive:
+  - 운영사업자
+  - 운영사 선정
+  - 수행기관 선정
+  - 사업자 선정
+  - 대행기관
+  - 구축용역
+  - 위탁운영
+  - 운영 대행 용역
+  - 용역 입찰
+  - 입찰 공고
+  - 입찰공고
+  - 용역공고
+  - 제안요청
+  - RFP
+
+procurement_or_tender_signals:
+  - 입찰
+  - 용역
+  - 제안요청
+  - RFP
+  - RFQ
+  - 나라장터
+  - 낙찰
+  - 과업지시
+  - 사업자 선정
+  - 우선협상
+  - 협상에 의한 계약
+  - 제한경쟁
+  - 일반경쟁
+  - 제안서
+  - 입찰공고
+  - 용역공고
+  - 운영 대행
+  - 운영대행
+  - 위탁운영
+
+qrpick_standard_signals:
+  - 행사 등록
+  - 참가등록
+  - 온라인 등록
+  - 행사 홈페이지
+  - 홈페이지 구축
+  - QR 체크인
+  - 체크인
+  - 명찰
+  - 배지
+  - 발권
+  - 부스 리드
+  - 리드 수집
+  - 비즈니스 매칭
+  - 상담회
+  - 세션 운영
+  - 참가자 데이터
+  - 결과보고
+  - 결과 리포트
+
+qrpick_ops_signals:
+  - 현장 운영
+  - 사무국
+  - 행사 세팅
+  - 현장 체크인
+  - 현장 등록
+  - 운영 대행
+  - 운영대행
+  - 운영지원
+  - 운영 지원
+  - 포럼 운영
+  - 한국관 구축
+
+showda_custom_build_signals:
+  - 운영시스템
+  - 운영 시스템
+  - 시스템 구축
+  - 플랫폼 구축
+  - 플랫폼 제작
+  - 웹서비스
+  - 모바일 서비스
+  - SaaS
+  - 정보검색
+  - 다국어
+  - CRM
+  - 대시보드
+  - 콘텐츠 큐레이션
+  - B2B 플랫폼
+  # Note: bare 고도화/정보화 alone must not create bid scope — use with 용역/입찰 context
+  - 시스템 고도화
+  - 플랫폼 고도화
+  - 유지관리 용역
+  - 정보화 용역
+  - 정보화사업
+showda_platform_data_signals:
+  - 데이터 플랫폼
+  - 공공 데이터
+  - 데이터 연계
+  - API 연계
+  - 통합 플랫폼
+  - 포털 구축
+
+consortium_or_joint_signals:
+  - 공동수급
+  - 공동이행
+  - 컨소시엄
+  - 컨소시엄 구성
+  - 협력사
+  - 주관사
+  - 주사업자
+  - 부사업자
+  - 분담이행
+
+subcontract_or_partner_signals:
+  - 하도급
+  - 재하도급
+  - 외주
+  - 시스템 공급
+  - SW 공급
+  - 솔루션 공급
+  - 개발사
+  - SI
+
+award_winner_sales_signals:
+  - 낙찰
+  - 낙찰자
+  - 낙찰기업
+  - 계약상대자
+  - 우선협상대상자
+
+event_production_partner_signals:
+  - 행사 기획
+  - 연출
+  - 무대
+  - 부스 설치
+  - 전시 연출
+  - 홍보 대행
+  - PCO
+  - 행사대행
+
+specialist_partner_signals:
+  - 영상 제작
+  - 무대 설치
+  - 하드웨어
+  - 위치추적
+  - IoT
+  - 센서
+  - 로봇
+  - 컴퓨터비전
+  - 객체추적
+
+# Soft keyword hints for qualification text (never VERIFIED from list alone)
+qualification_hint_keywords:
+  - 입찰참가자격
+  - 참가자격
+  - 자격요건
+  - 실적
+  - 유사실적
+  - 소프트웨어사업자
+  - 직접생산
+  - 중소기업
+  - 지역제한
+  - 본사
+  - 사업장
+  - 공동수급 허용
+  - 공동수급 불가
+  - 하도급 허용
+  - 하도급 불가
+  - 제안발표
+  - 발표평가
+  - 필수인력
+  - 기술인력
+
+regional_restriction_hints:
+  - 지역제한
+  - 관내
+  - 소재지 제한
+  - 본사 소재
+  - 사업장 소재
+
+sme_restriction_hints:
+  - 중소기업만
+  - 중소기업 제한
+  - 중소기업자
+  - 소상공인
+
+software_biz_reg_hints:
+  - 소프트웨어사업자
+  - 소프트웨어 사업자
+  - SW사업자
+
+direct_production_hints:
+  - 직접생산
+  - 직접생산확인
+  - 직접생산증명
+
+joint_allowed_hints:
+  - 공동수급 가능
+  - 공동수급 허용
+  - 공동이행 가능
+  - 컨소시엄 가능
+
+joint_disallowed_hints:
+  - 공동수급 불가
+  - 공동수급 금지
+  - 단독응찰
+  - 단독 입찰만
+
+subcontract_allowed_hints:
+  - 하도급 가능
+  - 하도급 허용
+
+subcontract_disallowed_hints:
+  - 하도급 불가
+  - 하도급 금지
+  - 재하도급 금지
+
+presentation_hints:
+  - 제안발표
+  - 발표평가
+  - PT 평가
+  - 구두발표
+
+# Gates that must be cleared for bid ACTION_NOW (direct)
+action_now_required_gates:
+  - announcement_and_proposal_deadline
+  - mandatory_bid_qualifications
+  - regional_or_sme_restrictions
+  - performance_requirements
+  - joint_contract_allowed_known
+  - qrpick_showda_role_scope
+  - delivery_period
+  - budget_or_estimated_amount
+  - internal_delivery_capacity
+
+# Priority bands for sales_window labeling (informational)
+p0_deadline_days_min: 3
+p0_deadline_days_max: 21

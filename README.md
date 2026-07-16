@@ -109,6 +109,9 @@ scripts\run_phase2_pipeline.bat
 | 요약 보고서 | `reports/YYYY-MM-DD/collection-summary.md` |
 | 후보 CSV (HIGH/REVIEW/DETAIL) | `reports/YYYY-MM-DD/candidate-list.csv` |
 | 상태별 CSV | `high-priority-list.csv`, `review-list.csv`, `needs-detail-review.csv`, `low-fit-list.csv` |
+| 직접 입찰 후보 | `reports/YYYY-MM-DD/direct-bid-opportunities.csv` (`DIRECT_PRIME_BID`) |
+| 컨소시엄 후보 | `reports/YYYY-MM-DD/consortium-opportunities.csv` (`CONSORTIUM_BID`, 0건이면 헤더만) |
+| 시스템 공급 파트너 후보 | `reports/YYYY-MM-DD/solution-partner-opportunities.csv` (`SUBCONTRACT_OR_SOLUTION_PARTNER`) |
 | Phase-2 로그 | `logs/YYYY-MM-DD_phase2.log` |
 | MICE 원본 | `data/raw/mice/YYYY-MM-DD/*.jsonl` |
 | MICE 정규화 | `data/normalized/mice/YYYY-MM-DD/events.jsonl` |
@@ -117,6 +120,13 @@ scripts\run_phase2_pipeline.bat
 | MICE MVP 로그 | `logs/YYYY-MM-DD_mice_mvp.log` |
 
 CSV는 Excel 한글 호환을 위해 **UTF-8 BOM(`utf-8-sig`)** 으로 저장한다.
+
+`direct-bid-opportunities.csv` / `consortium-opportunities.csv` / `solution-partner-opportunities.csv`는
+나라장터 전용 collector 산출물이 아니다.
+기존 Phase-2 공고 중 조달형(`bid_assessment_applicable`) 입찰 판정 후보이며,
+`source_scope=PHASE2_PROCUREMENT_LIKE_NOT_G2B_COLLECTOR`로 표시한다.
+경로별로 파일을 분리한다(복수 경로 공고는 해당 CSV에 각각 포함).
+`eligibility_status`는 자격·실적·등록 조건만 표현하고, 마감 경과는 readiness/go만 바꾼다.
 
 ## 상태코드와 점수의 의미
 

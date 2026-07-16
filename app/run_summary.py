@@ -12,7 +12,22 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from app.io_utils import QUEUE_CSV_MAP, ensure_dir, read_jsonl, sort_for_csv, write_csv_bom
+from app.evaluators.bid_assessment import (
+    is_consortium_candidate,
+    is_direct_bid_candidate,
+    is_solution_partner_candidate,
+)
+from app.io_utils import (
+    CONSORTIUM_COLUMNS,
+    DIRECT_BID_COLUMNS,
+    QUEUE_CSV_MAP,
+    SOLUTION_PARTNER_COLUMNS,
+    ensure_dir,
+    read_jsonl,
+    sort_for_csv,
+    write_csv_bom,
+    write_mapped_csv_bom,
+)
 
 
 CANDIDATE_STATUSES = {"HIGH_PRIORITY", "REVIEW", "DETAIL_REVIEW"}
@@ -199,6 +214,74 @@ def build_summary_md(
     lines.append("- 전시·참가기업 모집은 판로 기회가 될 수 있어 무조건 LOW_FIT 하지 않는다.")
     lines.append("- 동일 사업이 다른 제목으로 게시되면 중복으로 잡히지 않을 수 있다.")
     lines.append("")
+
+    direct = [r for r in opportunities if is_direct_bid_candidate(r)]
+    consortium = [r for r in opportunities if is_consortium_candidate(r)]
+    partner_supply = [r for r in opportunities if is_solution_partner_candidate(r)]
+    verified = [r for r in opportunities if r.get("eligibility_status") == "VERIFIED_ELIGIBLE"]
+    needs_qual = [
+        r
+        for r in opportunities
+        if r.get("eligibility_status") == "UNKNOWN_NEEDS_DOCUMENT_REVIEW"
+        and (is_direct_bid_candidate(r) or is_consortium_candidate(r) or is_solution_partner_candidate(r))
+    ]
+    no_go = [r for r in opportunities if r.get("bid_go_no_go") == "NO_GO"]
+    imminent = [
+        r for r in direct if isinstance(r.get("dday"), int) and 0 <= int(r["dday"]) <= 21
+    ]
+
+    lines.append("## 쇼다·QRPick 직접 입찰 판정")
+    lines.append(f"- 직접 입찰 후보 (DIRECT_PRIME_BID): **{len(direct)}**")
+    lines.append(f"- VERIFIED_ELIGIBLE: **{len(verified)}**")
+    lines.append(f"- 자격 검토 필요(UNKNOWN_NEEDS_DOCUMENT_REVIEW): **{len(needs_qual)}**")
+    lines.append(f"- 컨소시엄 후보 (CONSORTIUM_BID): **{len(consortium)}**")
+    lines.append(f"- 시스템 공급 파트너 후보 (SUBCONTRACT_OR_SOLUTION_PARTNER): **{len(partner_supply)}**")
+    lines.append(f"- NO_GO: **{len(no_go)}**")
+    lines.append(f"- 제안 마감 임박 직접 입찰(≤21일): **{len(imminent)}**")
+    lines.append("")
+    lines.append("### 대표 직접 입찰 후보")
+    for r in sort_for_csv(direct)[:8]:
+        lines.append(
+            f"- [{r.get('bid_go_no_go')}/{r.get('bid_participation_readiness')}] "
+            f"{r.get('title')} ({r.get('organization')}) "
+            f"path={r.get('direct_bid_fit_path')} primary={r.get('primary_route')} D={r.get('dday')}"
+        )
+    if not direct:
+        lines.append("- (해당 없음)")
+    lines.append("")
+    lines.append("### 대표 컨소시엄 후보")
+    for r in sort_for_csv(consortium)[:8]:
+        lines.append(
+            f"- [{r.get('bid_role')}] {r.get('title')} routes={r.get('opportunity_routes')} "
+            f"primary={r.get('primary_route')} partner={r.get('estimated_partner_dependency')}"
+        )
+    if not consortium:
+        lines.append("- (해당 없음)")
+    lines.append("")
+    lines.append("### 대표 시스템 공급 파트너 후보")
+    for r in sort_for_csv(partner_supply)[:8]:
+        lines.append(
+            f"- [{r.get('bid_role')}] {r.get('title')} routes={r.get('opportunity_routes')} "
+            f"primary={r.get('primary_route')}"
+        )
+    if not partner_supply:
+        lines.append("- (해당 없음)")
+    lines.append("")
+    lines.append("### 직접 입찰을 막는 주요 자격·차단 요인")
+    block_counts: Counter = Counter()
+    for r in direct + needs_qual:
+        for b in r.get("bid_blocking_reasons") or []:
+            block_counts[b] += 1
+        for m in r.get("missing_qualifications") or []:
+            block_counts[f"missing:{m}"] += 1
+    for reason, n in block_counts.most_common(12):
+        lines.append(f"- {reason}: {n}")
+    if not block_counts:
+        lines.append("- (집계할 차단 요인 없음)")
+    lines.append("")
+    lines.append("> 첨부(제안요청서·과업지시서) 미확보 시 VERIFIED_ELIGIBLE / GO / 직접입찰 ACTION_NOW 확정 금지.")
+    lines.append("")
+
     lines.append("## 추적 무결성")
     lines.append(
         f"- 검증식: input_total({normalize_stats.get('input_total')}) "
@@ -256,6 +339,19 @@ def run_summary(
         write_csv_bom(p, rows)
         paths[fname] = str(p)
 
+    direct_rows = [r for r in opportunities if is_direct_bid_candidate(r)]
+    consortium_rows = [r for r in opportunities if is_consortium_candidate(r)]
+    partner_rows = [r for r in opportunities if is_solution_partner_candidate(r)]
+    direct_path = report_dir / "direct-bid-opportunities.csv"
+    consortium_path = report_dir / "consortium-opportunities.csv"
+    partner_path = report_dir / "solution-partner-opportunities.csv"
+    write_mapped_csv_bom(direct_path, DIRECT_BID_COLUMNS, direct_rows)
+    write_mapped_csv_bom(consortium_path, CONSORTIUM_COLUMNS, consortium_rows)
+    write_mapped_csv_bom(partner_path, SOLUTION_PARTNER_COLUMNS, partner_rows)
+    paths["direct-bid-opportunities.csv"] = str(direct_path)
+    paths["consortium-opportunities.csv"] = str(consortium_path)
+    paths["solution-partner-opportunities.csv"] = str(partner_path)
+
     return {
         "report_dir": str(report_dir),
         "paths": paths,
@@ -267,6 +363,23 @@ def run_summary(
         "opportunity_type_counts": dict(Counter(r.get("opportunity_type") for r in opportunities)),
         "fit_confidence_counts": dict(Counter(r.get("fit_confidence") for r in opportunities)),
         "representative_count": len(opportunities),
+        "direct_bid_candidate_count": len(direct_rows),
+        "consortium_candidate_count": len(consortium_rows),
+        "solution_partner_candidate_count": len(partner_rows),
+        "verified_eligible_count": sum(
+            1 for r in opportunities if r.get("eligibility_status") == "VERIFIED_ELIGIBLE"
+        ),
+        "qualification_check_bid_count": sum(
+            1
+            for r in opportunities
+            if r.get("eligibility_status") == "UNKNOWN_NEEDS_DOCUMENT_REVIEW"
+            and (
+                is_direct_bid_candidate(r)
+                or is_consortium_candidate(r)
+                or is_solution_partner_candidate(r)
+            )
+        ),
+        "bid_no_go_count": sum(1 for r in opportunities if r.get("bid_go_no_go") == "NO_GO"),
     }
 
 

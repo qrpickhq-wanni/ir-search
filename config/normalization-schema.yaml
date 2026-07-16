@@ -70,3 +70,5 @@ notes:
   - Fitness is not limited to existing QRPick feature parity
   - Top question: Can QRPick/Showda assets convert into supply, extension, custom build, ops service, consortium, or sales?
   - Every scored opportunity must carry asset_fit_path and next_action
+  - Bid fields (opportunity_routes, direct_bid_fit_path, eligibility_*, bid_*) are filled by
+    app/evaluators/bid_assessment.py; VERIFIED_ELIGIBLE/GO require attachments + detail verification
