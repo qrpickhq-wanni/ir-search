@@ -260,12 +260,15 @@ class SongdoConveniaCollector(MiceCollector):
         out_path = self.raw_dir / f"{self.source_id}.jsonl"
         write_jsonl(out_path, raw_rows)
 
-        # PARTIAL if we could not prove completeness under observed 10-row soft-cap
+        # PARTIAL_DAY_CAP = documented 10-row soft-cap not fully cleared → PARTIAL_EXPECTED
         if errors and not raw_rows:
             status = "FAILED"
             success = False
         elif completeness in {"PARTIAL_DAY_CAP"}:
-            status = "PARTIAL"
+            status = "PARTIAL_EXPECTED"
+            success = True
+        elif raw_rows and errors:
+            status = "PARTIAL_UNEXPECTED"
             success = True
         elif raw_rows:
             status = "OK"

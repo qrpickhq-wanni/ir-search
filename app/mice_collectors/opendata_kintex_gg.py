@@ -258,16 +258,32 @@ class OpendataKintexGgCollector(MiceCollector):
         out_path = self.raw_dir / f"{self.source_id}.jsonl"
         write_jsonl(out_path, raw_rows)
 
+        key = os.environ.get("GG_OPENAPI_KEY")
+        svc = os.environ.get("GG_KINTEX_OPENAPI_SERVICE")
+        keys_set = bool(key and svc)
+
         if raw_rows:
             status = "OK"
             success = True
-        else:
-            status = "PARTIAL"
+        elif not keys_set:
+            # Documented: keys required for row retrieval; portal probe alone is expected
+            status = "PARTIAL_EXPECTED"
+            success = True
+            warnings.append(
+                "PARTIAL_EXPECTED: GG_OPENAPI_KEY and/or GG_KINTEX_OPENAPI_SERVICE unset; "
+                "no rows collected (documented limitation)."
+            )
+        elif errors:
+            status = "PARTIAL_UNEXPECTED" if meta.get("data_go_status") or meta.get("gg_status") else "FAILED"
             success = False
             errors.append(
-                "No KINTEX open-data rows retrieved via HTTP. "
-                "Set GG_OPENAPI_KEY and GG_KINTEX_OPENAPI_SERVICE after confirming the "
-                "Sheet OpenAPI service name on the GG dataset page, then re-run."
+                "Keys set but no KINTEX open-data rows retrieved via HTTP."
+            )
+        else:
+            status = "FAILED"
+            success = False
+            errors.append(
+                "No KINTEX open-data rows retrieved via HTTP despite credentials."
             )
 
         return CollectResult(

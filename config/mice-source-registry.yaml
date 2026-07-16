@@ -58,6 +58,10 @@ sources:
   audit_date: '2026-07-15'
   notes: Existing single grade A kept as technical_grade. Legal B due to copy restriction in terms. No re-crawl of robots/sitemap
     in landscape phase.
+  runtime_enabled: true
+  expected_runtime_status: OK_EMPTY
+  failure_affects_exit_code: true
+  runtime_notes: List/detail SSR works; OK when in-window rows exist, OK_EMPTY when board has only out-of-window posts.
 - source_id: k_mice
   source_name: K-MICE (Korea Beyond Meetings)
   source_category: NATIONAL_PUBLIC_MICE
@@ -109,6 +113,10 @@ sources:
   audit_date: '2026-07-15'
   notes: 'Inherited A; implement detail via public HTML form POST calView (not private API). Existing note: POST dependency
     may need B verification at implementation time without changing inherited technical A unless new failure evidence.'
+  runtime_enabled: true
+  expected_runtime_status: OK
+  failure_affects_exit_code: true
+  runtime_notes: Public form POST calendar; unexpected parse/request failures are PARTIAL_UNEXPECTED.
 - source_id: myfair
   source_name: 마이페어
   source_category: COMMERCIAL_PLATFORM
@@ -203,6 +211,10 @@ sources:
   existing_audit_reference: ''
   audit_date: '2026-07-15'
   notes: Portal metadata claims CSV with organizer contacts and homepage. Prefer over site scrape where license permits.
+  runtime_enabled: true
+  expected_runtime_status: PARTIAL_EXPECTED
+  failure_affects_exit_code: true
+  runtime_notes: Without GG_OPENAPI_KEY + GG_KINTEX_OPENAPI_SERVICE expect PARTIAL_EXPECTED. With keys set, expect OK; then failures are PARTIAL_UNEXPECTED/FAILED.
 - source_id: kintex
   source_name: KINTEX 행사일정
   source_category: VENUE
@@ -251,6 +263,10 @@ sources:
   audit_date: '2026-07-15'
   notes: Legacy /exhibition/schedule.asp returned 400; current list is /web/ko/event/clist.do. Sitemap URL returned 400 in
     sample client.
+  runtime_enabled: true
+  expected_runtime_status: PARTIAL_EXPECTED
+  failure_affects_exit_code: true
+  runtime_notes: clist.do calendar titles/dates only; organizer/contact detail pages not available — PARTIAL_EXPECTED when titles collected.
 - source_id: coex
   source_name: COEX 행사일정
   source_category: VENUE
@@ -295,6 +311,10 @@ sources:
   existing_audit_reference: ''
   audit_date: '2026-07-15'
   notes: Home confirms live schedule cards; dedicated list URL adapter still needed (detail pages not exhaustively sampled).
+  runtime_enabled: true
+  expected_runtime_status: PARTIAL_EXPECTED
+  failure_affects_exit_code: true
+  runtime_notes: full-schedules SSR empty; home exhibition cards + /exhibitions/ detail only — PARTIAL_EXPECTED when that scope succeeds.
 - source_id: bexco
   source_name: BEXCO 행사일정
   source_category: VENUE
@@ -385,6 +405,10 @@ sources:
   audit_date: '2026-07-15'
   notes: Prefer OpenAPI after key approval over scraping Vue schedule. Page documents json/xml result types and API key status
     codes.
+  runtime_enabled: true
+  expected_runtime_status: OK
+  failure_affects_exit_code: true
+  runtime_notes: Documented OpenAPI date-split; PARTIAL_DAY_CAP remains PARTIAL_EXPECTED. Other incomplete failures are PARTIAL_UNEXPECTED.
 - source_id: exco
   source_name: 'EXCO(대구) '
   source_category: VENUE
@@ -762,6 +786,10 @@ sources:
   audit_date: '2026-07-15'
   notes: Notice list via simple fetch returned short body (likely JS). Search snippets and known view URLs show rich support/recruitment
     notices — prioritize browser/XHR verification.
+  runtime_enabled: false
+  expected_runtime_status: HOLD_CONFIGURED
+  failure_affects_exit_code: false
+  runtime_notes: JS board / ready.jsp shell; browser automation out of scope. runtime_enabled=false — no HTTP in MVP runs.
 - source_id: busan_cvb_bto
   source_name: 부산컨벤션뷰로
   source_category: REGIONAL_CVB

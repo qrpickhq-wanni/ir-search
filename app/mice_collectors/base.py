@@ -26,7 +26,7 @@ class CollectResult:
     raw_output_path: str | None = None
     errors: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
-    status: str = "OK"  # OK | PARTIAL | FAILED
+    status: str = "OK"  # OK | OK_EMPTY | PARTIAL_EXPECTED | HOLD_CONFIGURED | PARTIAL_UNEXPECTED | FAILED
     request_log: list[dict[str, Any]] = field(default_factory=list)
     metadata: dict[str, Any] = field(default_factory=dict)
 

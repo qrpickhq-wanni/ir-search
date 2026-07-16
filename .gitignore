@@ -14,6 +14,8 @@ scratch/
 scripts/probes/
 tmp/
 logs/mice_mvp_run*.txt
+logs/*_mice_1b1b_run*.txt
+logs/*_mice_runtime_policy_run*.txt
 
 # Local runtime (Phase 1+)
 .venv/

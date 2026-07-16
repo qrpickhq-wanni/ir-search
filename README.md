@@ -46,16 +46,17 @@
 - 검증·CSV 생성: `python scripts/build_mice_source_registry.py`
 - 지도·정책: [`docs/mice-source-landscape.md`](docs/mice-source-landscape.md), [`docs/mice-source-audit-policy.md`](docs/mice-source-audit-policy.md)
 
-### 서비스 1B-1A — MICE 행사 수집 MVP (신규)
+### 서비스 1B-1A / 1B-1B — MICE 행사 수집
 
-대상 소스: `opendata_kintex_gg`, `songdo_convenia`, `k_mice`
+대상 소스: `opendata_kintex_gg`, `songdo_convenia`, `k_mice`, `mice_or_kr`, `coex`, `kintex`, `mice_seoul_cvb`
 
 - 수집·정규화·중복·영업신호 CSV까지 **로컬 검토용** 파이프라인 (아직 DB·CRM 아님)
 - 실행: `scripts\run_mice_mvp.bat` 또는 `python app\run_mice_mvp.py`
 - 정책: [`config/mice-collection-policy.yaml`](config/mice-collection-policy.yaml)
 - 스키마·운영: [`docs/mice-event-schema.md`](docs/mice-event-schema.md), [`docs/mice-mvp-operation-guide.md`](docs/mice-mvp-operation-guide.md)
-- 결과: `data/raw/mice/YYYY-MM-DD/`, `data/normalized/mice/YYYY-MM-DD/`, `reports/YYYY-MM-DD/mice-*.csv`
-- 다음 단계: 추가 소스 수집기 + 주최·운영기관 통합 (본 MVP 범위 밖)
+- 결과: `data/raw/mice/YYYY-MM-DD/`, `data/normalized/mice/YYYY-MM-DD/`, `reports/YYYY-MM-DD/mice-*.csv` (+ `mice-source-coverage.csv`)
+- 상태: `coex`/`kintex`/`opendata_kintex_gg` → PARTIAL_EXPECTED, `mice_or_kr` → OK_EMPTY(창 내 0건 시), `mice_seoul_cvb` → HOLD_CONFIGURED(HTTP 미호출)
+- 종료코드: 예상 제한만 있으면 `0` (PARTIAL_UNEXPECTED/FAILED만 `2`)
 
 ## 실행 방법
 

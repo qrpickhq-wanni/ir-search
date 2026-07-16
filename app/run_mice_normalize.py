@@ -8,19 +8,10 @@ from datetime import date
 from pathlib import Path
 
 from app.io_utils import ensure_dir, load_yaml, project_root, read_jsonl, write_jsonl
-from app.mice_collectors.k_mice import KMiceCollector
-from app.mice_collectors.opendata_kintex_gg import OpendataKintexGgCollector
-from app.mice_collectors.songdo_convenia import SongdoConveniaCollector
+from app.mice_collectors.registry import COLLECTOR_MAP
 from app.mice_normalizers.deduplicate import deduplicate_events
 from app.mice_normalizers.event_normalizer import normalize_intermediate
 from app.mice_normalizers.sales_signals import apply_sales_layer
-
-
-COLLECTOR_MAP = {
-    "opendata_kintex_gg": OpendataKintexGgCollector,
-    "songdo_convenia": SongdoConveniaCollector,
-    "k_mice": KMiceCollector,
-}
 
 
 def find_mice_raw_dir(root: Path, today: str | None = None) -> Path:

@@ -263,7 +263,7 @@ class KMiceCollector(MiceCollector):
         out_path = self.raw_dir / f"{self.source_id}.jsonl"
         write_jsonl(out_path, raw_rows)
         if raw_rows and errors:
-            status = "PARTIAL"
+            status = "PARTIAL_UNEXPECTED"
             success = True
         elif raw_rows:
             status = "OK"

@@ -1,4 +1,4 @@
-# MICE MVP 운영 가이드 (1B-1A)
+# MICE MVP 운영 가이드 (1B-1A / 1B-1B)
 
 ## 실행 방법
 
@@ -108,19 +108,43 @@ KINTEX만 재수집:
 - robots `/*search*` 미사용
 - 날짜 창 밖 행사는 정규화에서 `outside_date_window`로 제외 (오류 로그)
 
+### mice_or_kr
+
+- SSR `bo_table=event` + `page=` / `wr_id` 상세
+- 외부 홈페이지만 `official_event_url` (mice.or.kr 게시판 URL 제외)
+- 이용조건: 무단 복제·재배포 주의 — 내부 연구용
+
+### coex (PARTIAL)
+
+- `/event/full-schedules/` SSR 비어 있음 → 홈 EXHIBITION 카드 + `/exhibitions/` 상세만
+- 시설명(COEX) ≠ 주최; 시설 대표번호 ≠ 행사 연락처
+
+### kintex (PARTIAL)
+
+- `clist.do` FullCalendar + a11y 홀 라인; registry `list_urls`만 사용
+- 행사별 주최/연락 상세 페이지 미확인 → 제목·날짜·홀 중심
+
+### mice_seoul_cvb (HOLD_CONFIGURED)
+
+- `runtime_enabled: false` — MVP 실행에서 HTTP 미호출
+- 목록 URL이 error/ready.jsp 셸 → 브라우저 자동화 없이 미구현
+
 ## 오류 처리
 
 - 소스 하나 실패해도 다른 소스 계속
 - `outside_date_window`: 필터(날짜 파싱 실패와 구분)
 - 제목 유효 + 날짜 파싱 실패: 행사 보존, dates=null, `needs_official_verification=true`
-- 종료코드: `0` 전부 OK / `2` 일부 PARTIAL·실패 / `1` 전체·테스트 실패
+- 종료코드: `0` = OK/OK_EMPTY/PARTIAL_EXPECTED만 / `2` = PARTIAL_UNEXPECTED·FAILED / `1` = 파이프라인·테스트·무결성 실패
+- `HOLD_CONFIGURED`(`runtime_enabled=false`)는 exit를 악화시키지 않으며 HTTP를 호출하지 않음
+- 런타임 필드: `config/mice-source-registry.yaml`의 `runtime_enabled`, `expected_runtime_status`, `failure_affects_exit_code`, `runtime_notes`
 
 ## 결과 파일 활용
 
 1. `mice-events.csv` — 전체·적용 가능성
 2. `mice-sales-signals.csv` — 근거 있는 영업 후보만
 3. `mice-contact-presence.csv` — 연락·문의 경로
-4. `duplicates.jsonl`의 `CANDIDATE` 수동 확인
+4. `mice-source-coverage.csv` — 소스별 구현/커버리지
+5. `duplicates.jsonl`의 `CANDIDATE` 수동 확인
 
 ## 다음 소스 추가 방법
 

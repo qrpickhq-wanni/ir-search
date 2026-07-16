@@ -139,7 +139,7 @@ def normalize_intermediate(
     contact_conf = None
     contact_source = None
     if email or phone or intermediate.get("contact_department") or intermediate.get("contact_name"):
-        contact_source = intermediate.get("source_url")
+        contact_source = intermediate.get("contact_source_url") or intermediate.get("source_url")
         if email or phone:
             contact_conf = "VERIFIED_PUBLIC_OFFICIAL_SOURCE"
         elif intermediate.get("contact_department"):

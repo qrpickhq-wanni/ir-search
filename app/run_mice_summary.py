@@ -241,13 +241,91 @@ def run_summary(*, day: str | None = None, root: Path | None = None) -> dict:
     for e in events:
         by_source[e.get("source_id") or "?"] = by_source.get(e.get("source_id") or "?", 0) + 1
 
+    # Per-source coverage (raw + normalized fields on representatives that include the source)
+    coverage_rows: list[dict] = []
+    collect_by_id = {s.get("source_id"): s for s in (collect_meta.get("sources") or [])}
+    source_ids = list(collect_by_id.keys()) or sorted({e.get("source_id") for e in events if e.get("source_id")})
+    for sid in source_ids:
+        cref = collect_by_id.get(sid) or {}
+        status = cref.get("status") or "?"
+        impl = (cref.get("metadata") or {}).get("implementation_status") or status
+        raw_n = int(cref.get("fetched_count") or 0)
+        # Representatives that include this source in occurrences
+        members = [
+            e
+            for e in events
+            if any(o.get("source_id") == sid for o in (e.get("source_occurrences") or []))
+            or e.get("source_id") == sid
+        ]
+        norm_ok = len(members)
+        err_n = sum(1 for x in nerr if x.get("source_id") == sid)
+        host_c = sum(1 for e in members if e.get("host_organizations"))
+        url_c = sum(1 for e in members if e.get("official_event_url"))
+        contact_c = sum(1 for e in members if _has_contact(e) == "Y")
+        signal_c = sum(1 for e in members if e.get("sales_signal_types"))
+        notes = "; ".join((cref.get("warnings") or [])[:2])
+        if cref.get("errors"):
+            notes = (notes + "; " if notes else "") + "; ".join(cref["errors"][:2])
+        coverage_rows.append(
+            {
+                "source_id": sid,
+                "구현상태": impl,
+                "runtime_status": cref.get("runtime_status") or status,
+                "expected_runtime_status": cref.get("expected_runtime_status")
+                or (cref.get("metadata") or {}).get("expected_runtime_status")
+                or "",
+                "status_is_expected": cref.get("status_is_expected")
+                if cref.get("status_is_expected") is not None
+                else (cref.get("metadata") or {}).get("status_is_expected"),
+                "failure_affects_exit_code": cref.get("failure_affects_exit_code")
+                if cref.get("failure_affects_exit_code") is not None
+                else (cref.get("metadata") or {}).get("failure_affects_exit_code"),
+                "원본건수": raw_n,
+                "fetched_count": raw_n,
+                "정상정규화건수": norm_ok,
+                "오류건수": err_n,
+                "주최기관보유건수": host_c,
+                "공식행사URL보유건수": url_c,
+                "공개연락처보유건수": contact_c,
+                "실제영업신호보유건수": signal_c,
+                "warning_message": (
+                    cref.get("warning_message")
+                    or (cref.get("metadata") or {}).get("warning_message")
+                    or notes
+                )[:500],
+                "비고": notes[:500],
+            }
+        )
+    write_bom_csv(
+        reports / "mice-source-coverage.csv",
+        [
+            "source_id",
+            "구현상태",
+            "runtime_status",
+            "expected_runtime_status",
+            "status_is_expected",
+            "failure_affects_exit_code",
+            "원본건수",
+            "fetched_count",
+            "정상정규화건수",
+            "오류건수",
+            "주최기관보유건수",
+            "공식행사URL보유건수",
+            "공개연락처보유건수",
+            "실제영업신호보유건수",
+            "warning_message",
+            "비고",
+        ],
+        coverage_rows,
+    )
+
     songdo_meta = {}
     for s in collect_meta.get("sources") or []:
         if s.get("source_id") == "songdo_convenia":
             songdo_meta = s.get("metadata") or {}
 
     lines = [
-        f"# MICE MVP 수집 요약 ({day})",
+        f"# MICE 수집 요약 ({day})",
         "",
         "## 수집",
     ]
@@ -264,6 +342,8 @@ def run_summary(*, day: str | None = None, root: Path | None = None) -> dict:
                 f"pagination_documented={meta.get('pagination_params_documented')} "
                 f"totalCount_present={meta.get('totalCount_field_present')}"
             )
+        if meta.get("implementation_status"):
+            lines.append(f"  - implementation_status={meta.get('implementation_status')}")
         for w in (s.get("warnings") or [])[:6]:
             lines.append(f"  - warning: {w}")
         for e in (s.get("errors") or [])[:5]:
@@ -291,7 +371,10 @@ def run_summary(*, day: str | None = None, root: Path | None = None) -> dict:
         f"- 공개 업무 연락처: {contact_n}",
         f"- 날짜 파싱 성공률: {date_rate:.1f}% ({len(dated)}/{len(events)})",
         "",
-        "## KINTEX",
+        "## 소스 커버리지",
+        f"- `{reports / 'mice-source-coverage.csv'}`",
+        "",
+        "## KINTEX 오픈데이터",
         "- API 키 미설정 시 PARTIAL 유지. `GG_OPENAPI_KEY` + `GG_KINTEX_OPENAPI_SERVICE` 설정 후 "
         "`python app/run_mice_collect.py --sources opendata_kintex_gg` 재실행.",
         "",
@@ -299,11 +382,13 @@ def run_summary(*, day: str | None = None, root: Path | None = None) -> dict:
         f"- `{reports / 'mice-events.csv'}` (전체·적용가능성)",
         f"- `{reports / 'mice-sales-signals.csv'}` (근거 있는 영업 후보만)",
         f"- `{reports / 'mice-contact-presence.csv'}`",
+        f"- `{reports / 'mice-source-coverage.csv'}`",
         "",
         "## 참고",
         "- qrpick_service_matches = 유형 기반 잠재 적용 가능성",
         "- sales_signal_types = 원문·구조화 필드 근거가 있는 영업 단서만",
         "- 연락처는 공개 원문만 보관하며 추정하지 않는다.",
+        "- 시설명(KINTEX/COEX 등)을 주최기관으로 저장하지 않는다.",
     ]
     md_path = reports / "mice-collection-summary.md"
     md_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -322,6 +407,7 @@ def run_summary(*, day: str | None = None, root: Path | None = None) -> dict:
         "error_types": dict(err_types),
         "date_rate": date_rate,
         "songdo_completeness": songdo_meta.get("completeness"),
+        "coverage_sources": len(coverage_rows),
         "reports_dir": str(reports),
         "summary_md": str(md_path),
     }

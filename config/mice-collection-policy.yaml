@@ -1,8 +1,8 @@
-# MICE MVP collection policy (Service 1B-1A)
+# MICE collection policy (Service 1B-1A + 1B-1B)
 # Scope-limiting defaults — do not crawl unbounded history.
 
-policy_version: "1.0"
-collector_version: "1.0.0"
+policy_version: "1.1"
+collector_version: "1.1.0"
 
 date_window:
   past_days: 60
@@ -42,7 +42,42 @@ sources:
     notes: >
       Public HTML form POST for list pagination (curr_page) and detail (calView).
       Do not use Disallow /*search* paths.
+  mice_or_kr:
+    enabled: true
+    list_url: "https://www.mice.or.kr/bbs/board.php?bo_table=event"
+    notes: >
+      Gnuboard SSR list (page=) + detail (wr_id). Terms restrict copy/republish —
+      internal use only. Do not treat mice.or.kr board URLs as official event homepages.
+  coex:
+    enabled: true
+    notes: >
+      PARTIAL: /event/full-schedules/ is empty SSR. Collect home EXHIBITION cards
+      (data-title/date/link/location) and public /exhibitions/ detail pages only.
+      Do not store COEX facility switchboard as event contact; 담당자 from detail only.
+      External data-link = official_event_url; COEX /exhibitions/ = source_url.
+  kintex:
+    enabled: true
+    notes: >
+      PARTIAL: clist.do FullCalendar JS + a11y hall lines. Registry list_urls only
+      (clist.do, searchType=11). No public per-event organizer/contact detail pages observed.
+      Venue=KINTEX; never store KINTEX as host organization.
+  mice_seoul_cvb:
+    enabled: true
+    notes: >
+      HOLD: list URL returns error/ready.jsp shell under polite HTTP; JS board not
+      implementable without browser automation (out of MVP scope).
 
 integrity:
   # raw_ok == sum(source_occurrences over representatives) + normalization_errors
   formula: "raw_ok = sum(len(source_occurrences)) + normalization_error_count"
+
+exit_code_policy:
+  # 0 = all active sources in OK | OK_EMPTY | PARTIAL_EXPECTED (HOLD_CONFIGURED ignored)
+  # 2 = any PARTIAL_UNEXPECTED or FAILED among active sources
+  # 1 = pipeline/test failure or integrity failure
+  ok_statuses: [OK, OK_EMPTY, PARTIAL_EXPECTED]
+  neutral_statuses: [HOLD_CONFIGURED]
+  warn_statuses: [PARTIAL_UNEXPECTED, FAILED]
+  notes: >
+    Expected limitations (missing API keys, documented field gaps, empty in-window boards)
+    must not force exit 2. Runtime fields live on config/mice-source-registry.yaml per source.

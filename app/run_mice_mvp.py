@@ -6,9 +6,10 @@ import json
 import subprocess
 import sys
 from datetime import date
-from pathlib import Path
 
 from app.io_utils import ensure_dir, project_root
+from app.mice_collectors.registry import DEFAULT_MVP_SOURCES
+from app.mice_collectors.runtime_status import compute_mvp_exit_code
 from app.run_mice_collect import run_collect
 from app.run_mice_normalize import run_normalize
 from app.run_mice_summary import run_summary
@@ -32,27 +33,33 @@ def main(argv: list[str] | None = None) -> int:
             f.write(line)
 
     log(f"=== MICE MVP start {today.isoformat()} ===")
-    # Env checklist (do not print secret values)
     for name in ("SONGDO_OPENAPI_KEY", "GG_OPENAPI_KEY", "GG_KINTEX_OPENAPI_SERVICE"):
         import os
 
         log(f"env {name}: {'SET' if os.environ.get(name) else 'UNSET'}")
 
-    sources = ["opendata_kintex_gg", "songdo_convenia", "k_mice"]
-    collect_manifest = run_collect(sources=sources, today=today, root=root)
-    log("=== collect ===")
-    log(json.dumps(collect_manifest, ensure_ascii=False, indent=2))
+    pipeline_ok = True
+    try:
+        sources = list(DEFAULT_MVP_SOURCES)
+        collect_manifest = run_collect(sources=sources, today=today, root=root)
+        log("=== collect ===")
+        log(json.dumps(collect_manifest, ensure_ascii=False, indent=2))
 
-    norm = run_normalize(today=today, root=root)
-    log("=== normalize ===")
-    log(json.dumps(norm, ensure_ascii=False, indent=2))
+        norm = run_normalize(today=today, root=root)
+        log("=== normalize ===")
+        log(json.dumps(norm, ensure_ascii=False, indent=2))
 
-    summary = run_summary(day=today.isoformat(), root=root)
-    log("=== summary ===")
-    log(json.dumps(summary, ensure_ascii=False, indent=2))
+        summary = run_summary(day=today.isoformat(), root=root)
+        log("=== summary ===")
+        log(json.dumps(summary, ensure_ascii=False, indent=2))
+    except Exception as exc:  # noqa: BLE001
+        log(f"PIPELINE FAILURE: {exc}")
+        pipeline_ok = False
+        collect_manifest = {"sources": []}
+        norm = {"integrity_ok": False}
 
     test_rc = 0
-    if not args.skip_tests:
+    if pipeline_ok and not args.skip_tests:
         log("=== tests ===")
         proc = subprocess.run(
             [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-p", "test_mice_*.py", "-v"],
@@ -65,15 +72,12 @@ def main(argv: list[str] | None = None) -> int:
         test_rc = proc.returncode
         log(f"tests exit={test_rc}")
 
-    statuses = [s.get("status") for s in collect_manifest.get("sources") or []]
-    if test_rc != 0:
-        exit_code = 1
-    elif all(s == "OK" for s in statuses) and norm.get("integrity_ok"):
-        exit_code = 0
-    elif any(s in {"OK", "PARTIAL"} for s in statuses):
-        exit_code = 2
-    else:
-        exit_code = 1
+    exit_code = compute_mvp_exit_code(
+        source_rows=collect_manifest.get("sources") or [],
+        integrity_ok=bool(norm.get("integrity_ok")) if pipeline_ok else False,
+        test_rc=test_rc,
+        pipeline_ok=pipeline_ok,
+    )
 
     log(f"=== MICE MVP done exit={exit_code} ===")
     return exit_code
