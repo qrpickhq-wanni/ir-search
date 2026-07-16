@@ -1,0 +1,140 @@
+# G2B MICE procurement lifecycle MVP — official data.go.kr OpenAPI only.
+# Endpoints verified from Public Data Portal pages (not guessed).
+#
+# Bid notices:  https://www.data.go.kr/data/15129394/openapi.do
+#   Service URL: http://apis.data.go.kr/1230000/ad/BidPublicInfoService
+# Awards:       https://www.data.go.kr/data/15129397/openapi.do
+#   Service URL: http://apis.data.go.kr/1230000/as/ScsbidInfoService
+# Pre-specs:    https://www.data.go.kr/data/15129437/openapi.do
+#   Service URL: http://apis.data.go.kr/1230000/ao/HrcspSsstndrdInfoService
+# Contracts:    https://www.data.go.kr/data/15129427/openapi.do
+#   Service URL: http://apis.data.go.kr/1230000/ao/CntrctInfoService
+#
+# Auth: apply for each dataset on data.go.kr; set env DATA_GO_KR_SERVICE_KEY
+# (same key often works across PPS services after approval). Never commit keys.
+
+collector_version: "1.0.0"
+record_domain: PROCUREMENT_OPPORTUNITY
+source_scope: G2B_OFFICIAL_OPENAPI
+
+http:
+  request_delay_seconds: 0.5
+  request_timeout_seconds: 20
+  max_retries: 2
+  retry_backoff_seconds: 1.0
+  user_agent: "QRPickG2BMiceMVP/1.0 (+internal research; polite; delay>=0.5s)"
+  max_requests_per_run: 200
+
+limits:
+  max_records_per_stage: 500
+  max_pages_per_query: 20
+  num_of_rows: 100
+
+windows:
+  bid_notice_past_days: 180
+  award_contract_past_days: 548   # ~18 months
+  previous_cycle_lookback_years: 1
+  previous_cycle_extend_years: 2  # only when prior-year missing / biennial
+
+auth:
+  env_var: DATA_GO_KR_SERVICE_KEY
+  alt_env_vars:
+    - G2B_SERVICE_KEY
+    - PUBLIC_DATA_SERVICE_KEY
+  apply_urls:
+    - https://www.data.go.kr/data/15129394/openapi.do
+    - https://www.data.go.kr/data/15129397/openapi.do
+    - https://www.data.go.kr/data/15129437/openapi.do
+    - https://www.data.go.kr/data/15129427/openapi.do
+
+openapi:
+  base_host: https://apis.data.go.kr
+  type: json
+  # 용역(service) operations only for MICE MVP
+  bid_notice:
+    service_path: /1230000/ad/BidPublicInfoService
+    list_operation: getBidPblancListInfoServc
+    search_operation: getBidPblancListInfoServcPPSSrch
+    dataset_url: https://www.data.go.kr/data/15129394/openapi.do
+  pre_notice:
+    service_path: /1230000/ao/HrcspSsstndrdInfoService
+    list_operation: getPublicPrcureThngInfoServc
+    search_operation: getPublicPrcureThngInfoServcPPSSrch
+    dataset_url: https://www.data.go.kr/data/15129437/openapi.do
+  award_result:
+    service_path: /1230000/as/ScsbidInfoService
+    list_operation: getScsbidListSttusServc
+    opening_operation: getOpengResultListInfoServc
+    search_operation: getScsbidListSttusServcPPSSrch
+    dataset_url: https://www.data.go.kr/data/15129397/openapi.do
+  contract_result:
+    service_path: /1230000/ao/CntrctInfoService
+    list_operation: getCntrctInfoListServc
+    search_operation: getCntrctInfoListServcPPSSrch
+    dataset_url: https://www.data.go.kr/data/15129427/openapi.do
+
+# Keyword batches — title search via PPS operations (bidNtceNm / prdctClsfcNoNm where supported)
+search_keywords:
+  mice_event:
+    - 행사 운영
+    - 운영 대행
+    - 국제회의
+    - 국제행사
+    - 컨벤션
+    - 컨퍼런스
+    - 포럼
+    - 세미나
+    - 심포지엄
+    - 학술대회
+    - 박람회
+    - 전시회
+    - 수출상담회
+    - 구매상담회
+    - 비즈니스 매칭
+    - 투자상담회
+    - 설명회
+    - 성과공유회
+    - 데모데이
+    - 오픈이노베이션
+    - 네트워킹
+  qrpick_showda:
+    - 참가자 등록
+    - 사전등록
+    - 현장등록
+    - 참가자 관리
+    - 행사 홈페이지
+    - QR 체크인
+    - 출입관리
+    - 명찰
+    - 배지
+    - 비표
+    - 발권
+    - 부스 리드
+    - 상담 매칭
+    - 세션 운영
+    - 운영 대시보드
+    - 결과보고
+    - 행사 운영시스템
+    - 온라인 플랫폼
+    - 모바일 웹
+    - 다국어
+    - CRM
+
+sales_windows:
+  award_winner_days_after_award: 30
+  pre_registration_min_days_to_event: 45
+  direct_bid_min_days_to_deadline: 3
+  late_event_max_days_to_event: 21
+  next_cycle_months_before_prior_announcement: 2
+
+sales_priority:
+  P0_days_to_deadline_max: 14
+  P1_days_to_deadline_max: 45
+  P2_days_to_deadline_max: 120
+
+previous_cycle:
+  strong_requires:
+    - same_organization
+    - year_stripped_title_core
+  medium_allows_weak_title: false
+  exclude_confidence_below: MEDIUM

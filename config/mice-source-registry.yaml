@@ -1413,14 +1413,21 @@ sources:
   legal_operational_grade: A
   business_value_grade: A
   implementation_priority: P0
-  implementation_mode: QUERY_EXTENSION
+  implementation_mode: NEW_COLLECTOR
   audit_status: PARTIAL
   evidence_urls:
   - logs/mice-landscape-sample/g2b_hint.txt
+  - docs/g2b-mice-lifecycle-schema.md
   existing_audit_reference: ''
-  audit_date: '2026-07-15'
-  notes: Connect via existing opportunity pipeline tender keyword filters (행사/등록/체크인/MICE 시스템). Full API audit out of scope
-    this pass.
+  audit_date: '2026-07-16'
+  notes: >-
+    Official data.go.kr OpenAPI MVP added (app/run_g2b_mice_mvp.py, config/g2b-mice-lifecycle.yaml).
+    Requires DATA_GO_KR_SERVICE_KEY. Without key → PARTIAL_EXPECTED. QUERY_EXTENSION path retained for
+    Phase-2 keyword overlay.
+  runtime_enabled: true
+  expected_runtime_status: PARTIAL_EXPECTED
+  failure_affects_exit_code: false
+  runtime_notes: Live OpenAPI collect gated on DATA_GO_KR_SERVICE_KEY
 - source_id: pipeline_kstartup
   source_name: K-Startup(기존 파이프라인)
   source_category: PROCUREMENT
