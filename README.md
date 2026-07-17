@@ -1,66 +1,54 @@
 # QRPick Opportunity Pipeline
 
-주식회사 쇼다의 **QRPick** 전용 정부지원사업·실증·오픈이노베이션 공고 수집 및 제안 대응 운영체계(로컬 Python 자동화)입니다.
+공공·민간의 MICE·행사 관련 사업 및 조달 기회를 수집하고, QRPick·쇼다의 직접입찰·파트너 공급·낙찰사 영업 가능성을 우선순위화하여, 사람이 매주 실행할 상위 영업기회를 제공하는 **내부 매출지원 시스템**입니다.
 
-기반은 오픈소스 [ir-search](skills/ir-search/SKILL.md) 스킬의 검증된 공개 페이지 크롤러이며, 원본 수집기 코드는 수정하지 않고 **날짜별 저장·로그·배치·프로필·폴더 구조**만 이 저장소에서 운영합니다.
+이 저장소는 범용 조달 AI SaaS, 자동 입찰 시스템, CRM, 제안서 생성기 또는 대규모 웹 대시보드가 아닙니다. 자동 판정은 검토 순서를 만들 뿐이며 상세·첨부가 검증되지 않은 후보를 `GO` 또는 `ACTION_NOW`로 확정하지 않습니다.
 
-원본 ir-search 플러그인 설명은 [`docs/upstream-ir-search-README.md`](docs/upstream-ir-search-README.md) 및 [`README.en.md`](README.en.md)를 참고하세요.
+## 제품 상태
 
-## 프로젝트 목적
+- 제품 정의와 MVP 범위는 동결되었습니다.
+- 신규 수집기, AI API, 첨부/RFP 파싱, OCR, 자동 이메일, 웹 UI, CRM 개발은 중단합니다.
+- 허용되는 변경은 운영 중 발견된 데이터 손실·보안·오분류·재현성·테스트 결함 수정과 공식 소스의 불가피한 구조 변경 대응입니다.
+- `skills/ir-search/`는 upstream 권위 영역이며 수정하지 않습니다.
 
-- K-Startup·기업마당·NIPA·KOCCA·SMTECH 등 공개 공고를 주기적으로 수집한다.
-- 수집 원본은 `data/raw/YYYY-MM-DD/`에 날짜별로 보관하고 수정하지 않는다.
-- 이후 단계에서 정규화·QRPick 적합성 평가·제안 대응으로 확장한다.
-- QRPick 실제 서비스 저장소와는 연결하지 않는다 (독립 로컬 운영체계).
+정본 읽기 순서:
 
-## 현재 구축 범위
+1. [`docs/product/QRPick_OPPORTUNITY_PIPELINE_PRD.md`](docs/product/QRPick_OPPORTUNITY_PIPELINE_PRD.md)
+2. [`docs/product/MVP_SCOPE_AND_STOP_RULES.md`](docs/product/MVP_SCOPE_AND_STOP_RULES.md)
+3. [`docs/product/OPPORTUNITY_OPERATING_PLAYBOOK.md`](docs/product/OPPORTUNITY_OPERATING_PLAYBOOK.md)
+4. [`docs/product/DOCUMENT_CANONICAL_INDEX.md`](docs/product/DOCUMENT_CANONICAL_INDEX.md)
+5. 도메인별 스키마·운영 가이드
 
-### 1단계 — 수집 기반환경
+## 현재 구현
 
-- Python `.venv` + `requirements.txt` (`curl_cffi>=0.15`, `PyYAML`)
-- 운영 폴더 구조, `ir-search-profile.md`, 수집 배치/로그
+- 공개 지원사업 수집과 Phase-2 정규화·보수적 중복 제거·규칙 기반 1차 분류
+- 공개 MICE 행사 수집·정규화·영업신호 추출
+- G2B 사전규격·입찰·낙찰·계약 수집과 생애주기 연결
+- 직접입찰·컨소시엄·솔루션 파트너·낙찰사 영업 경로
+- 근거, 미확인 사항, 부분성공 상태, 권장 다음 행동
+- G2B 사전규격 운영자 Top 30과 전체 273개 후보 원장
+- 날짜별 raw/normalized/report 산출물과 실행 manifest
+- Windows 배치 실행과 `unittest` 회귀 테스트
 
-### 2단계 — 정규화·보수적 중복·룰 기반 1차 필터 (이번 단계)
+현재 제품 부합성은 **부분 구현**입니다. G2B 사전규격 Top 30은 구현되었지만 일반 공고·행사·입찰·낙찰사 영업을 하나로 합친 제품 전체 Top 30, 담당자·처리상태를 유지하는 CRM형 행동 큐, 통합 end-to-end manifest는 구현하지 않았습니다. 이 항목들은 운영 검증 없이 신규 개발하지 않습니다.
 
-목적: 원본 JSONL을 QRPick 표준 레코드로 정규화하고, 보수적으로 중복을 묶은 뒤,
-유료 AI 없이 설명 가능한 규칙으로 검토 후보를 선별한다.
+## 운영자 기본 흐름
 
-포함:
-- `config/qrpick-profile.yaml`, `normalization-schema.yaml`, `filter-rules.yaml`, `status-codes.yaml`
-- `app/normalizers/*`, `app/evaluators/*`
-- `app/run_normalize.py`, `app/run_first_pass.py`, `app/run_summary.py`, `app/run_phase2.py`
-- `scripts/run_phase2_pipeline.bat`
-- `tests/test_*.py`
-- 정책 문서: [`docs/phase2-normalization-and-filter-policy.md`](docs/phase2-normalization-and-filter-policy.md)
+매주 다음 순서로 운영합니다.
 
-아직 포함하지 않음:
-- 웹 대시보드, SQLite, LLM/유료 AI API
-- 상세공고·첨부 전수 다운로드
-- 관광기관·컨벤션뷰로 신규 크롤러(구현 전)
-- 자동 이메일·제안서 작성·최종 GO/NO-GO·자동 제출
+`수집 → Top 30 확인 → Top 10 상세검토 → Top 3~5 행동 → 결과 기록`
 
-### MICE 소스 레지스트리 (1B-0)
+기본 운영 파일:
 
-- **기준 데이터(source of truth):** [`config/mice-source-registry.yaml`](config/mice-source-registry.yaml)
-- **생성 산출물:** [`reports/mice-source-audit.csv`](reports/mice-source-audit.csv) — YAML을 읽어 검증·생성하며 수동 편집하지 않는다.
-- 검증·CSV 생성: `python scripts/build_mice_source_registry.py`
-- 지도·정책: [`docs/mice-source-landscape.md`](docs/mice-source-landscape.md), [`docs/mice-source-audit-policy.md`](docs/mice-source-audit-policy.md)
+- `reports/YYYY-MM-DD/g2b-pre-notice-top30.csv`: 운영자 기본 출력 30건
+- `reports/YYYY-MM-DD/g2b-pre-notice-all-candidates.csv`: 전체 영업 후보 원장
+- `data/normalized/procurement/YYYY-MM-DD/procurements.jsonl`: 전체 조달 데이터 원장
 
-### 서비스 1B-1A / 1B-1B — MICE 행사 수집
+직접입찰 표시는 입찰 가능 확정이 아니라 **직접입찰 상세검토 경로**입니다. `primary_opportunity_route`는 우선 검토 경로이며 `secondary_opportunity_routes`는 함께 가능한 경로를 보존합니다.
 
-대상 소스: `opendata_kintex_gg`, `songdo_convenia`, `k_mice`, `mice_or_kr`, `coex`, `kintex`, `mice_seoul_cvb`
+## 실행
 
-- 수집·정규화·중복·영업신호 CSV까지 **로컬 검토용** 파이프라인 (아직 DB·CRM 아님)
-- 실행: `scripts\run_mice_mvp.bat` 또는 `python app\run_mice_mvp.py`
-- 정책: [`config/mice-collection-policy.yaml`](config/mice-collection-policy.yaml)
-- 스키마·운영: [`docs/mice-event-schema.md`](docs/mice-event-schema.md), [`docs/mice-mvp-operation-guide.md`](docs/mice-mvp-operation-guide.md)
-- 결과: `data/raw/mice/YYYY-MM-DD/`, `data/normalized/mice/YYYY-MM-DD/`, `reports/YYYY-MM-DD/mice-*.csv` (+ `mice-source-coverage.csv`)
-- 상태: `coex`/`kintex`/`opendata_kintex_gg` → PARTIAL_EXPECTED, `mice_or_kr` → OK_EMPTY(창 내 0건 시), `mice_seoul_cvb` → HOLD_CONFIGURED(HTTP 미호출)
-- 종료코드: 예상 제한만 있으면 `0` (PARTIAL_UNEXPECTED/FAILED만 `2`)
-
-## 실행 방법
-
-### 최초 준비
+최초 준비:
 
 ```bat
 cd C:\git_hub\work\qrpick-opportunity-pipeline
@@ -69,123 +57,55 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### 1단계 수집 테스트
+지원사업 Phase-2:
 
 ```bat
-scripts\test_kstartup_collect.bat
 scripts\test_all_sources_collect.bat
-```
-
-### 2단계 정규화·1차 필터
-
-```bat
 scripts\run_phase2_pipeline.bat
 ```
 
-또는:
+MICE 행사:
 
 ```bat
-.venv\Scripts\python.exe app\run_phase2.py --raw-dir data\raw\2026-07-15 --today 2026-07-15
+scripts\run_mice_mvp.bat
 ```
 
-입력은 `data/raw` 아래 가장 최근 `YYYY-MM-DD` 폴더의 `kstartup_all.jsonl` + `sources_all.jsonl`이다.
-원본 JSONL은 읽기 전용이며 수정하지 않는다.
+G2B 조달:
 
-### 단위 테스트
+```bat
+set DATA_GO_KR_SERVICE_KEY=발급키
+scripts\run_g2b_mice_mvp.bat
+```
+
+테스트:
 
 ```bat
 .venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-## 생성되는 파일 위치
+API 키는 환경변수로만 주입하며 코드·문서·로그·manifest·커밋에 기록하지 않습니다.
 
-| 종류 | 경로 |
-|------|------|
-| K-Startup 원본 | `data/raw/YYYY-MM-DD/kstartup_all.jsonl` |
-| 통합 소스 원본 | `data/raw/YYYY-MM-DD/sources_all.jsonl` |
-| 정규화 대표 공고 | `data/normalized/YYYY-MM-DD/opportunities.jsonl` |
-| 중복 로그 | `data/normalized/YYYY-MM-DD/duplicates.jsonl` |
-| 정규화 오류 | `data/normalized/YYYY-MM-DD/normalization_errors.jsonl` |
-| 요약 보고서 | `reports/YYYY-MM-DD/collection-summary.md` |
-| 후보 CSV (HIGH/REVIEW/DETAIL) | `reports/YYYY-MM-DD/candidate-list.csv` |
-| 상태별 CSV | `high-priority-list.csv`, `review-list.csv`, `needs-detail-review.csv`, `low-fit-list.csv` |
-| 직접 입찰 후보 | `reports/YYYY-MM-DD/direct-bid-opportunities.csv` (`DIRECT_PRIME_BID`) |
-| 컨소시엄 후보 | `reports/YYYY-MM-DD/consortium-opportunities.csv` (`CONSORTIUM_BID`, 0건이면 헤더만) |
-| 시스템 공급 파트너 후보 | `reports/YYYY-MM-DD/solution-partner-opportunities.csv` (`SUBCONTRACT_OR_SOLUTION_PARTNER`) |
-| Phase-2 로그 | `logs/YYYY-MM-DD_phase2.log` |
-| MICE 원본 | `data/raw/mice/YYYY-MM-DD/*.jsonl` |
-| MICE 정규화 | `data/normalized/mice/YYYY-MM-DD/events.jsonl` |
-| MICE 검토 CSV | `reports/YYYY-MM-DD/mice-events.csv`, `mice-sales-signals.csv`, `mice-contact-presence.csv` |
-| MICE 요약 | `reports/YYYY-MM-DD/mice-collection-summary.md` |
-| MICE MVP 로그 | `logs/YYYY-MM-DD_mice_mvp.log` |
+## 데이터 계층
 
-CSV는 Excel 한글 호환을 위해 **UTF-8 BOM(`utf-8-sig`)** 으로 저장한다.
+- `data/raw/`: 공개 원문의 날짜별 원장. 수정하지 않습니다.
+- `data/normalized/`: 정규화 대표 레코드, 중복 근거, 오류, 통계.
+- `reports/`: 사람이 읽는 Top 30, 전체 후보, 상태·경로별 CSV와 요약.
+- `config/`: 실행 정책과 규칙.
+- `app/`: QRPick 운영 코드.
+- `scripts/`: Windows 배치 진입점.
+- `skills/ir-search/`: upstream 수집 스킬. 수정 금지.
 
-`direct-bid-opportunities.csv` / `consortium-opportunities.csv` / `solution-partner-opportunities.csv`는
-나라장터 전용 collector 산출물이 아니다.
-기존 Phase-2 공고 중 조달형(`bid_assessment_applicable`) 입찰 판정 후보이며,
-`source_scope=PHASE2_PROCUREMENT_LIKE_NOT_G2B_COLLECTOR`로 표시한다.
-경로별로 파일을 분리한다(복수 경로 공고는 해당 CSV에 각각 포함).
-`eligibility_status`는 자격·실적·등록 조건만 표현하고, 마감 경과는 readiness/go만 바꾼다.
+CSV는 Excel 한글 호환을 위해 UTF-8 BOM으로 생성합니다.
 
-## 상태코드와 점수의 의미
+## 판정 원칙
 
-| 상태 | 의미 |
-|------|------|
-| HIGH_PRIORITY | QRPick 코어·확장과 직접 연관 신호가 강해 상세검토 우선 (지원 확정 아님) |
-| REVIEW | 연관 가능, 지원형태·효익 추가 검토 |
-| DETAIL_REVIEW | 제목만으로 과제·자격 판단 불가 |
-| LOW_FIT | 직접 관련성 낮음 또는 대상 명확 부적합 |
-| EXPIRED | 마감 종료 |
-| UNKNOWN | 데이터 부족 |
+- 규칙 기반 결과는 지원·입찰 가능 여부의 확정이 아닙니다.
+- MICE 관련성, 영업 경로, 실행 대기열을 분리합니다.
+- 목록 정보만으로 자격·예산·역할을 추정하지 않습니다.
+- 없는 연락처를 생성하지 않고 공개 출처와 근거를 보존합니다.
+- 실패한 소스가 있어도 가능한 범위는 처리하되 `PARTIAL_EXPECTED`, `PARTIAL_UNEXPECTED`, `FAILED`, truncation과 인증 부재를 명시합니다.
+- 불확실한 중복은 합치지 않고 후보 관계로 남깁니다.
 
-점수는 **검토 순서용(0~100)** 이며 지원 가능 여부가 아니다.
-상세 정책은 `docs/phase2-normalization-and-filter-policy.md`를 본다.
+## 라이선스와 경계
 
-## 중복 제거 방식
-
-- 자동 병합: 동일 source+source_id, 또는 정규화 제목+기관+마감 완전 일치
-- 후보만 기록: 제목 일치 + (기관 또는 마감) — fuzzy 병합 없음
-- 불확실하면 별도 공고로 유지
-
-## 자동 필터의 한계 / 회사 TODO 영향
-
-- 목록 메타데이터만 사용한다. 자격·예산·지역제한은 확정하지 않는다.
-- `headquarters_region`·업력이 TODO이면 지역/업력 요건을 판정하지 않고 `DETAIL_REVIEW`/`review_reasons`에 남긴다.
-- NIPA 등에서 과거 마감 공고가 섞이면 EXPIRED가 커질 수 있다.
-- 따라서 **다음 단계에서는 HIGH/REVIEW/DETAIL 후보의 상세공고를 반드시 검증**해야 한다.
-
-### 1단계 실행 검증 메모 (2026-07-15)
-
-- K-Startup: **성공** 217건
-- sources `list all`: **성공** 825건 (bizinfo 450 · nipa 300 · kocca 16 · smtech 59)
-
-### 2단계 실행 검증 메모 (행동 대기열 분리 후, 2026-07-15)
-
-- 입력 1,042 / 대표 1,041 / 오류 0 / 자동병합 1
-- **action_queue**: ACTION_NOW **5** · QUALIFICATION_CHECK **38** · SALES_OUTREACH **108** · WATCHLIST **52** · NO_ACTION **511** · CLOSED **327**
-- **primary_asset_fit_path**: SHOWDA_ASSET_REUSE **29** ← 이전 787에서 감소 · NO_REALISTIC_PATH 819 · SALES_LEAD 116 · CUSTOM_BUILD 55 · EXTENSION 7 · DIRECT 1 · PARTNER 14
-- 즉시 사람 손길 필요한 작업열(ACTION_NOW+QUAL+SALES) ≈ **151건** (유효 714 대비 운영 가능)
-- 회사 프로필: 설립 2021-02-14·서울·대표 신석원 (`INTERNAL_COMPANY_PROFILE_ONLY`)
-- 추적 무결성 PASS (1042)
-- 대기열 CSV: `reports/2026-07-15/action-now.csv` 등
-
-## 원본 ir-search 코드와 QRPick 맞춤 코드의 경계
-
-| 구분 | 경로 | 수정 정책 |
-|------|------|-----------|
-| 원본 수집기·스킬 | `skills/ir-search/` | **수정하지 않음** |
-| QRPick 운영 코드 | `scripts/`, `config/`, `app/`, `tests/`, `docs/` | 이 저장소에서 관리 |
-| 원본·로그 산출물 | `data/raw`, `logs/` | 원본 JSONL은 수정하지 않음 |
-| QRPick 서비스 저장소 | (외부) | **연결·수정하지 않음** |
-
-## 다음 단계
-
-1. 프로필 TODO(업력·소재지) 확정
-2. HIGH/REVIEW/DETAIL 후보 상세공고 선택 수집·자격 체크리스트
-3. 사람 검토 워크플로(스프레드시트/노션) 정착
-4. (이후) 대시보드·제안 파이프라인·추가 관광기관 소스
-
-## 라이선스
-
-업스트림 ir-search 플러그인 라이선스는 루트 `LICENSE`를 따릅니다.
+upstream `ir-search` 플러그인의 라이선스는 루트 `LICENSE`를 따릅니다. QRPick 실제 서비스 저장소, 고객 데이터, CRM과 연결하지 않는 독립 로컬 운영체계입니다.
