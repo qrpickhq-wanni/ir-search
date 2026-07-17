@@ -1,0 +1,1077 @@
+{
+  "run_date": "2026-07-17",
+  "run_status": "OK",
+  "generated_at": "2026-07-17T04:40:14.585131+00:00",
+  "total_count": 2037,
+  "actionable_count": 440,
+  "top30_count": 30,
+  "domain_counts": {
+    "AWARD_WINNER_OUTREACH": 20,
+    "BID_NOTICE": 20,
+    "CONTRACT_RECURRING": 20,
+    "MICE_EVENT": 416,
+    "PRE_NOTICE": 520,
+    "SUPPORT_PROGRAM": 1041
+  },
+  "priority_counts": {
+    "NO_ACTION": 1597,
+    "P1_THIS_WEEK": 13,
+    "P2_REVIEW": 118,
+    "P3_WATCH": 309
+  },
+  "warnings": [],
+  "opportunities": [
+    {
+      "rank": 1,
+      "unified_opportunity_id": "uop:ceee5bf2e5728654b433",
+      "domain_type": "PRE_NOTICE",
+      "title": "2026년 제2회 인천 섬의날 행사 운영 대행",
+      "organization": "인천관광공사",
+      "opportunity_stage": "PRE_NOTICE",
+      "primary_opportunity_route": "SUBCONTRACT_OR_SOLUTION_PARTNER",
+      "priority_band": "P1_THIS_WEEK",
+      "unified_priority_score": 80.0,
+      "relevance_reasons": [
+        "strong:행사 운영",
+        "strong:운영 대행",
+        "첨부·상세 미검증 — 자격 확정 금지 (마감과 무관)",
+        "scope:contract_counterparty_signals:운영 대행",
+        "tender_signals:운영 대행",
+        "qrpick_ops:운영 대행",
+        "route:DIRECT_PRIME_BID(sw_ops_role+contract)",
+        "route:SUBCONTRACT_OR_SOLUTION_PARTNER",
+        "FULL_EVENT_DELIVERY_PARTNER_LED:행사 운영,운영 대행",
+        "PARTNER_LED_EVENT_DELIVERY_WITH_TIMING_OR_SCALE",
+        "행사 운영",
+        "운영 대행"
+      ],
+      "expected_qrpick_role": [
+        "행사 운영",
+        "운영 대행",
+        "운영·현장: 운영 대행"
+      ],
+      "recommended_next_action": "기획사·PCO 후보를 선별해 역할 구성·견적 초안을 준비하고 선제 접촉",
+      "blocking_unknowns": [
+        "gate_unconfirmed:mandatory_bid_qualifications",
+        "gate_unconfirmed:regional_or_sme_restrictions",
+        "gate_unconfirmed:performance_requirements",
+        "gate_unconfirmed:joint_contract_allowed_known",
+        "gate_unconfirmed:delivery_period",
+        "gate_unconfirmed:internal_delivery_capacity",
+        "company_profile_not_officially_verified",
+        "detail_not_verified",
+        "system_supplier_unknown",
+        "registration_open_status_unknown",
+        "DETAIL_NOT_VERIFIED",
+        "QUALIFICATION_REQUIREMENTS_UNKNOWN"
+      ],
+      "posted_at": "2026-07-16",
+      "deadline": "2026-07-19",
+      "source_urls": [
+        "https://apis.data.go.kr/1230000/ao/HrcspSsstndrdInfoService/getPublicPrcureThngInfoServcPPSSrch",
+        "https://www.g2b.go.kr/pn/pnz/pnza/UntyAtchFile/downloadFile.do?bfSpecRegNo=R26BD00253132&fileType=BFDTL&fileSeq=1",
+        "https://www.g2b.go.kr/pn/pnz/pnza/UntyAtchFile/downloadFile.do?bfSpecRegNo=R26BD00253132&fileType=BFDTL&fileSeq=2"
+      ]
+    },
+    {
+      "rank": 2,
+      "unified_opportunity_id": "uop:e93654cb9ead15177ce5",
+      "domain_type": "PRE_NOTICE",
+      "title": "2026 파주페어 북앤컬처 행사 운영 대행",
+      "organization": "재단법인출판도시문화재단",
+      "opportunity_stage": "PRE_NOTICE",
+      "primary_opportunity_route": "SUBCONTRACT_OR_SOLUTION_PARTNER",
+      "priority_band": "P1_THIS_WEEK",
+      "unified_priority_score": 79.25,
+      "relevance_reasons": [
+        "strong:행사 운영",
+        "strong:운영 대행",
+        "첨부·상세 미검증 — 자격 확정 금지 (마감과 무관)",
+        "scope:contract_counterparty_signals:운영 대행",
+        "tender_signals:운영 대행",
+        "qrpick_ops:운영 대행",
+        "route:DIRECT_PRIME_BID(sw_ops_role+contract)",
+        "route:SUBCONTRACT_OR_SOLUTION_PARTNER",
+        "FULL_EVENT_DELIVERY_PARTNER_LED:행사 운영,운영 대행",
+        "PARTNER_LED_EVENT_DELIVERY_WITH_TIMING_OR_SCALE",
+        "행사 운영",
+        "운영 대행"
+      ],
+      "expected_qrpick_role": [
+        "행사 운영",
+        "운영 대행",
+        "운영·현장: 운영 대행"
+      ],
+      "recommended_next_action": "기획사·PCO 후보를 선별해 역할 구성·견적 초안을 준비하고 선제 접촉",
+      "blocking_unknowns": [
+        "gate_unconfirmed:mandatory_bid_qualifications",
+        "gate_unconfirmed:regional_or_sme_restrictions",
+        "gate_unconfirmed:performance_requirements",
+        "gate_unconfirmed:joint_contract_allowed_known",
+        "gate_unconfirmed:delivery_period",
+        "gate_unconfirmed:internal_delivery_capacity",
+        "company_profile_not_officially_verified",
+        "detail_not_verified",
+        "system_supplier_unknown",
+        "registration_open_status_unknown",
+        "DETAIL_NOT_VERIFIED",
+        "QUALIFICATION_REQUIREMENTS_UNKNOWN"
+      ],
+      "posted_at": "2026-07-15",
+      "deadline": "2026-07-20",
+      "source_urls": [
+        "https://apis.data.go.kr/1230000/ao/HrcspSsstndrdInfoService/getPublicPrcureThngInfoServcPPSSrch",
+        "https://www.g2b.go.kr/pn/pnz/pnza/UntyAtchFile/downloadFile.do?bfSpecRegNo=R26BD00252747&fileType=BFDTL&fileSeq=1",
+        "https://www.g2b.go.kr/pn/pnz/pnza/UntyAtchFile/downloadFile.do?bfSpecRegNo=R26BD00252747&fileType=BFDTL&fileSeq=2"
+      ]
+    },
+    {
+      "rank": 3,
+      "unified_opportunity_id": "uop:598dca8af80d6fc971fc",
+      "domain_type": "PRE_NOTICE",
+      "title": "운탄고도 소원의 길 트레킹 행사 운영 대행용역",
+      "organization": "재단법인강원관광재단",
+      "opportunity_stage": "PRE_NOTICE",
+      "primary_opportunity_route": "SUBCONTRACT_OR_SOLUTION_PARTNER",
+      "priority_band": "P1_THIS_WEEK",
+      "unified_priority_score": 79.25,
+      "relevance_reasons": [
+        "strong:행사 운영",
+        "strong:운영 대행",
+        "첨부·상세 미검증 — 자격 확정 금지 (마감과 무관)",
+        "scope:contract_counterparty_signals:용역,운영 대행",
+        "tender_signals:용역,운영 대행",
+        "qrpick_ops:운영 대행",
+        "route:DIRECT_PRIME_BID(sw_ops_role+contract)",
+        "route:SUBCONTRACT_OR_SOLUTION_PARTNER",
+        "FULL_EVENT_DELIVERY_PARTNER_LED:행사 운영,운영 대행",
+        "PARTNER_LED_EVENT_DELIVERY_WITH_TIMING_OR_SCALE",
+        "행사 운영",
+        "운영 대행"
+      ],
+      "expected_qrpick_role": [
+        "행사 운영",
+        "운영 대행",
+        "운영·현장: 운영 대행"
+      ],
+      "recommended_next_action": "기획사·PCO 후보를 선별해 역할 구성·견적 초안을 준비하고 선제 접촉",
+      "blocking_unknowns": [
+        "gate_unconfirmed:mandatory_bid_qualifications",
+        "gate_unconfirmed:regional_or_sme_restrictions",
+        "gate_unconfirmed:performance_requirements",
+        "gate_unconfirmed:joint_contract_allowed_known",
+        "gate_unconfirmed:delivery_period",
+        "gate_unconfirmed:internal_delivery_capacity",
+        "company_profile_not_officially_verified",
+        "detail_not_verified",
+        "system_supplier_unknown",
+        "registration_open_status_unknown",
+        "DETAIL_NOT_VERIFIED",
+        "QUALIFICATION_REQUIREMENTS_UNKNOWN"
+      ],
+      "posted_at": "2026-07-16",
+      "deadline": "2026-07-21",
+      "source_urls": [
+        "https://apis.data.go.kr/1230000/ao/HrcspSsstndrdInfoService/getPublicPrcureThngInfoServcPPSSrch",
+        "https://www.g2b.go.kr/pn/pnz/pnza/UntyAtchFile/downloadFile.do?bfSpecRegNo=R26BD00253042&fileType=BFDTL&fileSeq=1",
+        "https://www.g2b.go.kr/pn/pnz/pnza/UntyAtchFile/downloadFile.do?bfSpecRegNo=R26BD00253042&fileType=BFDTL&fileSeq=2"
+      ]
+    },
+    {
+      "rank": 4,
+      "unified_opportunity_id": "uop:75187c1a7cb4a0e0f691",
+      "domain_type": "PRE_NOTICE",
+      "title": "2026 영등포 청소년 진로축제 ‘자몽’ 행사 운영 용역",
+      "organization": "서울특별시 영등포구",
+      "opportunity_stage": "PRE_NOTICE",
+      "primary_opportunity_route": "SUBCONTRACT_OR_SOLUTION_PARTNER",
+      "priority_band": "P1_THIS_WEEK",
+      "unified_priority_score": 79.25,
+      "relevance_reasons": [
+        "strong:행사 운영",
+        "weak:축제",
+        "첨부·상세 미검증 — 자격 확정 금지 (마감과 무관)",
+        "scope:contract_counterparty_signals:용역",
+        "tender_signals:용역",
+        "route:DIRECT_PRIME_BID(sw_ops_role+contract)",
+        "route:SUBCONTRACT_OR_SOLUTION_PARTNER",
+        "FULL_EVENT_DELIVERY_PARTNER_LED:행사 운영,축제",
+        "PARTNER_LED_EVENT_DELIVERY_WITH_TIMING_OR_SCALE",
+        "행사 운영",
+        "축제"
+      ],
+      "expected_qrpick_role": [
+        "행사 운영",
+        "축제"
+      ],
+      "recommended_next_action": "기획사·PCO 후보를 선별해 역할 구성·견적 초안을 준비하고 선제 접촉",
+      "blocking_unknowns": [
+        "gate_unconfirmed:mandatory_bid_qualifications",
+        "gate_unconfirmed:regional_or_sme_restrictions",
+        "gate_unconfirmed:performance_requirements",
+        "gate_unconfirmed:joint_contract_allowed_known",
+        "gate_unconfirmed:qrpick_showda_role_scope",
+        "gate_unconfirmed:delivery_period",
+        "gate_unconfirmed:internal_delivery_capacity",
+        "company_profile_not_officially_verified",
+        "detail_not_verified",
+        "system_supplier_unknown",
+        "registration_open_status_unknown",
+        "DETAIL_NOT_VERIFIED",
+        "QUALIFICATION_REQUIREMENTS_UNKNOWN"
+      ],
+      "posted_at": "2026-07-16",
+      "deadline": "2026-07-21",
+      "source_urls": [
+        "https://apis.data.go.kr/1230000/ao/HrcspSsstndrdInfoService/getPublicPrcureThngInfoServcPPSSrch",
+        "https://www.g2b.go.kr/pn/pnz/pnza/UntyAtchFile/downloadFile.do?bfSpecRegNo=R26BD00253220&fileType=BFDTL&fileSeq=1",
+        "https://www.g2b.go.kr/pn/pnz/pnza/UntyAtchFile/downloadFile.do?bfSpecRegNo=R26BD00253220&fileType=BFDTL&fileSeq=2"
+      ]
+    },
+    {
+      "rank": 5,
+      "unified_opportunity_id": "uop:a5fc00a237bfa2420797",
+      "domain_type": "AWARD_WINNER_OUTREACH",
+      "title": "2026 한글주간 행사 대행",
+      "organization": "(주)동아일보사",
+      "opportunity_stage": "AWARD_RESULT",
+      "primary_opportunity_route": "AWARD_WINNER_SALES",
+      "priority_band": "P1_THIS_WEEK",
+      "unified_priority_score": 75.75,
+      "relevance_reasons": [
+        "strong:행사 대행",
+        "scope_excluded:opportunity_type_PROCUREMENT_OR_BUILD_without_contract_token"
+      ],
+      "expected_qrpick_role": [
+        "상세 과업에서 QRPick·쇼다 역할 확인 필요"
+      ],
+      "recommended_next_action": "낙찰기업 공개연락처로 시스템·운영 공급 제안 (공급사 미정)",
+      "blocking_unknowns": [
+        "system_supplier_unknown",
+        "registration_open_status_unknown",
+        "DETAIL_NOT_VERIFIED"
+      ],
+      "posted_at": "2026-06-18",
+      "deadline": null,
+      "source_urls": [
+        "https://apis.data.go.kr/1230000/as/ScsbidInfoService/getScsbidListSttusServc"
+      ]
+    },
+    {
+      "rank": 6,
+      "unified_opportunity_id": "uop:6493b237cacf3727182c",
+      "domain_type": "AWARD_WINNER_OUTREACH",
+      "title": "「2026년 옛길따라 만나는 문화체험」 경기옛길 마라톤 행사 운영 용역",
+      "organization": "주식회사 로드스포츠",
+      "opportunity_stage": "AWARD_RESULT",
+      "primary_opportunity_route": "AWARD_WINNER_SALES",
+      "priority_band": "P1_THIS_WEEK",
+      "unified_priority_score": 73.5,
+      "relevance_reasons": [
+        "strong:행사 운영",
+        "첨부·상세 미검증 — 자격 확정 금지 (마감과 무관)",
+        "scope:contract_counterparty_signals:용역",
+        "tender_signals:용역",
+        "route:DIRECT_PRIME_BID(sw_ops_role+contract)",
+        "route:SUBCONTRACT_OR_SOLUTION_PARTNER"
+      ],
+      "expected_qrpick_role": [
+        "상세 과업에서 QRPick·쇼다 역할 확인 필요"
+      ],
+      "recommended_next_action": "낙찰사 공개 연락경로와 시스템 공급사 상태를 확인 후 QRPick 역할을 제안",
+      "blocking_unknowns": [
+        "gate_unconfirmed:announcement_and_proposal_deadline",
+        "gate_unconfirmed:mandatory_bid_qualifications",
+        "gate_unconfirmed:regional_or_sme_restrictions",
+        "gate_unconfirmed:performance_requirements",
+        "gate_unconfirmed:joint_contract_allowed_known",
+        "gate_unconfirmed:qrpick_showda_role_scope",
+        "gate_unconfirmed:delivery_period",
+        "gate_unconfirmed:budget_or_estimated_amount",
+        "gate_unconfirmed:internal_delivery_capacity",
+        "company_profile_not_officially_verified",
+        "attachments_not_fetched",
+        "detail_not_verified",
+        "system_supplier_unknown",
+        "registration_open_status_unknown",
+        "DETAIL_NOT_VERIFIED"
+      ],
+      "posted_at": "2026-06-25",
+      "deadline": null,
+      "source_urls": [
+        "https://apis.data.go.kr/1230000/as/ScsbidInfoService/getScsbidListSttusServc"
+      ]
+    },
+    {
+      "rank": 7,
+      "unified_opportunity_id": "uop:36265a13f0cdb115bd90",
+      "domain_type": "MICE_EVENT",
+      "title": "2026 그린에너텍 (GreenEnerTEC 2026)",
+      "organization": "인천광역시",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "ORGANIZER_OUTREACH",
+      "priority_band": "P1_THIS_WEEK",
+      "unified_priority_score": 73.0,
+      "relevance_reasons": [
+        "contact_phone",
+        "registration_text",
+        "organizer_name",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH",
+        "REGISTRATION"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "EXHIBITOR_LEAD"
+      ],
+      "recommended_next_action": "공개 업무 연락처 기준 접촉 검토",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-08-05",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117",
+        "https://greenenertec.com/GETEC/120006"
+      ]
+    },
+    {
+      "rank": 8,
+      "unified_opportunity_id": "uop:1d09f26f16fa3b07faaa",
+      "domain_type": "MICE_EVENT",
+      "title": "2026 물환경 혁신 전시회 (Innovation in Hydro-Environments)",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P1_THIS_WEEK",
+      "unified_priority_score": 68.0,
+      "relevance_reasons": [
+        "contact_phone",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "EXHIBITOR_LEAD"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-07-20",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117",
+        "https://swgic.org/"
+      ]
+    },
+    {
+      "rank": 9,
+      "unified_opportunity_id": "uop:48fc4c332440daf389c3",
+      "domain_type": "MICE_EVENT",
+      "title": "2026 뷰티&헬스케어쇼",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P1_THIS_WEEK",
+      "unified_priority_score": 68.0,
+      "relevance_reasons": [
+        "contact_phone",
+        "registration_text",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH",
+        "REGISTRATION"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "EXHIBITOR_LEAD"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-07-23",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117",
+        "https://www.beautyhealthcareshow.com/62"
+      ]
+    },
+    {
+      "rank": 10,
+      "unified_opportunity_id": "uop:c7e6df03a858555eb8d6",
+      "domain_type": "MICE_EVENT",
+      "title": "2026 인천가구박람회 2차",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P1_THIS_WEEK",
+      "unified_priority_score": 68.0,
+      "relevance_reasons": [
+        "contact_phone",
+        "registration_text",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH",
+        "REGISTRATION"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "EXHIBITOR_LEAD"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-07-23",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117",
+        "https://www.icnff.com"
+      ]
+    },
+    {
+      "rank": 11,
+      "unified_opportunity_id": "uop:4e892e6945d915d75412",
+      "domain_type": "MICE_EVENT",
+      "title": "2026 인천광역시 제61회 전국기능경기대회",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P1_THIS_WEEK",
+      "unified_priority_score": 66.75,
+      "relevance_reasons": [
+        "contact_phone",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "EXHIBITOR_LEAD"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-08-22",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117"
+      ]
+    },
+    {
+      "rank": 12,
+      "unified_opportunity_id": "uop:a1de354b74ef314e7d57",
+      "domain_type": "MICE_EVENT",
+      "title": "정브르X헌터퐝 키워 특수동물 EXPO with 크리에이터 기획전",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P1_THIS_WEEK",
+      "unified_priority_score": 65.5,
+      "relevance_reasons": [
+        "contact_email",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "EXHIBITOR_LEAD"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-08-01",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117",
+        "https://www.kiwo.kr/"
+      ]
+    },
+    {
+      "rank": 13,
+      "unified_opportunity_id": "uop:5790dc7fc2617568ac0c",
+      "domain_type": "MICE_EVENT",
+      "title": "2026 G12 한국 컨퍼런스",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P1_THIS_WEEK",
+      "unified_priority_score": 65.5,
+      "relevance_reasons": [
+        "contact_phone",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "SESSION_MANAGEMENT"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-08-06",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117"
+      ]
+    },
+    {
+      "rank": 14,
+      "unified_opportunity_id": "uop:791dd3bd0d3f7938462a",
+      "domain_type": "MICE_EVENT",
+      "title": "33회 인천 베이비&키즈페어",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 62.75,
+      "relevance_reasons": [
+        "contact_phone",
+        "registration_text",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH",
+        "REGISTRATION"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "EXHIBITOR_LEAD"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-09-03",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117",
+        "http://www.ibabyshow.co.kr/"
+      ]
+    },
+    {
+      "rank": 15,
+      "unified_opportunity_id": "uop:0f72a74e0e13d46197c3",
+      "domain_type": "MICE_EVENT",
+      "title": "2026 국제 반도체 기판 및 첨단 패키징 산업전 (KPCA SHOW 2026)",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 62.75,
+      "relevance_reasons": [
+        "contact_phone",
+        "registration_text",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH",
+        "REGISTRATION"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "EXHIBITOR_LEAD"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-09-09",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117",
+        "http://www.kpcashow.com"
+      ]
+    },
+    {
+      "rank": 16,
+      "unified_opportunity_id": "uop:a8079a665023da3c68f2",
+      "domain_type": "MICE_EVENT",
+      "title": "G-ROUND ART FAIR 2026",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 62.75,
+      "relevance_reasons": [
+        "contact_phone",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "EXHIBITOR_LEAD"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-09-17",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117",
+        "https://www.ground-artfair.com/ko"
+      ]
+    },
+    {
+      "rank": 17,
+      "unified_opportunity_id": "uop:cef02d7d2558a0f3f8e4",
+      "domain_type": "MICE_EVENT",
+      "title": "2026 케이펫페어 송도(대한민국펫산업박람회)",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 62.75,
+      "relevance_reasons": [
+        "contact_phone",
+        "registration_text",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH",
+        "REGISTRATION"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "EXHIBITOR_LEAD"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-09-18",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117"
+      ]
+    },
+    {
+      "rank": 18,
+      "unified_opportunity_id": "uop:af7bd68dce019f171313",
+      "domain_type": "MICE_EVENT",
+      "title": "제24차 세계한상대회(World Korean Business Convention 2026)",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 62.75,
+      "relevance_reasons": [
+        "contact_phone",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "SESSION_MANAGEMENT"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-09-28",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117",
+        "https://hansang.net/"
+      ]
+    },
+    {
+      "rank": 19,
+      "unified_opportunity_id": "uop:fb427787ebe5e5fd1a86",
+      "domain_type": "MICE_EVENT",
+      "title": "국제치안산업대전",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 62.75,
+      "relevance_reasons": [
+        "contact_phone",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "EXHIBITOR_LEAD"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-10-21",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117",
+        "https://police-expo.com/"
+      ]
+    },
+    {
+      "rank": 20,
+      "unified_opportunity_id": "uop:156c1b2df78167a04ddb",
+      "domain_type": "MICE_EVENT",
+      "title": "2026 인천 일러스트코리아",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 62.75,
+      "relevance_reasons": [
+        "contact_phone",
+        "registration_text",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH",
+        "REGISTRATION"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "EXHIBITOR_LEAD"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-10-30",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117",
+        "https://illustrationkorea.co.kr/incheon/"
+      ]
+    },
+    {
+      "rank": 21,
+      "unified_opportunity_id": "uop:93cc0dd5a2fd68efb61a",
+      "domain_type": "MICE_EVENT",
+      "title": "2026 인천 슈퍼아웃도어 페스티벌",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 62.75,
+      "relevance_reasons": [
+        "contact_phone",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "EXHIBITOR_LEAD"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-10-30",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117",
+        "https://gocaf.kr/"
+      ]
+    },
+    {
+      "rank": 22,
+      "unified_opportunity_id": "uop:1d27a4c262abbaff53a1",
+      "domain_type": "MICE_EVENT",
+      "title": "제61차 대한방사선사 학술대회 및 국제학술대회",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 62.75,
+      "relevance_reasons": [
+        "contact_email",
+        "contact_phone",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "SESSION_MANAGEMENT"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-10-31",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117",
+        "https://conf.krta.or.kr/"
+      ]
+    },
+    {
+      "rank": 23,
+      "unified_opportunity_id": "uop:f008832157a83c8fccab",
+      "domain_type": "MICE_EVENT",
+      "title": "제5회 세계를 품은 인천교육 한마당",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 62.75,
+      "relevance_reasons": [
+        "contact_phone",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "EXHIBITOR_LEAD"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-11-10",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117",
+        "https://www.ice.go.kr/"
+      ]
+    },
+    {
+      "rank": 24,
+      "unified_opportunity_id": "uop:4addc29094edec7e2f93",
+      "domain_type": "MICE_EVENT",
+      "title": "IQT 코리아 2026",
+      "organization": "3DR 홀딩스",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "ORGANIZER_OUTREACH",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 62.5,
+      "relevance_reasons": [
+        "contact_phone",
+        "organizer_name",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH"
+      ],
+      "expected_qrpick_role": [
+        "상세 과업에서 QRPick·쇼다 역할 확인 필요"
+      ],
+      "recommended_next_action": "공개 업무 연락처 기준 접촉 검토",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:19:45+09:00",
+      "deadline": "2026-11-25",
+      "source_urls": [
+        "https://k-mice.visitkorea.or.kr/miceCalendar.kto?func_name=calView&EVENT_NO=15635",
+        "https://iqtkorea.com",
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117"
+      ]
+    },
+    {
+      "rank": 25,
+      "unified_opportunity_id": "uop:f20c0cc0e1dc74954c40",
+      "domain_type": "SUPPORT_PROGRAM",
+      "title": "[경남] 남해군ㆍ함양군 2026년 시군구연고산업육성 협업프로젝트 수출상담회 지원기업 통합 공고",
+      "organization": "중소벤처기업부 / 경남테크노파크",
+      "opportunity_stage": "REVIEW",
+      "primary_opportunity_route": "SHOWDA_ASSET_REUSE",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 59.25,
+      "relevance_reasons": [
+        "자산군 근거: B2B_MATCHING_OR_COMMERCE:상담회",
+        "영업단서 근거: 수출상담회",
+        "event_types 신호 확인: 수출상담회, 상담회",
+        "core_mice 신호 확인: 수출상담회, 상담회",
+        "export_market 신호 확인: 수출",
+        "고가치 신호 그룹 결합 가점 (+18): core_mice, event_types",
+        "입찰근거:scope_excluded:no_contract_counterparty_signal",
+        "회사정보(설립일·소재지·대표)는 내부 프로필만 반영 — 사업자등록증·등기부 검증 전이라 공식 자격판정에 사용하지 않음",
+        "행동대기열 SALES_OUTREACH — 영업·참가 효익 확인",
+        "scope_excluded:no_contract_counterparty_signal"
+      ],
+      "expected_qrpick_role": [
+        "B2B_MATCHING_OR_COMMERCE"
+      ],
+      "recommended_next_action": "참가·부스·판로 영업단서 — 상세·비용·효익 확인 후 아웃리치 여부 판단",
+      "blocking_unknowns": [
+        "신청자격",
+        "지원내용·과업산출물",
+        "지원주체",
+        "과업범위",
+        "컨소시엄 필요 여부",
+        "ACTION_NOW 미부여: detail_verification_status != VERIFIED (현재 NOT_FETCHED)",
+        "blocking_unknowns: 신청자격, 지원내용·과업산출물, 지원주체, 과업범위, 컨소시엄 필요 여부",
+        "soft_company_unknowns: 소재지(공식검증 전), 업력(공식검증 전)",
+        "DETAIL_NOT_VERIFIED"
+      ],
+      "posted_at": "2026-07-13",
+      "deadline": "2026-07-20",
+      "source_urls": [
+        "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000124301"
+      ]
+    },
+    {
+      "rank": 26,
+      "unified_opportunity_id": "uop:12d4130ba4fbfe53947a",
+      "domain_type": "MICE_EVENT",
+      "title": "인천아트쇼 2026",
+      "organization": "",
+      "opportunity_stage": "UPCOMING",
+      "primary_opportunity_route": "WATCH",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 58.75,
+      "relevance_reasons": [
+        "contact_phone",
+        "official_inquiry_url",
+        "ORGANIZER_OUTREACH"
+      ],
+      "expected_qrpick_role": [
+        "REGISTRATION",
+        "CHECKIN",
+        "EXHIBITOR_LEAD"
+      ],
+      "recommended_next_action": "공식 URL만 확인 — 주최·운영기관 확인 필요",
+      "blocking_unknowns": [],
+      "posted_at": "2026-07-16T10:16:53+09:00",
+      "deadline": "2026-11-19",
+      "source_urls": [
+        "https://songdoconvensia.visitincheon.or.kr/openApi/event.do?resultType=json&stdate=20260517&eddate=20280117",
+        "https://www.iartshow.co.kr/"
+      ]
+    },
+    {
+      "rank": 27,
+      "unified_opportunity_id": "uop:3c01d0b24f4e2b375cc2",
+      "domain_type": "SUPPORT_PROGRAM",
+      "title": "[강원] 2026년 강원 바이오엑스포ㆍ지역 창업 페스티벌 해외바이어 초청 수출상담회 및 취창업박람회 참가기업 추가 모집 공고",
+      "organization": "강원특별자치도 / 춘천바이오산업진흥원",
+      "opportunity_stage": "REVIEW",
+      "primary_opportunity_route": "SHOWDA_ASSET_REUSE",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 57.5,
+      "relevance_reasons": [
+        "자산군 근거: B2B_MATCHING_OR_COMMERCE:상담회",
+        "영업단서 근거: 참가기업, 수출상담회",
+        "event_types 신호 확인: 박람회, 엑스포, 페스티벌, 수출상담회, 상담회",
+        "core_mice 신호 확인: 수출상담회, 상담회, 박람회",
+        "export_market 신호 확인: 수출",
+        "고가치 신호 그룹 결합 가점 (+18): core_mice, event_types",
+        "입찰근거:scope_excluded:exhibition_or_sales_signal_not_bid",
+        "회사정보(설립일·소재지·대표)는 내부 프로필만 반영 — 사업자등록증·등기부 검증 전이라 공식 자격판정에 사용하지 않음",
+        "행동대기열 SALES_OUTREACH — 영업·참가 효익 확인",
+        "scope_excluded:exhibition_or_sales_signal_not_bid"
+      ],
+      "expected_qrpick_role": [
+        "B2B_MATCHING_OR_COMMERCE"
+      ],
+      "recommended_next_action": "참가·부스·판로 영업단서 — 상세·비용·효익 확인 후 아웃리치 여부 판단",
+      "blocking_unknowns": [
+        "신청자격",
+        "지원내용·과업산출물",
+        "지원주체",
+        "과업범위",
+        "컨소시엄 필요 여부",
+        "ACTION_NOW 미부여: detail_verification_status != VERIFIED (현재 NOT_FETCHED)",
+        "blocking_unknowns: 신청자격, 지원내용·과업산출물, 지원주체, 과업범위, 컨소시엄 필요 여부",
+        "soft_company_unknowns: 소재지(공식검증 전), 업력(공식검증 전)",
+        "DETAIL_NOT_VERIFIED"
+      ],
+      "posted_at": "2026-07-06",
+      "deadline": "2026-07-17",
+      "source_urls": [
+        "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123959"
+      ]
+    },
+    {
+      "rank": 28,
+      "unified_opportunity_id": "uop:c6e9af31b88ed15cc042",
+      "domain_type": "SUPPORT_PROGRAM",
+      "title": "2026년도 SaaS 전환 컨설팅 2차 수요기업 모집",
+      "organization": "NIPA",
+      "opportunity_stage": "DETAIL_REVIEW",
+      "primary_opportunity_route": "SHOWDA_ASSET_REUSE",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 56.75,
+      "relevance_reasons": [
+        "자산군 근거: WEB_SAAS_SERVICE_PLANNING:SaaS",
+        "technology 신호 확인: SaaS",
+        "service_build 신호 확인: 컨설팅",
+        "입찰근거:scope_excluded:non_contract_notice:수요기업 모집",
+        "회사정보(설립일·소재지·대표)는 내부 프로필만 반영 — 사업자등록증·등기부 검증 전이라 공식 자격판정에 사용하지 않음",
+        "행동대기열 QUALIFICATION_CHECK — 자격·과제 상세 확인",
+        "scope_excluded:non_contract_notice:수요기업 모집"
+      ],
+      "expected_qrpick_role": [
+        "WEB_SAAS_SERVICE_PLANNING"
+      ],
+      "recommended_next_action": "OI/실증·수요과제 — 상세공고·자격·매칭 조건 확인",
+      "blocking_unknowns": [
+        "신청자격",
+        "지원내용·과업산출물",
+        "지원주체",
+        "과업범위",
+        "컨소시엄 필요 여부",
+        "ACTION_NOW 미부여: detail_verification_status != VERIFIED (현재 NOT_FETCHED)",
+        "blocking_unknowns: 신청자격, 지원내용·과업산출물, 지원주체, 과업범위, 컨소시엄 필요 여부",
+        "soft_company_unknowns: 소재지(공식검증 전), 업력(공식검증 전)",
+        "DETAIL_NOT_VERIFIED"
+      ],
+      "posted_at": "2026-06-23",
+      "deadline": "2026-07-20",
+      "source_urls": [
+        "https://www.nipa.kr/home/2-2/16827"
+      ]
+    },
+    {
+      "rank": 29,
+      "unified_opportunity_id": "uop:71a0a2fb8cf239d25250",
+      "domain_type": "SUPPORT_PROGRAM",
+      "title": "2026년 판매상담회(기후산업국제박람회 연계) 참여기업 모집 공고",
+      "organization": "중소벤처기업부 / 한국중소벤처기업유통원",
+      "opportunity_stage": "REVIEW",
+      "primary_opportunity_route": "SHOWDA_ASSET_REUSE",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 56.75,
+      "relevance_reasons": [
+        "자산군 근거: B2B_MATCHING_OR_COMMERCE:상담회",
+        "영업단서 근거: 전시·참가·판로 신호",
+        "event_types 신호 확인: 박람회, 상담회",
+        "core_mice 신호 확인: 상담회, 박람회",
+        "export_market 신호 확인: 수출",
+        "고가치 신호 그룹 결합 가점 (+18): core_mice, event_types",
+        "입찰근거:scope_excluded:non_contract_notice:참여기업 모집",
+        "회사정보(설립일·소재지·대표)는 내부 프로필만 반영 — 사업자등록증·등기부 검증 전이라 공식 자격판정에 사용하지 않음",
+        "행동대기열 SALES_OUTREACH — 영업·참가 효익 확인",
+        "scope_excluded:non_contract_notice:참여기업 모집"
+      ],
+      "expected_qrpick_role": [
+        "B2B_MATCHING_OR_COMMERCE"
+      ],
+      "recommended_next_action": "참가·부스·판로 영업단서 — 상세·비용·효익 확인 후 아웃리치 여부 판단",
+      "blocking_unknowns": [
+        "신청자격",
+        "지원내용·과업산출물",
+        "지원주체",
+        "과업범위",
+        "컨소시엄 필요 여부",
+        "ACTION_NOW 미부여: detail_verification_status != VERIFIED (현재 NOT_FETCHED)",
+        "blocking_unknowns: 신청자격, 지원내용·과업산출물, 지원주체, 과업범위, 컨소시엄 필요 여부",
+        "soft_company_unknowns: 소재지(공식검증 전), 업력(공식검증 전)",
+        "DETAIL_NOT_VERIFIED"
+      ],
+      "posted_at": "2026-07-09",
+      "deadline": "2026-07-22",
+      "source_urls": [
+        "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000124183"
+      ]
+    },
+    {
+      "rank": 30,
+      "unified_opportunity_id": "uop:cfc7e025bb19bd3bcd27",
+      "domain_type": "SUPPORT_PROGRAM",
+      "title": "[대구] 2026년 3차 지역주력산업육성(지역특화 프로젝트 레전드 50+) 지원모집 공고(로봇)",
+      "organization": "중소벤처기업부 / 대구기계부품연구원",
+      "opportunity_stage": "DETAIL_REVIEW",
+      "primary_opportunity_route": "PARTNER_CONSORTIUM",
+      "priority_band": "P2_REVIEW",
+      "unified_priority_score": 56.25,
+      "relevance_reasons": [
+        "파트너 근거: 로봇",
+        "입찰근거:scope_excluded:no_contract_counterparty_signal",
+        "회사정보(설립일·소재지·대표)는 내부 프로필만 반영 — 사업자등록증·등기부 검증 전이라 공식 자격판정에 사용하지 않음",
+        "행동대기열 QUALIFICATION_CHECK — 자격·과제 상세 확인",
+        "scope_excluded:no_contract_counterparty_signal"
+      ],
+      "expected_qrpick_role": [
+        "상세 과업에서 QRPick·쇼다 역할 확인 필요"
+      ],
+      "recommended_next_action": "전문 도메인 구축·파트너 가능 — 상세에서 역할·컨소시엄 확인",
+      "blocking_unknowns": [
+        "신청자격",
+        "지원내용·과업산출물",
+        "지원주체",
+        "과업범위",
+        "컨소시엄 필요 여부",
+        "ACTION_NOW 미부여: detail_verification_status != VERIFIED (현재 NOT_FETCHED)",
+        "blocking_unknowns: 신청자격, 지원내용·과업산출물, 지원주체, 과업범위, 컨소시엄 필요 여부",
+        "soft_company_unknowns: 소재지(공식검증 전), 업력(공식검증 전)",
+        "DETAIL_NOT_VERIFIED"
+      ],
+      "posted_at": "2026-07-13",
+      "deadline": "2026-07-17",
+      "source_urls": [
+        "https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000124292"
+      ]
+    }
+  ]
+}

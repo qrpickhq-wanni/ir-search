@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>QRPick Opportunity Pipeline</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">INTERNAL SALES REVIEW</p>
+        <h1>QRPick Opportunity Pipeline</h1>
+        <p class="subtitle">이번 주 우선 검토할 영업기회 Top 30</p>
+      </div>
+      <span id="status-badge" class="status-badge status-loading">불러오는 중</span>
+    </header>
+
+    <main>
+      <section id="warning-banner" class="warning-banner" hidden aria-live="polite"></section>
+
+      <section class="kpi-grid" aria-label="실행 요약">
+        <article class="kpi"><span>실행일</span><strong id="kpi-run-date">-</strong></article>
+        <article class="kpi"><span>실행 상태</span><strong id="kpi-status">-</strong></article>
+        <article class="kpi"><span>전체 원장</span><strong id="kpi-total">-</strong></article>
+        <article class="kpi"><span>행동 후보</span><strong id="kpi-actionable">-</strong></article>
+        <article class="kpi"><span>Top 30</span><strong id="kpi-top30">-</strong></article>
+      </section>
+
+      <section class="workspace" aria-label="통합 기회 목록">
+        <div class="toolbar">
+          <div class="filter-field">
+            <label for="priority-filter">우선순위</label>
+            <select id="priority-filter">
+              <option value="">전체</option>
+            </select>
+          </div>
+          <div class="filter-field">
+            <label for="domain-filter">도메인</label>
+            <select id="domain-filter">
+              <option value="">전체</option>
+            </select>
+          </div>
+          <div class="filter-field search-field">
+            <label for="search-input">검색</label>
+            <input
+              id="search-input"
+              type="search"
+              placeholder="사업명, 기관명, 다음 행동"
+              autocomplete="off"
+            >
+          </div>
+          <p id="result-count" class="result-count" aria-live="polite">0건</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">순위</th>
+                <th scope="col">우선순위</th>
+                <th scope="col">도메인</th>
+                <th scope="col">사업명</th>
+                <th scope="col">기관</th>
+                <th scope="col">마감일</th>
+                <th scope="col">점수</th>
+                <th scope="col">다음 행동</th>
+              </tr>
+            </thead>
+            <tbody id="opportunity-rows"></tbody>
+          </table>
+          <p id="empty-state" class="empty-state" hidden>필터 조건에 맞는 기회가 없습니다.</p>
+        </div>
+      </section>
+    </main>
+
+    <div id="detail-backdrop" class="detail-backdrop" hidden></div>
+    <aside
+      id="detail-panel"
+      class="detail-panel"
+      aria-labelledby="detail-title"
+      aria-hidden="true"
+    >
+      <div class="detail-header">
+        <div>
+          <p id="detail-meta" class="detail-meta"></p>
+          <h2 id="detail-title">기회 상세</h2>
+        </div>
+        <button id="detail-close" class="detail-close" type="button" aria-label="상세 닫기">×</button>
+      </div>
+      <div id="detail-content" class="detail-content"></div>
+    </aside>
+
+    <footer>
+      조회 전용 내부 화면 · 데이터 수정과 자동 판정을 제공하지 않습니다.
+    </footer>
+  </body>
+</html>
