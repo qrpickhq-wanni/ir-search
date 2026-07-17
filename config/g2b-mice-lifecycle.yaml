@@ -23,7 +23,7 @@ http:
   max_retries: 2
   retry_backoff_seconds: 1.0
   user_agent: "QRPickG2BMiceMVP/1.0 (+internal research; polite; delay>=0.5s)"
-  max_requests_per_run: 200
+  max_requests_per_run: 800
 
 limits:
   max_records_per_stage: 500

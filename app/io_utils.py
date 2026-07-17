@@ -181,9 +181,15 @@ G2B_DIRECT_BID_COLUMNS = DIRECT_BID_COLUMNS
 G2B_CONSORTIUM_COLUMNS = CONSORTIUM_COLUMNS
 
 
-def write_mapped_csv_bom(path: Path, columns: list[tuple[str, str]], rows: list[dict[str, Any]]) -> None:
+def write_mapped_csv_bom(
+    path: Path,
+    columns: list[tuple[str, str]],
+    rows: list[dict[str, Any]],
+    *,
+    preserve_order: bool = False,
+) -> None:
     ensure_dir(path.parent)
-    ordered = sort_for_csv(rows)
+    ordered = rows if preserve_order else sort_for_csv(rows)
     with path.open("w", encoding="utf-8-sig", newline="") as f:
         writer = csv.writer(f)
         writer.writerow([c[0] for c in columns])

@@ -12,6 +12,7 @@ from app.mice_collectors.http_client import PoliteHttpClient
 
 COLLECTOR_VERSION = "1.0.0"
 KST = timezone(timedelta(hours=9))
+_SERVICE_KEY_UNSET = object()
 
 
 def now_iso() -> str:
@@ -19,15 +20,19 @@ def now_iso() -> str:
 
 
 def resolve_service_key(config: dict[str, Any]) -> str | None:
+    """Return raw env key (whitespace-stripped). Shape checks happen in api_client."""
     auth = config.get("auth") or {}
     names = [auth.get("env_var") or "DATA_GO_KR_SERVICE_KEY"]
     names.extend(auth.get("alt_env_vars") or [])
     for name in names:
         if not name:
             continue
-        val = (os.environ.get(str(name)) or "").strip()
-        if val:
-            return val
+        val = os.environ.get(str(name))
+        if val is None:
+            continue
+        stripped = str(val).strip()
+        if stripped:
+            return stripped
     return None
 
 
@@ -71,20 +76,39 @@ class ProcurementCollector:
         raw_dir: Path,
         today: date | None = None,
         http: PoliteHttpClient | None = None,
-        service_key: str | None = None,
+        service_key: str | None | object = _SERVICE_KEY_UNSET,
+        from_date: date | None = None,
+        to_date: date | None = None,
+        max_records: int | None = None,
+        max_pages: int | None = None,
+        smoke_test: bool = False,
     ) -> None:
         self.config = config
         self.raw_dir = raw_dir
         self.today = today or date.today()
-        self.service_key = service_key if service_key is not None else resolve_service_key(config)
+        self.from_date = from_date
+        self.to_date = to_date
+        self.smoke_test = smoke_test
+        if service_key is _SERVICE_KEY_UNSET:
+            self.service_key = resolve_service_key(config)
+        else:
+            self.service_key = (str(service_key).strip() if service_key else None) or None
         http_cfg = config.get("http") or {}
         limits = config.get("limits") or {}
-        self.max_records = int(limits.get("max_records_per_stage", 500))
-        self.max_pages = int(limits.get("max_pages_per_query", 20))
-        self.num_of_rows = int(limits.get("num_of_rows", 100))
+        self.max_records = int(
+            max_records if max_records is not None else limits.get("max_records_per_stage", 500)
+        )
+        self.max_pages = int(
+            max_pages if max_pages is not None else limits.get("max_pages_per_query", 20)
+        )
+        default_rows = int(limits.get("num_of_rows", 100))
+        self.num_of_rows = min(default_rows, self.max_records) if smoke_test else default_rows
         self.collector_version = str(config.get("collector_version") or COLLECTOR_VERSION)
         if http is not None:
             self.http = http
+        elif not self.service_key:
+            # No auth key — never open live HTTP in collectors.
+            self.http = None
         else:
             self.http = PoliteHttpClient(
                 user_agent=str(http_cfg.get("user_agent") or "QRPickG2BMiceMVP/1.0"),
@@ -96,8 +120,11 @@ class ProcurementCollector:
             )
 
     def date_window(self, past_days: int) -> tuple[str, str]:
-        end = self.today
-        start = self.today - timedelta(days=past_days)
+        end = self.to_date or self.today
+        if self.from_date:
+            start = self.from_date
+        else:
+            start = end - timedelta(days=past_days)
         return start.strftime("%Y%m%d") + "0000", end.strftime("%Y%m%d") + "2359"
 
     def stamp(self, record: dict[str, Any], *, operation: str, source_url: str) -> dict[str, Any]:
@@ -116,11 +143,17 @@ class ProcurementCollector:
             success=True,
             status="PARTIAL_EXPECTED",
             warnings=[
-                f"Missing API key env {auth.get('env_var') or 'DATA_GO_KR_SERVICE_KEY'}; "
+                f"SERVICE_KEY_NOT_CONFIGURED: missing API key env "
+                f"{auth.get('env_var') or 'DATA_GO_KR_SERVICE_KEY'}; "
                 "collector structure validated; live OpenAPI collect skipped. "
                 f"Apply at: {', '.join(auth.get('apply_urls') or [])}"
             ],
-            metadata={"auth_present": False},
+            metadata={
+                "auth_present": False,
+                "reason": "SERVICE_KEY_NOT_CONFIGURED",
+                "runtime_status": "PARTIAL_EXPECTED",
+                "http_pages": 0,
+            },
         )
 
     def collect(self) -> ProcurementCollectResult:  # pragma: no cover - override

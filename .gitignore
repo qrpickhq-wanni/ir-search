@@ -36,3 +36,5 @@ reports/**/*.csv
 reports/**/*.md
 # Keep curated MICE landscape audit (not dated run artifacts)
 !reports/mice-source-audit.csv
+
+docs/나라장터 API/

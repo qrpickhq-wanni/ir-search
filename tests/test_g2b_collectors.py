@@ -2,17 +2,20 @@
 from __future__ import annotations
 
 import json
+import os
 import tempfile
 import unittest
 from datetime import date
 from pathlib import Path
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 from app.io_utils import load_yaml, project_root
 from app.procurement_collectors.api_client import DataGoKrClient
 from app.procurement_collectors.base import resolve_service_key
 from app.procurement_collectors.g2b_bid_notice import G2bBidNoticeCollector
 from app.run_g2b_collect import run_g2b_collect
+
+KEY_ENV_VARS = ("DATA_GO_KR_SERVICE_KEY", "G2B_SERVICE_KEY", "PUBLIC_DATA_SERVICE_KEY")
 
 
 class G2bCollectorTests(unittest.TestCase):
@@ -21,16 +24,21 @@ class G2bCollectorTests(unittest.TestCase):
 
     def test_missing_key_is_partial_expected(self):
         with tempfile.TemporaryDirectory() as td:
-            c = G2bBidNoticeCollector(
-                config=self.config,
-                raw_dir=Path(td),
-                today=date(2026, 7, 16),
-                service_key=None,
-            )
-            r = c.collect()
+            with patch.dict(os.environ, {k: "" for k in KEY_ENV_VARS}, clear=False):
+                c = G2bBidNoticeCollector(
+                    config=self.config,
+                    raw_dir=Path(td),
+                    today=date(2026, 7, 16),
+                    service_key=None,
+                )
+                r = c.collect()
             self.assertEqual(r.status, "PARTIAL_EXPECTED")
             self.assertTrue(r.success)
-            self.assertIn("Missing API key", r.warnings[0])
+            self.assertIn("SERVICE_KEY_NOT_CONFIGURED", r.warnings[0])
+            self.assertEqual(r.metadata.get("reason"), "SERVICE_KEY_NOT_CONFIGURED")
+            self.assertEqual(r.metadata.get("runtime_status"), "PARTIAL_EXPECTED")
+            self.assertEqual(r.metadata.get("http_pages"), 0)
+            self.assertEqual(r.parsed_count, 0)
 
     def test_extract_items_shapes(self):
         payload = {

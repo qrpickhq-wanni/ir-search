@@ -25,9 +25,8 @@ def link_lifecycle(
     """Return representative lifecycle records + stats.
 
     Strong links only: notice_number (+ revision), contract→notice_number.
-    Change/re-notices share lifecycle_group_id by base notice_number and are
-    not duplicated as separate sales opportunities (highest revision kept as
-    representative; history preserved on lifecycle_link_basis).
+    Standalone PRE_NOTICE / BID_NOTICE / AWARD / CONTRACT records are always
+    preserved — missing links never discard normalized stage rows.
     """
     by_notice: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for n in notices:
@@ -36,10 +35,13 @@ def link_lifecycle(
             by_notice[str(no)].append(n)
 
     awards_by_notice: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    orphan_awards: list[dict[str, Any]] = []
     for a in awards:
         no = a.get("notice_number")
         if no:
             awards_by_notice[str(no)].append(a)
+        else:
+            orphan_awards.append(a)
 
     contracts_by_notice: dict[str, list[dict[str, Any]]] = defaultdict(list)
     orphan_contracts: list[dict[str, Any]] = []
@@ -58,6 +60,10 @@ def link_lifecycle(
         "candidate_links": 0,
         "awardee_confirmed": 0,
         "contract_amount_confirmed": 0,
+        "standalone_pre_notice": 0,
+        "standalone_bid_notice": 0,
+        "standalone_award": 0,
+        "standalone_contract": 0,
     }
 
     all_notice_nos = set(by_notice) | set(awards_by_notice) | set(contracts_by_notice)
@@ -81,9 +87,15 @@ def link_lifecycle(
             )
             basis.append("representative_revision:" + str(base.get("notice_revision")))
 
+        if revs and not awards_by_notice.get(no) and not contracts_by_notice.get(no):
+            stats["standalone_bid_notice"] += 1
+            base["procurement_stage"] = base.get("procurement_stage") or "BID_NOTICE"
+
         aw_list = awards_by_notice.get(no, [])
         if aw_list:
             stats["notice_to_award_links"] += 1
+            if not revs:
+                stats["standalone_award"] += 1
             aw = aw_list[0]
             basis.append("award_by_notice_number")
             base["procurement_stage"] = "AWARD_RESULT"
@@ -100,6 +112,8 @@ def link_lifecycle(
         if ct_list:
             if aw_list:
                 stats["award_to_contract_links"] += 1
+            if not revs and not aw_list:
+                stats["standalone_contract"] += 1
             basis.append("contract_by_notice_number")
             ct = ct_list[0]
             base["procurement_stage"] = "CONTRACT_RESULT"
@@ -116,14 +130,25 @@ def link_lifecycle(
         if base.get("contract_amount"):
             stats["contract_amount_confirmed"] += 1
 
-        base["lifecycle_group_id"] = f"g2b:lg:{no}"
+        base["lifecycle_group_id"] = base.get("lifecycle_group_id") or f"g2b:lg:{no}"
         base["lifecycle_link_basis"] = basis
-        base["lifecycle_candidate_links"] = []
+        base["lifecycle_candidate_links"] = list(base.get("lifecycle_candidate_links") or [])
         linked.append(base)
 
-    # Orphan contracts → candidate only (no auto merge without notice number)
+    for a in orphan_awards:
+        cand = deepcopy(a)
+        cand["lifecycle_group_id"] = cand.get("lifecycle_group_id") or cand.get("procurement_id")
+        cand["lifecycle_link_basis"] = ["orphan_award"]
+        cand["lifecycle_candidate_links"] = [
+            {"type": "orphan_award", "reason": "missing_notice_number", "confidence": "WEAK"}
+        ]
+        stats["candidate_links"] += 1
+        stats["standalone_award"] += 1
+        linked.append(cand)
+
     for c in orphan_contracts:
         cand = deepcopy(c)
+        cand["lifecycle_group_id"] = cand.get("lifecycle_group_id") or cand.get("procurement_id")
         cand["lifecycle_candidate_links"] = [
             {
                 "type": "orphan_contract",
@@ -133,12 +158,23 @@ def link_lifecycle(
         ]
         cand["lifecycle_link_basis"] = ["orphan_contract"]
         stats["candidate_links"] += 1
+        stats["standalone_contract"] += 1
         linked.append(cand)
 
-    # Pre-notices stay separate unless notice_number appears (rare in pre stage)
+    # Pre-notices always preserved (bfSpecRgstNo is not bid notice_number).
     for p in pre_notices or []:
-        if not p.get("notice_number"):
-            linked.append(deepcopy(p))
+        pre = deepcopy(p)
+        pre["procurement_stage"] = pre.get("procurement_stage") or "PRE_NOTICE"
+        pre_id = (
+            pre.get("lifecycle_group_id")
+            or pre.get("procurement_id")
+            or (f"g2b:prelg:{pre.get('notice_number')}" if pre.get("notice_number") else None)
+        )
+        pre["lifecycle_group_id"] = pre_id
+        pre["lifecycle_link_basis"] = list(pre.get("lifecycle_link_basis") or ["pre_notice_standalone"])
+        pre["lifecycle_candidate_links"] = list(pre.get("lifecycle_candidate_links") or [])
+        stats["standalone_pre_notice"] += 1
+        linked.append(pre)
 
     return linked, stats
 

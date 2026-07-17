@@ -20,6 +20,7 @@ from app.evaluators.bid_assessment import (
     is_solution_partner_candidate,
 )
 from app.io_utils import ensure_dir, project_root, read_jsonl, write_mapped_csv_bom
+from app.procurement_normalizers.pre_notice_priority import priority_sort_key
 
 
 SALES_QUEUE_COLUMNS = [
@@ -91,6 +92,103 @@ ROUTE_COLUMNS = [
     ("원문URL", "url"),
 ]
 
+PRE_NOTICE_REVIEW_COLUMNS = [
+    ("사업명", "title"),
+    ("사전규격번호", "notice_number"),
+    ("발주기관", "ordering_organization"),
+    ("공개일", "announcement_date"),
+    ("배정예산", "estimated_amount"),
+    ("MICE적합근거", "mice_relevance_evidence"),
+    ("직접입찰경로", "direct_route_flag"),
+    ("파트너경로", "partner_route_flag"),
+    ("QRPickShowda수행가능범위", "qrpick_showda_delivery_scope"),
+    ("미확인자격조건", "blocking_unknowns"),
+    ("권장다음행동", "recommended_next_action"),
+    ("본공고추적필요여부", "track_formal_notice"),
+    ("원문URL", "url"),
+]
+
+PRE_NOTICE_PRIORITY_COLUMNS = [
+    ("우선순위", "pre_notice_priority"),
+    ("주기회경로", "primary_opportunity_route"),
+    ("보조경로", "secondary_opportunity_routes"),
+    ("사업명", "title"),
+    ("사전규격번호", "notice_number"),
+    ("발주기관", "ordering_organization"),
+    ("공개일", "announcement_date"),
+    ("배정예산", "estimated_amount"),
+    ("QRPick·Showda 역할", "priority_role_scope"),
+    ("MICE 적합 근거", "mice_relevance_evidence"),
+    ("직접입찰 근거", "direct_bid_evidence"),
+    ("파트너 참여 근거", "partner_participation_evidence"),
+    ("미확인 사항", "review_blocking_unknowns"),
+    ("권장 다음 행동", "recommended_review_action"),
+    ("연락경로 확인 여부", "contact_path_verified"),
+    ("검토기한", "review_deadline"),
+    ("경로선택근거", "route_selection_reasons"),
+    ("원문 URL", "url"),
+]
+
+
+def _enrich_pre_notice_row(r: dict[str, Any]) -> dict[str, Any]:
+    out = dict(r)
+    routes = out.get("opportunity_routes") or []
+    out["direct_route_flag"] = "Y" if "DIRECT_PRIME_BID" in routes else "N"
+    out["partner_route_flag"] = (
+        "Y"
+        if ("CONSORTIUM_BID" in routes or "SUBCONTRACT_OR_SOLUTION_PARTNER" in routes)
+        else "N"
+    )
+    if out.get("track_formal_notice") is None:
+        out["track_formal_notice"] = "Y"
+    elif isinstance(out.get("track_formal_notice"), bool):
+        out["track_formal_notice"] = "Y" if out["track_formal_notice"] else "N"
+    scope = out.get("qrpick_showda_delivery_scope") or out.get("usable_qrpick_features") or []
+    if not scope:
+        scope = out.get("mice_relevance_evidence") or []
+    out["qrpick_showda_delivery_scope"] = scope
+    return out
+
+
+def _dedupe_pre_notice_candidates(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Collapse direct/partner overlap into one procurement row."""
+    merged: dict[tuple[str, ...], dict[str, Any]] = {}
+    for index, row in enumerate(sorted(rows, key=priority_sort_key)):
+        stable_id = row.get("notice_number") or row.get("procurement_id") or row.get("url")
+        title = str(row.get("title") or "")
+        organization = str(row.get("ordering_organization") or "")
+        if stable_id:
+            key = ("id", str(stable_id))
+        elif title or organization:
+            key = ("fallback", title, organization)
+        else:
+            key = ("row", str(index))
+        if key not in merged:
+            merged[key] = dict(row)
+            continue
+        current = merged[key]
+        routes = list(
+            dict.fromkeys(
+                (current.get("opportunity_routes") or [])
+                + (row.get("opportunity_routes") or [])
+                + (current.get("secondary_opportunity_routes") or [])
+                + (row.get("secondary_opportunity_routes") or [])
+            )
+        )
+        primary = current.get("primary_opportunity_route") or row.get(
+            "primary_opportunity_route"
+        )
+        current["opportunity_routes"] = routes
+        current["primary_opportunity_route"] = primary
+        current["secondary_opportunity_routes"] = [route for route in routes if route != primary]
+        current["route_selection_reasons"] = list(
+            dict.fromkeys(
+                (current.get("route_selection_reasons") or [])
+                + (row.get("route_selection_reasons") or [])
+            )
+        )
+    return sorted(merged.values(), key=priority_sort_key)
+
 
 def run_g2b_summary(
     *,
@@ -100,21 +198,74 @@ def run_g2b_summary(
     collect_manifest: dict | None = None,
     normalize_stats: dict | None = None,
     run_day: str | None = None,
+    top_n: int = 30,
 ) -> dict:
     run_day = run_day or date.today().isoformat()
     ensure_dir(report_dir)
     rows = read_jsonl(procurements_path) if procurements_path.exists() else []
 
     write_mapped_csv_bom(report_dir / "g2b-mice-procurements.csv", PROCUREMENT_COLUMNS, rows)
-    queue = [r for r in rows if r.get("sales_priority") in {"P0", "P1", "P2"}]
+    queue = [r for r in rows if r.get("sales_queue_eligible")]
+    if not queue:
+        if not any("sales_queue_eligible" in r for r in rows):
+            queue = [
+                r
+                for r in rows
+                if r.get("mice_relevant") and r.get("sales_priority") in {"P0", "P1", "P2"}
+            ]
     write_mapped_csv_bom(report_dir / "g2b-mice-sales-queue.csv", SALES_QUEUE_COLUMNS, queue)
 
-    direct = [r for r in rows if is_direct_bid_candidate(r)]
-    consortium = [r for r in rows if is_consortium_candidate(r)]
-    partner = [r for r in rows if is_solution_partner_candidate(r)]
+    direct = [r for r in rows if r.get("mice_relevant") and is_direct_bid_candidate(r)]
+    consortium = [r for r in rows if r.get("mice_relevant") and is_consortium_candidate(r)]
+    partner = [r for r in rows if r.get("mice_relevant") and is_solution_partner_candidate(r)]
     write_mapped_csv_bom(report_dir / "g2b-direct-bid-opportunities.csv", ROUTE_COLUMNS, direct)
     write_mapped_csv_bom(report_dir / "g2b-consortium-opportunities.csv", ROUTE_COLUMNS, consortium)
     write_mapped_csv_bom(report_dir / "g2b-solution-partner-opportunities.csv", ROUTE_COLUMNS, partner)
+
+    pre_direct = [
+        _enrich_pre_notice_row(r)
+        for r in rows
+        if "PRE_NOTICE_DIRECT_REVIEW" in (r.get("sales_windows") or [])
+    ]
+    pre_partner = [
+        _enrich_pre_notice_row(r)
+        for r in rows
+        if "PRE_NOTICE_PARTNER_OUTREACH" in (r.get("sales_windows") or [])
+    ]
+    write_mapped_csv_bom(
+        report_dir / "g2b-pre-notice-direct-review.csv", PRE_NOTICE_REVIEW_COLUMNS, pre_direct
+    )
+    write_mapped_csv_bom(
+        report_dir / "g2b-pre-notice-partner-outreach.csv", PRE_NOTICE_REVIEW_COLUMNS, pre_partner
+    )
+    all_pre_notice_candidates = _dedupe_pre_notice_candidates(
+        [
+            r
+            for r in rows
+            if r.get("procurement_stage") == "PRE_NOTICE"
+            and r.get("sales_queue_eligible")
+            and r.get("pre_notice_priority") != "NO_ACTION"
+        ]
+    )
+    priority_queue = all_pre_notice_candidates[: max(0, top_n)]
+    write_mapped_csv_bom(
+        report_dir / "g2b-pre-notice-priority-queue.csv",
+        PRE_NOTICE_PRIORITY_COLUMNS,
+        priority_queue,
+        preserve_order=True,
+    )
+    write_mapped_csv_bom(
+        report_dir / "g2b-pre-notice-top30.csv",
+        PRE_NOTICE_PRIORITY_COLUMNS,
+        priority_queue,
+        preserve_order=True,
+    )
+    write_mapped_csv_bom(
+        report_dir / "g2b-pre-notice-all-candidates.csv",
+        PRE_NOTICE_PRIORITY_COLUMNS,
+        all_pre_notice_candidates,
+        preserve_order=True,
+    )
 
     award_outreach = [
         r for r in rows if "AWARD_WINNER_WINDOW" in (r.get("sales_windows") or [])
@@ -144,6 +295,10 @@ def run_g2b_summary(
             "bid_partner": len(bid_partner),
             "next_cycle": len(next_cycle),
             "queue": len(queue),
+            "pre_direct": len(pre_direct),
+            "pre_partner": len(pre_partner),
+            "priority_queue": len(priority_queue),
+            "all_pre_notice_candidates": len(all_pre_notice_candidates),
         },
     )
     (report_dir / "g2b-lifecycle-summary.md").write_text(md, encoding="utf-8")
@@ -158,6 +313,10 @@ def run_g2b_summary(
             "bid_partner": len(bid_partner),
             "next_cycle": len(next_cycle),
             "queue": len(queue),
+            "pre_direct": len(pre_direct),
+            "pre_partner": len(pre_partner),
+            "priority_queue": len(priority_queue),
+            "all_pre_notice_candidates": len(all_pre_notice_candidates),
         },
     }
 
@@ -188,10 +347,20 @@ def _build_md(*, run_day, rows, link_stats, collect_manifest, normalize_stats, c
         f"- {json.dumps(link_stats, ensure_ascii=False)}",
         "",
         "## Counts",
-        f"- procurements: **{len(rows)}**",
-        f"- direct / consortium / partner: **{counts['direct']}** / **{counts['consortium']}** / **{counts['partner']}**",
+        f"- normalized_total: **{(normalize_stats or {}).get('normalized_total')}**",
+        f"- procurement_records_total: **{(link_stats or {}).get('procurement_records_total', len(rows))}**",
+        f"- mice_relevant_procurements: **{(link_stats or {}).get('mice_relevant_procurements')}**",
+        f"- direct_bid_candidates: **{(link_stats or {}).get('direct_bid_candidates', counts['direct'])}**",
+        f"- partner_candidates: **{(link_stats or {}).get('partner_candidates', counts['partner'])}**",
+        f"- sales_queue_count: **{(link_stats or {}).get('sales_queue_count', counts['queue'])}**",
+        f"- pre_notice_direct_review: **{(link_stats or {}).get('pre_notice_direct_review_count', counts.get('pre_direct'))}**",
+        f"- pre_notice_partner_outreach: **{(link_stats or {}).get('pre_notice_partner_outreach_count', counts.get('pre_partner'))}**",
+        f"- sales_action_types: `{json.dumps((link_stats or {}).get('sales_action_type_counts') or {}, ensure_ascii=False)}`",
+        f"- procurements (file rows): **{len(rows)}**",
+        f"- mice_relevance confidence: `{json.dumps((link_stats or {}).get('mice_relevance_confidence_counts') or {}, ensure_ascii=False)}`",
+        f"- direct / consortium / partner (report filters): **{counts['direct']}** / **{counts['consortium']}** / **{counts['partner']}**",
         f"- award outreach / bid partner / next cycle: **{counts['award_outreach']}** / **{counts['bid_partner']}** / **{counts['next_cycle']}**",
-        f"- sales queue (P0–P2): **{counts['queue']}**",
+        f"- sales queue rows written: **{counts['queue']}**",
         "",
         "## sales_windows",
     ]
@@ -221,11 +390,13 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--procurements", required=True)
     ap.add_argument("--report-dir", required=True)
     ap.add_argument("--today", default=None)
+    ap.add_argument("--top-n", type=int, default=30)
     args = ap.parse_args(argv)
     stats = run_g2b_summary(
         procurements_path=Path(args.procurements),
         report_dir=Path(args.report_dir),
         run_day=args.today or date.today().isoformat(),
+        top_n=args.top_n,
     )
     print(json.dumps(stats, ensure_ascii=False, indent=2))
     return 0

@@ -1,7 +1,7 @@
 """Apply bid assessment + G2B sales window / priority rules."""
 from __future__ import annotations
 
-from datetime import date, datetime
+from datetime import date
 from typing import Any
 
 from app.evaluators.bid_assessment import assess_bid_opportunity, primary_opportunity_route
@@ -94,7 +94,6 @@ def apply_sales_windows(
 
     conf = out.get("previous_cycle_confidence")
     if conf in {"STRONG", "MEDIUM"}:
-        # Before this year's notice or when still early
         if dday is None or (isinstance(dday, int) and dday < 0) or out.get("procurement_stage") in {
             "AWARD_RESULT",
             "CONTRACT_RESULT",
@@ -111,7 +110,6 @@ def apply_sales_windows(
         else:
             windows.append("RESEARCH")
 
-    # Deduplicate preserve order
     out["sales_windows"] = list(dict.fromkeys(windows))
     out["sales_priority"] = _priority(out, config, today)
     out["recommended_next_action"] = out.get("recommended_bid_action") or _default_action(out)
@@ -128,11 +126,169 @@ def apply_sales_windows(
     return out
 
 
-def _has_qrpick_signal(rec: dict[str, Any]) -> bool:
-    text = " ".join(
-        str(rec.get(k) or "")
-        for k in ("title", "title_normalized")
+def has_qrpick_showda_role_evidence(rec: dict[str, Any]) -> bool:
+    """QRPick/Showda delivery role evidence (not mere event-hosting nouns)."""
+    if _has_qrpick_signal(rec) or _qrpick_features(rec):
+        return True
+    if rec.get("usable_qrpick_features"):
+        return True
+    families = rec.get("matched_asset_families") or []
+    if "QRPICK_EVENT_OPERATIONS" in families:
+        return True
+    evidence = " ".join(str(x) for x in (rec.get("mice_relevance_evidence") or []))
+    role_tokens = (
+        "등록",
+        "체크인",
+        "명찰",
+        "배지",
+        "홈페이지",
+        "운영시스템",
+        "매칭",
+        "플랫폼",
+        "세션 운영",
+        "참가자",
+        "QR",
     )
+    if any(t in evidence for t in role_tokens):
+        return True
+    text = " ".join(str(rec.get(k) or "") for k in ("title", "title_normalized"))
+    ops_role = (
+        "행사 운영",
+        "행사운영",
+        "운영 대행",
+        "운영대행",
+        "행사 대행",
+        "현장 운영",
+        "세션 운영",
+        "참가자 등록",
+        "사전등록",
+        "체크인",
+        "명찰",
+        "배지",
+        "행사 홈페이지",
+        "운영시스템",
+        "비즈니스 매칭",
+        "상담 매칭",
+    )
+    return any(t in text for t in ops_role)
+
+
+def apply_pre_notice_sales_windows(rec: dict[str, Any]) -> dict[str, Any]:
+    """Add PRE_NOTICE review/outreach windows after mice_relevant is known.
+
+    Missing proposal deadline alone must not block these windows.
+    Never promotes to ACTION_NOW / GO without detail verification.
+    """
+    out = dict(rec)
+    if out.get("procurement_stage") != "PRE_NOTICE":
+        return out
+    if not out.get("mice_relevant"):
+        return out
+
+    windows = list(out.get("sales_windows") or [])
+    routes = out.get("opportunity_routes") or []
+    role = has_qrpick_showda_role_evidence(out)
+    verified = str(out.get("detail_verification_status") or "").upper() == "VERIFIED"
+
+    if "DIRECT_PRIME_BID" in routes and role:
+        if "PRE_NOTICE_DIRECT_REVIEW" not in windows:
+            windows.append("PRE_NOTICE_DIRECT_REVIEW")
+        # Strip immediate bid windows that require a live deadline.
+        windows = [w for w in windows if w not in {"DIRECT_BID_WINDOW"}]
+        out["bid_participation_readiness"] = "QUALIFICATION_CHECK"
+        if not verified:
+            out["bid_go_no_go"] = "UNKNOWN"
+            if out.get("eligibility_status") in {None, "VERIFIED_ELIGIBLE"}:
+                out["eligibility_status"] = "UNKNOWN_NEEDS_DOCUMENT_REVIEW"
+        out["recommended_next_action"] = (
+            "사전규격 기준 직접입찰 사전검토 — 과업·자격·역할 확인 후 본공고 추적"
+        )
+        out["track_formal_notice"] = True
+
+    partner_routes = {"CONSORTIUM_BID", "SUBCONTRACT_OR_SOLUTION_PARTNER"}
+    if partner_routes.intersection(routes) and role:
+        if "PRE_NOTICE_PARTNER_OUTREACH" not in windows:
+            windows.append("PRE_NOTICE_PARTNER_OUTREACH")
+        if out.get("recommended_next_action") in {None, "", "문서·자격 추가 확인"} or (
+            "PRE_NOTICE_DIRECT_REVIEW" not in windows
+        ):
+            # Keep direct-review action if both apply; else partner outreach action.
+            if "PRE_NOTICE_DIRECT_REVIEW" not in windows:
+                out["recommended_next_action"] = (
+                    "기획사·PCO 파트너 선제 접촉 — 구성·견적 준비 및 본공고 추적"
+                )
+        out["track_formal_notice"] = True
+        if out.get("bid_participation_readiness") in {None, "NO_BID", "WATCH"}:
+            out["bid_participation_readiness"] = "PARTNER_SEARCH"
+
+    # Drop NO_ACTION when we now have a pre-notice path.
+    if any(
+        w in windows for w in ("PRE_NOTICE_DIRECT_REVIEW", "PRE_NOTICE_PARTNER_OUTREACH")
+    ):
+        windows = [w for w in windows if w != "NO_ACTION"]
+
+    out["sales_windows"] = list(dict.fromkeys(windows))
+    if "PRE_NOTICE_DIRECT_REVIEW" in out["sales_windows"] or "PRE_NOTICE_PARTNER_OUTREACH" in out[
+        "sales_windows"
+    ]:
+        # Pre-notice queues are P2 watch — not immediate bid.
+        if out.get("sales_priority") in {None, "P3"}:
+            out["sales_priority"] = "P2"
+    return out
+
+
+def classify_sales_action_types(rec: dict[str, Any]) -> dict[str, Any]:
+    """Split queue behavior into explicit action types (multi-label)."""
+    windows = set(rec.get("sales_windows") or [])
+    types: list[str] = []
+
+    immediate = bool(
+        windows & {"DIRECT_BID_WINDOW", "AWARD_WINNER_WINDOW"}
+        or rec.get("bid_participation_readiness") == "ACTION_NOW"
+    )
+    if immediate and str(rec.get("detail_verification_status") or "").upper() == "VERIFIED":
+        types.append("IMMEDIATE_ACTION")
+    elif immediate:
+        # Unverified detail cannot be IMMEDIATE_ACTION.
+        if "DIRECT_BID_WINDOW" in windows:
+            types.append("PRE_NOTICE_REVIEW" if rec.get("procurement_stage") == "PRE_NOTICE" else "RESEARCH")
+
+    if "PRE_NOTICE_DIRECT_REVIEW" in windows:
+        types.append("PRE_NOTICE_REVIEW")
+    if "PRE_NOTICE_PARTNER_OUTREACH" in windows or "BID_PARTNER_WINDOW" in windows:
+        types.append("PARTNER_OUTREACH")
+    if "CONSORTIUM_PARTNER_WINDOW" in windows and "PARTNER_OUTREACH" not in types:
+        types.append("PARTNER_OUTREACH")
+
+    if not types:
+        if windows & {"RESEARCH", "NEXT_CYCLE_WINDOW", "PRE_REGISTRATION_WINDOW"}:
+            types.append("RESEARCH")
+        elif windows <= {"NO_ACTION", "CLOSED"} or not windows:
+            types.append("NO_ACTION")
+        else:
+            types.append("RESEARCH")
+
+    types = list(dict.fromkeys(types))
+    # Primary: prefer immediate → pre review → partner → research → no action
+    primary = "NO_ACTION"
+    for pref in ("IMMEDIATE_ACTION", "PRE_NOTICE_REVIEW", "PARTNER_OUTREACH", "RESEARCH", "NO_ACTION"):
+        if pref in types:
+            primary = pref
+            break
+    return {
+        "sales_action_types": types,
+        "sales_action_type": primary,
+    }
+
+
+def _has_qrpick_signal(rec: dict[str, Any]) -> bool:
+    text = " ".join(str(rec.get(k) or "") for k in ("title", "title_normalized"))
+    # Legal exercise phrases are not event-ops role evidence.
+    if any(p in text for p in ("구상권 행사", "권리 행사", "권한 행사", "채권 행사")):
+        text_for_ops = text
+        for p in ("구상권 행사 운영", "권리 행사 운영", "권한 행사 운영", "채권 행사 운영", "권 행사 운영"):
+            text_for_ops = text_for_ops.replace(p, " ")
+        text = text_for_ops
     keys = (
         "등록",
         "체크인",
@@ -147,6 +303,10 @@ def _has_qrpick_signal(rec: dict[str, Any]) -> bool:
         "대시보드",
         "CRM",
         "다국어",
+        "행사 운영",
+        "운영 대행",
+        "세션 운영",
+        "참가자",
     )
     return any(k in text for k in keys)
 
@@ -162,6 +322,8 @@ def _qrpick_features(rec: dict[str, Any]) -> list[str]:
         "홈페이지": "홈페이지",
         "플랫폼": "플랫폼",
         "QR": "QR",
+        "운영시스템": "운영시스템",
+        "세션": "세션운영",
     }
     for k, v in mapping.items():
         if k in text:
@@ -170,6 +332,7 @@ def _qrpick_features(rec: dict[str, Any]) -> list[str]:
 
 
 def _priority(rec: dict[str, Any], config: dict[str, Any], today: date) -> str:
+    del today
     cfg = config.get("sales_priority") or {}
     windows = set(rec.get("sales_windows") or [])
     dday = rec.get("days_to_deadline")
@@ -180,6 +343,8 @@ def _priority(rec: dict[str, Any], config: dict[str, Any], today: date) -> str:
             return "P1"
     if "AWARD_WINNER_WINDOW" in windows or "BID_PARTNER_WINDOW" in windows:
         return "P1"
+    if "PRE_NOTICE_DIRECT_REVIEW" in windows or "PRE_NOTICE_PARTNER_OUTREACH" in windows:
+        return "P2"
     if "PRE_REGISTRATION_WINDOW" in windows or "NEXT_CYCLE_WINDOW" in windows:
         return "P2"
     if "RESEARCH" in windows:
@@ -189,6 +354,10 @@ def _priority(rec: dict[str, Any], config: dict[str, Any], today: date) -> str:
 
 def _default_action(rec: dict[str, Any]) -> str:
     windows = rec.get("sales_windows") or []
+    if "PRE_NOTICE_DIRECT_REVIEW" in windows:
+        return "사전규격 기준 직접입찰 사전검토 — 과업·자격·역할 확인 후 본공고 추적"
+    if "PRE_NOTICE_PARTNER_OUTREACH" in windows:
+        return "기획사·PCO 파트너 선제 접촉 — 구성·견적 준비 및 본공고 추적"
     if "DIRECT_BID_WINDOW" in windows:
         return "제안요청서 확보 후 직접입찰 자격·역할 검토"
     if "BID_PARTNER_WINDOW" in windows:

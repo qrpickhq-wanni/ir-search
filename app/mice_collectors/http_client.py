@@ -99,19 +99,18 @@ class PoliteHttpClient:
                 }
                 self.request_log.append(entry)
 
+                # Retry transient gateway pressure, but always return the final
+                # response so callers can classify 401/403/429/5xx bodies.
                 if resp.status_code in (429, 403) or resp.status_code >= 500:
                     if attempt < attempts:
                         time.sleep(self.retry_backoff_seconds * attempt)
                         continue
-                    raise RuntimeError(
-                        f"HTTP {resp.status_code} for {url} after {attempt} attempts"
-                    )
 
                 if expect_content_types:
                     if not any(t in ctype for t in expect_content_types):
                         # Some Korean public APIs mislabel charset but return valid body.
                         body_ok = bool(resp.content) or allow_empty
-                        if not body_ok:
+                        if not body_ok and resp.status_code < 400:
                             raise RuntimeError(
                                 f"Unexpected content-type {ctype!r} for {url}"
                             )
