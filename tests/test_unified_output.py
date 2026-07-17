@@ -3,13 +3,16 @@ from __future__ import annotations
 
 import csv
 import json
+import os
+import subprocess
 import tempfile
 import unittest
 from datetime import date
 from pathlib import Path
+from unittest.mock import patch
 
-from app.io_utils import read_jsonl, write_jsonl
-from app.run_unified_output import run_unified_output
+from app.io_utils import write_jsonl
+from app.run_unified_output import UnifiedOutputError, run_unified_output
 from app.unified_opportunities import (
     adapt_record,
     merge_unified_records,
@@ -231,7 +234,7 @@ class UnifiedOpportunityTests(unittest.TestCase):
             procurement = root / "procurement.jsonl"
             write_jsonl(support, [_support(index) for index in range(35)])
             write_jsonl(mice, [_mice(sales_readiness="NONE", event_status="ENDED")])
-            write_jsonl(procurement, [])
+            write_jsonl(procurement, [_procurement()])
             normalized = root / "normalized"
             reports = root / "reports"
 
@@ -254,48 +257,51 @@ class UnifiedOpportunityTests(unittest.TestCase):
                 all_rows = list(csv.DictReader(fh))
 
             self.assertEqual(len(top), 30)
-            self.assertEqual(len(all_rows), 36)
+            self.assertEqual(len(all_rows), 37)
             self.assertNotIn("NO_ACTION", {row["우선순위"] for row in top})
             self.assertEqual(manifest["top_row_count"], 30)
-            self.assertEqual(manifest["unified_row_count"], 36)
+            self.assertEqual(manifest["unified_row_count"], 37)
+            self.assertEqual(
+                manifest["output_validation"],
+                {
+                    "jsonl_row_count": 37,
+                    "all_csv_data_row_count": 37,
+                    "top_csv_data_row_count": 30,
+                },
+            )
             self.assertFalse(manifest["scoring_policy"]["native_scores_used"])
             self.assertEqual(
                 (reports / "unified-opportunity-top30.csv").read_bytes()[:3],
                 b"\xef\xbb\xbf",
             )
 
-    def test_empty_domain_succeeds_and_is_manifested(self):
+    def test_empty_input_fails(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
             paths = []
             for name in ("support", "mice", "procurement"):
                 path = root / f"{name}.jsonl"
-                write_jsonl(path, [])
+                write_jsonl(path, [_support()] if name == "support" else [])
                 paths.append(path)
-            manifest = run_unified_output(
-                run_day=TODAY.isoformat(),
-                support_path=paths[0],
-                mice_path=paths[1],
-                procurement_paths=[paths[2]],
-                normalized_dir=root / "normalized",
-                report_dir=root / "reports",
-            )
-            self.assertEqual(manifest["status"], "OK")
-            self.assertEqual(manifest["unified_row_count"], 0)
-            self.assertEqual(
-                {item["status"] for item in manifest["inputs"]},
-                {"EMPTY"},
-            )
+            with self.assertRaisesRegex(UnifiedOutputError, "EMPTY:mice"):
+                run_unified_output(
+                    run_day=TODAY.isoformat(),
+                    support_path=paths[0],
+                    mice_path=paths[1],
+                    procurement_paths=[paths[2]],
+                    normalized_dir=root / "normalized",
+                    report_dir=root / "reports",
+                )
 
-    def test_rerun_clears_stale_outputs(self):
+    def test_failed_rerun_preserves_existing_outputs(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
             support = root / "support.jsonl"
             mice = root / "mice.jsonl"
             procurement = root / "procurement.jsonl"
             write_jsonl(support, [_support()])
-            write_jsonl(mice, [])
-            write_jsonl(procurement, [])
+            write_jsonl(mice, [_mice()])
+            write_jsonl(procurement, [_procurement()])
             normalized = root / "normalized"
             reports = root / "reports"
             kwargs = {
@@ -307,20 +313,117 @@ class UnifiedOpportunityTests(unittest.TestCase):
                 "report_dir": reports,
             }
             first = run_unified_output(**kwargs)
-            self.assertEqual(first["unified_row_count"], 1)
+            self.assertEqual(first["unified_row_count"], 3)
+            protected = {
+                path: path.read_bytes()
+                for path in (
+                    normalized / "unified-opportunities.jsonl",
+                    normalized / "unified-opportunity-manifest.json",
+                    reports / "unified-opportunity-top30.csv",
+                    reports / "unified-opportunity-all.csv",
+                    reports / "unified-opportunity-summary.md",
+                )
+            }
+
+            with patch(
+                "app.run_unified_output._validate_staged_outputs",
+                side_effect=UnifiedOutputError("forced staged validation failure"),
+            ):
+                with self.assertRaisesRegex(
+                    UnifiedOutputError, "forced staged validation failure"
+                ):
+                    run_unified_output(**kwargs)
+            for path, before in protected.items():
+                self.assertEqual(path.read_bytes(), before)
+            self.assertFalse(
+                any(
+                    path.name.startswith(".unified-output-stage-")
+                    for path in root.iterdir()
+                )
+            )
 
             write_jsonl(support, [])
-            second = run_unified_output(**kwargs)
-            self.assertEqual(second["unified_row_count"], 0)
-            self.assertEqual(read_jsonl(normalized / "unified-opportunities.jsonl"), [])
-            with (reports / "unified-opportunity-all.csv").open(
+            with self.assertRaisesRegex(UnifiedOutputError, "EMPTY:support"):
+                run_unified_output(**kwargs)
+            for path, before in protected.items():
+                self.assertEqual(path.read_bytes(), before)
+
+    def test_missing_input_fails_without_creating_outputs(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            support = root / "support.jsonl"
+            procurement = root / "procurement.jsonl"
+            write_jsonl(support, [_support()])
+            write_jsonl(procurement, [_procurement()])
+            normalized = root / "normalized"
+            reports = root / "reports"
+
+            with self.assertRaisesRegex(UnifiedOutputError, "MISSING:mice"):
+                run_unified_output(
+                    run_day=TODAY.isoformat(),
+                    support_path=support,
+                    mice_path=root / "missing-mice.jsonl",
+                    procurement_paths=[procurement],
+                    normalized_dir=normalized,
+                    report_dir=reports,
+                )
+
+            self.assertFalse(normalized.exists())
+            self.assertFalse(reports.exists())
+
+    @unittest.skipUnless(os.name == "nt", "Windows batch behavior")
+    def test_batch_runs_from_wrong_working_directory(self):
+        repo_root = Path(__file__).resolve().parents[1]
+        batch = repo_root / "scripts" / "run_unified_output.bat"
+        with tempfile.TemporaryDirectory() as td, tempfile.TemporaryDirectory() as wrong_cwd:
+            root = Path(td)
+            support = root / "support.jsonl"
+            mice = root / "mice.jsonl"
+            procurement = root / "procurement.jsonl"
+            normalized = root / "normalized"
+            reports = root / "reports"
+            write_jsonl(support, [_support(index) for index in range(31)])
+            write_jsonl(mice, [_mice()])
+            write_jsonl(procurement, [_procurement()])
+
+            completed = subprocess.run(
+                [
+                    "cmd.exe",
+                    "/d",
+                    "/c",
+                    str(batch),
+                    "--run-day",
+                    TODAY.isoformat(),
+                    "--support",
+                    str(support),
+                    "--mice",
+                    str(mice),
+                    "--procurement",
+                    str(procurement),
+                    "--normalized-dir",
+                    str(normalized),
+                    "--report-dir",
+                    str(reports),
+                ],
+                cwd=wrong_cwd,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                check=False,
+            )
+
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            with (reports / "unified-opportunity-top30.csv").open(
                 encoding="utf-8-sig", newline=""
             ) as fh:
-                self.assertEqual(len(list(csv.DictReader(fh))), 0)
-            persisted = json.loads(
-                (normalized / "unified-opportunity-manifest.json").read_text(encoding="utf-8")
+                self.assertEqual(len(list(csv.DictReader(fh))), 30)
+            manifest = json.loads(
+                (normalized / "unified-opportunity-manifest.json").read_text(
+                    encoding="utf-8"
+                )
             )
-            self.assertEqual(persisted["unified_row_count"], 0)
+            self.assertEqual(manifest["output_validation"]["top_csv_data_row_count"], 30)
 
 
 if __name__ == "__main__":

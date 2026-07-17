@@ -2,13 +2,17 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
+import os
+import shutil
 import sys
+import tempfile
 from collections import Counter, defaultdict
 from datetime import date, datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, TextIO
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -61,6 +65,10 @@ NORMALIZED_FILENAMES = (
 )
 
 
+class UnifiedOutputError(RuntimeError):
+    """Raised when a unified run cannot safely publish complete outputs."""
+
+
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as fh:
@@ -69,16 +77,19 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def _clear_outputs(normalized_dir: Path, report_dir: Path) -> None:
-    """Remove only this finalizer's known outputs so failed reruns cannot look successful."""
-    for name in OUTPUT_FILENAMES:
-        path = report_dir / name
-        if path.exists():
-            path.unlink()
-    for name in NORMALIZED_FILENAMES:
-        path = normalized_dir / name
-        if path.exists():
-            path.unlink()
+def _rooted_path(path: Path, root: Path) -> Path:
+    """Resolve CLI paths against the repository root, never the caller's cwd."""
+    return path.resolve() if path.is_absolute() else (root / path).resolve()
+
+
+def _physical_line_count(path: Path) -> int:
+    with path.open("rb") as fh:
+        return sum(1 for _ in fh)
+
+
+def _csv_data_row_count(path: Path) -> int:
+    with path.open(encoding="utf-8-sig", newline="") as fh:
+        return sum(1 for _ in csv.DictReader(fh))
 
 
 def _input_specs(
@@ -89,12 +100,22 @@ def _input_specs(
     procurement_paths: list[Path] | None,
 ) -> list[tuple[str, Path]]:
     root = project_root()
-    support = support_path or root / "data" / "normalized" / run_day / "opportunities.jsonl"
-    mice = mice_path or root / "data" / "normalized" / "mice" / run_day / "events.jsonl"
+    support = _rooted_path(
+        support_path or Path("data") / "normalized" / run_day / "opportunities.jsonl",
+        root,
+    )
+    mice = _rooted_path(
+        mice_path or Path("data") / "normalized" / "mice" / run_day / "events.jsonl",
+        root,
+    )
     procurements = procurement_paths or [
-        root / "data" / "normalized" / "procurement" / run_day / "procurements.jsonl"
+        Path("data") / "normalized" / "procurement" / run_day / "procurements.jsonl"
     ]
-    return [("support", support), ("mice", mice), *[("procurement", path) for path in procurements]]
+    return [
+        ("support", support),
+        ("mice", mice),
+        *[("procurement", _rooted_path(path, root)) for path in procurements],
+    ]
 
 
 def _read_inputs(
@@ -110,6 +131,7 @@ def _read_inputs(
             "path": str(path),
             "status": "MISSING",
             "row_count": 0,
+            "physical_line_count": 0,
             "sha256": None,
             "size_bytes": None,
         }
@@ -123,6 +145,7 @@ def _read_inputs(
                 {
                     "status": "OK" if input_rows else "EMPTY",
                     "row_count": len(input_rows),
+                    "physical_line_count": _physical_line_count(path),
                     "sha256": _sha256(path),
                     "size_bytes": path.stat().st_size,
                 }
@@ -293,6 +316,91 @@ def _summary_markdown(
     return "\n".join(lines)
 
 
+def _require_complete_inputs(input_statuses: list[dict[str, Any]]) -> None:
+    invalid = [status for status in input_statuses if status["status"] != "OK"]
+    if not invalid:
+        return
+    details = "; ".join(
+        f"{status['status']}:{status['domain']}:{status['path']}"
+        for status in invalid
+    )
+    raise UnifiedOutputError(f"Unified input validation failed: {details}")
+
+
+def _validate_staged_outputs(
+    *,
+    normalized_dir: Path,
+    report_dir: Path,
+    expected_all: int,
+    action_candidates: int,
+    top_n: int,
+) -> dict[str, int]:
+    jsonl_count = len(read_jsonl(normalized_dir / "unified-opportunities.jsonl"))
+    all_csv_count = _csv_data_row_count(report_dir / "unified-opportunity-all.csv")
+    top_csv_count = _csv_data_row_count(report_dir / "unified-opportunity-top30.csv")
+    expected_top = min(top_n, action_candidates)
+    failures = []
+    if jsonl_count <= 0 or jsonl_count != expected_all:
+        failures.append(f"jsonl={jsonl_count}, expected={expected_all}>0")
+    if all_csv_count <= 0 or all_csv_count != expected_all:
+        failures.append(f"all_csv={all_csv_count}, expected={expected_all}>0")
+    if action_candidates <= 0:
+        failures.append("action_candidates=0, expected>0")
+    if top_csv_count != expected_top:
+        failures.append(f"top_csv={top_csv_count}, expected={expected_top}")
+    if failures:
+        raise UnifiedOutputError(
+            "Unified staged output validation failed: " + "; ".join(failures)
+        )
+    return {
+        "jsonl_row_count": jsonl_count,
+        "all_csv_data_row_count": all_csv_count,
+        "top_csv_data_row_count": top_csv_count,
+    }
+
+
+def _publish_staged_outputs(
+    *,
+    staged_normalized_dir: Path,
+    staged_report_dir: Path,
+    normalized_dir: Path,
+    report_dir: Path,
+) -> None:
+    pairs = [
+        *[
+            (staged_normalized_dir / name, normalized_dir / name)
+            for name in NORMALIZED_FILENAMES
+        ],
+        *[
+            (staged_report_dir / name, report_dir / name)
+            for name in OUTPUT_FILENAMES
+        ],
+    ]
+    with tempfile.TemporaryDirectory(
+        prefix=".unified-output-backup-", dir=normalized_dir.parent
+    ) as backup_name:
+        backup_dir = Path(backup_name)
+        backups: dict[Path, Path] = {}
+        originally_missing: set[Path] = set()
+        for index, (_staged, final) in enumerate(pairs):
+            if final.exists():
+                backup = backup_dir / f"{index}-{final.name}"
+                shutil.copy2(final, backup)
+                backups[final] = backup
+            else:
+                originally_missing.add(final)
+        try:
+            for staged, final in pairs:
+                os.replace(staged, final)
+        except OSError:
+            for final, backup in backups.items():
+                shutil.copy2(backup, final)
+            for final in originally_missing:
+                if final.exists():
+                    final.unlink()
+            raise
+
+
 def run_unified_output(
     *,
     run_day: str,
@@ -303,13 +411,15 @@ def run_unified_output(
     report_dir: Path | None = None,
     top_n: int = 30,
 ) -> dict[str, Any]:
+    if top_n <= 0:
+        raise UnifiedOutputError(f"top_n must be positive: {top_n}")
     today = date.fromisoformat(run_day)
     root = project_root()
-    normalized_dir = normalized_dir or root / "data" / "normalized" / run_day
-    report_dir = report_dir or root / "reports" / run_day
-    ensure_dir(normalized_dir)
-    ensure_dir(report_dir)
-    _clear_outputs(normalized_dir, report_dir)
+    normalized_dir = _rooted_path(
+        normalized_dir or Path("data") / "normalized" / run_day,
+        root,
+    )
+    report_dir = _rooted_path(report_dir or Path("reports") / run_day, root)
 
     specs = _input_specs(
         run_day=run_day,
@@ -318,6 +428,8 @@ def run_unified_output(
         procurement_paths=procurement_paths,
     )
     raw_rows, input_statuses, warnings = _read_inputs(specs)
+    _require_complete_inputs(input_statuses)
+    adapted_domain_counts = Counter(domain for domain, _record in raw_rows)
     adapted = [
         adapt_record(record, source_domain=domain, today=today)
         for domain, record in raw_rows
@@ -326,30 +438,10 @@ def run_unified_output(
     all_rows = sorted(merged, key=unified_sort_key)
     action_rows = [row for row in all_rows if row.get("priority_band") != "NO_ACTION"]
     top_rows = action_rows[: max(0, top_n)]
-
-    public_all = [public_record(row) for row in all_rows]
-    write_jsonl(normalized_dir / "unified-opportunities.jsonl", public_all)
-    write_mapped_csv_bom(
-        report_dir / "unified-opportunity-all.csv",
-        UNIFIED_CSV_COLUMNS,
-        _ranked_rows(all_rows),
-        preserve_order=True,
-    )
-    write_mapped_csv_bom(
-        report_dir / "unified-opportunity-top30.csv",
-        UNIFIED_CSV_COLUMNS,
-        _ranked_rows(top_rows),
-        preserve_order=True,
-    )
-    summary = _summary_markdown(
-        run_day=run_day,
-        input_statuses=input_statuses,
-        all_rows=all_rows,
-        top_rows=top_rows,
-        duplicate_count=duplicate_count,
-        warnings=warnings,
-    )
-    (report_dir / "unified-opportunity-summary.md").write_text(summary, encoding="utf-8")
+    if not all_rows:
+        raise UnifiedOutputError("Unified transformation produced zero rows")
+    if not action_rows:
+        raise UnifiedOutputError("Unified transformation produced zero action candidates")
 
     priority_counts = Counter(str(row.get("priority_band")) for row in all_rows)
     unified_domain_counts = Counter(str(row.get("domain_type")) for row in all_rows)
@@ -361,14 +453,13 @@ def run_unified_output(
         "schema_version": "unified-opportunity-v1",
         "run_day": run_day,
         "created_at": datetime.now(timezone.utc).isoformat(),
-        "status": (
-            "PARTIAL"
-            if any(status["status"] in {"MISSING", "ERROR"} for status in input_statuses)
-            else "OK"
-        ),
+        "status": "OK",
+        "working_directory": str(Path.cwd().resolve()),
+        "project_root": str(root.resolve()),
         "inputs": input_statuses,
         "input_row_count": len(raw_rows),
         "adapted_row_count": len(adapted),
+        "adapted_source_domain_counts": dict(adapted_domain_counts),
         "unified_row_count": len(all_rows),
         "duplicate_merge_count": duplicate_count,
         "action_candidate_count": len(action_rows),
@@ -404,11 +495,82 @@ def run_unified_output(
             "manifest": str(normalized_dir / "unified-opportunity-manifest.json"),
         },
     }
-    (normalized_dir / "unified-opportunity-manifest.json").write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+
+    ensure_dir(normalized_dir)
+    ensure_dir(report_dir)
+    with tempfile.TemporaryDirectory(
+        prefix=".unified-output-stage-", dir=normalized_dir.parent
+    ) as staged_normalized_name, tempfile.TemporaryDirectory(
+        prefix=".unified-output-stage-", dir=report_dir.parent
+    ) as staged_report_name:
+        staged_normalized_dir = Path(staged_normalized_name)
+        staged_report_dir = Path(staged_report_name)
+        public_all = [public_record(row) for row in all_rows]
+        write_jsonl(
+            staged_normalized_dir / "unified-opportunities.jsonl",
+            public_all,
+        )
+        write_mapped_csv_bom(
+            staged_report_dir / "unified-opportunity-all.csv",
+            UNIFIED_CSV_COLUMNS,
+            _ranked_rows(all_rows),
+            preserve_order=True,
+        )
+        write_mapped_csv_bom(
+            staged_report_dir / "unified-opportunity-top30.csv",
+            UNIFIED_CSV_COLUMNS,
+            _ranked_rows(top_rows),
+            preserve_order=True,
+        )
+        summary = _summary_markdown(
+            run_day=run_day,
+            input_statuses=input_statuses,
+            all_rows=all_rows,
+            top_rows=top_rows,
+            duplicate_count=duplicate_count,
+            warnings=warnings,
+        )
+        (staged_report_dir / "unified-opportunity-summary.md").write_text(
+            summary,
+            encoding="utf-8",
+        )
+        output_validation = _validate_staged_outputs(
+            normalized_dir=staged_normalized_dir,
+            report_dir=staged_report_dir,
+            expected_all=len(all_rows),
+            action_candidates=len(action_rows),
+            top_n=top_n,
+        )
+        manifest["output_validation"] = output_validation
+        (staged_normalized_dir / "unified-opportunity-manifest.json").write_text(
+            json.dumps(manifest, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        _publish_staged_outputs(
+            staged_normalized_dir=staged_normalized_dir,
+            staged_report_dir=staged_report_dir,
+            normalized_dir=normalized_dir,
+            report_dir=report_dir,
+        )
     return manifest
+
+
+def _print_input_selection(
+    specs: list[tuple[str, Path]],
+    *,
+    stream: TextIO,
+) -> None:
+    print(f"working_directory={Path.cwd().resolve()}", file=stream)
+    print(f"project_root={project_root().resolve()}", file=stream)
+    for index, (domain, path) in enumerate(specs):
+        exists = path.exists()
+        line_count = _physical_line_count(path) if exists else 0
+        print(
+            f"input[{index}] domain={domain} path={path} "
+            f"exists={exists} physical_lines={line_count}",
+            file=stream,
+        )
+    stream.flush()
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -421,14 +583,39 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--report-dir", type=Path)
     parser.add_argument("--top-n", type=int, default=30)
     args = parser.parse_args(argv)
-    manifest = run_unified_output(
+    specs = _input_specs(
         run_day=args.run_day,
         support_path=args.support,
         mice_path=args.mice,
         procurement_paths=args.procurement,
-        normalized_dir=args.normalized_dir,
-        report_dir=args.report_dir,
-        top_n=args.top_n,
+    )
+    _print_input_selection(specs, stream=sys.stdout)
+    try:
+        manifest = run_unified_output(
+            run_day=args.run_day,
+            support_path=args.support,
+            mice_path=args.mice,
+            procurement_paths=args.procurement,
+            normalized_dir=args.normalized_dir,
+            report_dir=args.report_dir,
+            top_n=args.top_n,
+        )
+    except UnifiedOutputError as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
+    for status in manifest["inputs"]:
+        print(
+            f"loaded domain={status['domain']} path={status['path']} "
+            f"rows={status['row_count']}"
+        )
+    print(
+        "counts "
+        f"loaded={manifest['input_row_count']} "
+        f"adapted={manifest['adapted_row_count']} "
+        f"adapted_by_domain={manifest['adapted_source_domain_counts']} "
+        f"unified={manifest['unified_row_count']} "
+        f"action_candidates={manifest['action_candidate_count']} "
+        f"top={manifest['top_row_count']}"
     )
     print(json.dumps(manifest, ensure_ascii=False, indent=2))
     return 0
