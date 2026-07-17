@@ -108,7 +108,7 @@
 3. G2B 운영 가이드에 pre-notice priority, Top 30, 273 all-candidates가 없다.
 4. 루트 `README.en.md`는 현재 제품의 영문 README로 오해될 수 있다.
 5. source registry에서 구현 상태가 변경되어도 historical landscape와 생성 audit CSV는 자동으로 최신 정본이 되지 않는다.
-6. 문서의 통합 제품 그림과 달리 현재 Top 30은 G2B 사전규격에 한정된다.
+6. 제품 전체 통합 Top 30이 구현되었으며 G2B 사전규격 Top 30은 도메인별 보조 산출물로 유지된다.
 
 이번 작업에서는 요구된 5개 정본 문서만 생성·정리하며 기존 문서를 삭제하거나 drift 문장을 직접 수정하지 않는다.
 

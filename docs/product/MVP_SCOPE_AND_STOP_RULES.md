@@ -19,8 +19,8 @@ QRPick Opportunity Pipeline은 현재 구현을 MVP 기준선으로 동결한다
 | MICE·QRPick 분류 | 설명 가능한 규칙과 근거·신뢰도 | 구현 |
 | 조달 생애주기 | 사전규격·입찰·낙찰·계약의 강한 연결 | 부분 구현 |
 | 영업 경로 | 직접입찰·컨소시엄·솔루션 파트너·낙찰사 영업 | 조달 중심 구현 |
-| Top 30 | G2B 사전규격 운영자 기본 출력 | 구현 |
-| 전체 원장 | raw, normalized, 273 all-candidates 보존 | 구현, 제품 통합 원장은 미구현 |
+| Top 30 | 도메인 원점수를 쓰지 않는 제품 전체 운영자 기본 출력 | 구현 |
+| 전체 원장 | raw, 도메인 normalized, 통합 JSONL/all CSV 보존 | 구현 |
 | 판정 근거 | reasons/evidence/confidence/unknowns | 구현 |
 | 권장 행동 | 다음 검토·접촉 행동 텍스트 | 구현, 상태형 task는 미구현 |
 | manifest | 소스·stage·건수·상태·오류 | 도메인별 부분 구현 |
@@ -36,8 +36,10 @@ QRPick Opportunity Pipeline은 현재 구현을 MVP 기준선으로 동결한다
 - duplicates 또는 lifecycle link 근거
 - collection manifest와 통계
 - G2B `procurements.jsonl`
-- `g2b-pre-notice-top30.csv`
-- `g2b-pre-notice-all-candidates.csv`
+- `unified-opportunity-top30.csv`
+- `unified-opportunity-all.csv`
+- `unified-opportunities.jsonl`
+- `unified-opportunity-manifest.json`
 - 근거·미확인 사항·권장 다음 행동
 - 테스트 결과와 실행 로그
 
@@ -118,7 +120,7 @@ QRPick Opportunity Pipeline은 현재 구현을 MVP 기준선으로 동결한다
 | `app/dashboard/` | 동결 | 웹 UI는 비범위 |
 | `app/proposal_pipeline/` | 동결 | 제안서 자동화는 비범위 |
 | 추가 MICE source registry 구현 | 동결 | 현재 소스의 운영가치 검증 우선 |
-| 세 도메인 공통 opportunity envelope | 동결 | 통합 Top 30 병목이 확인될 때만 검토 |
+| 경량 통합 opportunity 출력 | 유지·동결 | 최종 출력에만 구현됨; 도메인 모델로 확장 금지 |
 | 상태형 action queue/CRM | 동결 | 외부 운영 기록으로 4주 검증 |
 | 기존 경로별 CSV | 유지 | 감사·세부 분석용, 운영 기본 파일은 Top 30 |
 | `skills/ir-search/` | 수정 금지 | upstream 권위 |

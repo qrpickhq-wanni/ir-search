@@ -52,6 +52,15 @@ G2B 조달:
 scripts\run_g2b_mice_mvp.bat
 ```
 
+제품 전체 통합:
+
+```bat
+scripts\run_unified_output.bat --run-day YYYY-MM-DD
+```
+
+도메인 원장이 서로 다른 날짜 또는 실험 폴더에 있으면 입력 경로를 명시한다.
+통합 실행 manifest의 경로·해시·건수로 실제 사용된 원장을 확인한다.
+
 테스트:
 
 ```bat
@@ -75,9 +84,10 @@ scripts\run_g2b_mice_mvp.bat
 
 기본 파일:
 
-- `g2b-pre-notice-top30.csv`: 운영자 기본 30건
-- `g2b-pre-notice-all-candidates.csv`: 영업 후보 전체
-- `procurements.jsonl`: NO_ACTION을 포함한 전체 조달 원장
+- `unified-opportunity-top30.csv`: 제품 전체 운영자 기본 30건
+- `unified-opportunity-all.csv`: NO_ACTION을 포함한 통합 원장 CSV
+- `unified-opportunities.jsonl`: 원본 ID·URL을 보존한 통합 JSONL 원장
+- 도메인별 기존 원장: 상세 감사와 재분류용
 
 Top 30에서 확인:
 
@@ -215,7 +225,7 @@ notes
 
 4주 후 제품 검토:
 
-- 통합 Top 30 필요성
+- 통합 Top 30의 실제 행동 전환율과 도메인 구성
 - action 상태 관리 필요성
 - RFP 독해 병목과 AI 진입 조건
 
